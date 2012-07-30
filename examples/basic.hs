@@ -7,12 +7,14 @@ import Filesystem.Path.CurrentOS
 
 main = do
   [img,out] <- getArgs
-  withMagickWandGenesis $
-    withMagickWand $ do
-      stR <- readImage $ decodeString img
+  withMagickWandGenesis $ do
+    (_,w) <- magickWand
+    stR <- readImage w $ decodeString img
 --      unless stR $ throwWandException 
-      magickIterate $ do
-        resizeImage 106 80 lanczosFilter 1.0
-      writeImages (decodeString out) True
+    magickIterate w $ \p -> do
+        resizeImage p 106 80 lanczosFilter 1.0
+        return ()
+    writeImages w (decodeString out) True
 --      unless stW $ throwWandException
+    return ()
 

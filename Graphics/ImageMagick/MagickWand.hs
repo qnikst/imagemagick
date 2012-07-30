@@ -5,51 +5,45 @@ import Prelude hiding (FilePath)
 import "mtl" Control.Monad.Reader                         -- TODO: remove
 import Control.Exception
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Resource
 import Graphics.ImageMagick.MagickWand.Internal
 import Filesystem.Path.CurrentOS
 import Data.ByteString
 import Foreign
 import Foreign.C 
 
-data Filter                                                 -- TODO: change name
 type PMagickWand = Ptr MagickWand
-type MagickR a = ReaderT PMagickWand IO a
 
 -- | Create magic wand environment and closes it at the
 -- end of the work, should wrap all MagickWand functions
-withMagickWandGenesis :: IO a -> IO a
-withMagickWandGenesis f = bracket start finish (const f)
+-- withMagickWandGenesis :: IO a -> IO a
+withMagickWandGenesis f = bracket start finish (const $ runResourceT f)
   where
     start = magickWandGenesis
     finish = const magickWandTerminus
 
-withMagickWand :: (MagickR a) -> IO a
-withMagickWand f = bracket start close (runReaderT f)
-  where
-    start = newMagickWand
-    close = destroyMagickWand
+magickWand :: (MonadResource m) => m (ReleaseKey, Ptr MagickWand)
+magickWand = allocate newMagickWand destroy 
+  where destroy x = destroyMagickWand x >> return ()
 
-
-magickIterate :: (MagickR a) -> (MagickR ())
-magickIterate f = ask >>= \w -> liftIO (magickResetIterator w) >> go w f -- TODO: use fix
+magickIterate :: (MonadResource m) => PMagickWand -> (Ptr MagickWand -> m ()) -> m ()
+magickIterate w f = liftIO (magickResetIterator w) >> go w f -- TODO: use fix
   where 
     go w f = do
-      i <- lift (magickNextImage w)
-      unless (i==0) $ f >> go w f
+      i <- liftIO $ magickNextImage w
+      unless (i==0) $ f w >> go w f
 
-resizeImage :: CInt -> CInt -> FilterTypes -> CDouble -> MagickR Bool
-resizeImage w h f s = ask >>= \m -> fmap (/=0) $! lift (magickResizeImage m w h f s)
+resizeImage :: (MonadResource m) => Ptr MagickWand -> CInt -> CInt -> FilterTypes -> CDouble -> m Bool
+resizeImage pw w h f s = liftIO $  magickResizeImage pw w h f s >>= return . (/=0)
 
-readImage :: FilePath -> MagickR Bool                       -- TODO: move to apropiate file
-readImage fn = do 
-  w <- ask
-  r <- lift $ useAsCString (encode fn) (magickReadImage w)
-  return (r/=0)
+readImage :: (MonadResource m) => PMagickWand -> FilePath -> m Bool
+readImage w fn = liftIO $ do
+      x <- useAsCString (encode fn) (magickReadImage w)
+      return (x/=0)
 
-writeImages :: FilePath -> Bool -> MagickR Bool
-writeImages fn b = do
-  w <- ask 
-  r <- lift $ useAsCString (encode fn) (\f -> magickWriteImages w f b')
-  return (r/=0)
+writeImages :: (MonadResource m) => PMagickWand -> FilePath -> Bool -> m Bool
+writeImages w fn b = liftIO $ do
+  x <- useAsCString (encode fn) (\f -> magickWriteImages w f b')
+  return (x/=0)
   where b' = if b then 1 else 0
 

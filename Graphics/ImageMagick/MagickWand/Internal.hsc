@@ -54,6 +54,8 @@ foreign import ccall "wand/MagickWand.h ClearMagickWand" clearMagickWand
 foreign import ccall "wand/MagickWand.h DestroyMagickWand" destroyMagickWand
   :: Ptr MagickWand -> IO (Ptr MagickWand)
 
+foreign import ccall "wand/MagickWand.h &DestroyMagickWand" pDestroyMagickWand
+  :: FunPtr (Ptr MagickWand -> IO ())
 -- * Utilities
 
 -- | IsMagickWand() returns MagickTrue if the wand is verified as a magick wand.
