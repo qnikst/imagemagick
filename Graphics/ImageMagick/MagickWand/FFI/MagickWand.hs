@@ -1,18 +1,18 @@
+{-# LINE 1 "Graphics/ImageMagick/MagickWand/FFI/MagickWand.hsc" #-}
 {-# LANGUAGE CPP, ForeignFunctionInterface #-}
+{-# LINE 2 "Graphics/ImageMagick/MagickWand/FFI/MagickWand.hsc" #-}
 
-module Graphics.ImageMagick.MagickWand.Internal
+module Graphics.ImageMagick.MagickWand.FFI.MagickWand
   where
 
 import Foreign
 import Foreign.C.Types
 import Foreign.C.String
 
-#include <wand/MagickWand.h>
+import Graphics.ImageMagick.MagickWand.FFI.Types 
 
--- MagickWand type
-data MagickWand
-data Image
-type MagickBooleanType = CInt
+
+{-# LINE 13 "Graphics/ImageMagick/MagickWand/FFI/MagickWand.hsc" #-}
 
 
 -- | MagickWandGenesis() initializes the MagickWand environment.
@@ -322,38 +322,6 @@ foreign import ccall "wand/MagickWand.h MagickReadImage" magickReadImage
 foreign import ccall "wand/MagickWand.h MagickNextImage" magickNextImage
   :: Ptr MagickWand -> IO (MagickBooleanType)
 
-newtype FilterTypes = FilterTypes { unPCREOption :: CInt }
-    deriving (Eq,Show)
-
-#{enum FilterTypes, FilterTypes
-  , undefinedFilter = UndefinedFilter
-  , pointFilter     = PointFilter
-  , boxFilter       = BoxFilter
-  , triangleFilter  = TriangleFilter
-  , hermiteFilter   = HermiteFilter
-  , hanningFilter   = HanningFilter
-  , hammingFilter   = HammingFilter
-  , blackmanFilter  = BlackmanFilter
-  , gaussianFilter  = GaussianFilter
-  , qaudraticFilter = QuadraticFilter
-  , cubicFilter     = CubicFilter
-  , catromFilter    = CatromFilter
-  , mirchellFilter  = MitchellFilter
-  , jincFilter      = JincFilter
-  , sinkFilter      = SincFilter
-  , sinkFastFilter  = SincFastFilter
-  , kaiserFilter    = KaiserFilter
-  , welshFilter     = WelshFilter
-  , parzenFilter    = ParzenFilter
-  , bohmanFilter    = BohmanFilter
-  , bartlettFilter  = BartlettFilter
-  , lagrangeFilter  = LagrangeFilter
-  , lanczosFilter   = LanczosFilter
-  , lanczosSharpFilter = LanczosSharpFilter
-  , lanczos2Filter  = Lanczos2Filter
-  , lanczos2SharpFilter = Lanczos2SharpFilter
-  , robidouxFilter  = RobidouxFilter
-}
 
 {-
   ResizeFilter      Bessel   Blackman   Box
@@ -383,4 +351,5 @@ foreign import ccall "wand/MagickWand.h MagickWriteImages" magickWriteImages
   -> CString                      -- ^ filename
   -> MagickBooleanType            -- ^ join images into a single multi-image file.
   -> IO (MagickBooleanType)
+
 
