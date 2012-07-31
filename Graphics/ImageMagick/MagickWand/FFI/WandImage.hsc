@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP, ForeignFunctionInterface, NoMonomorphismRestriction #-}
 module Graphics.ImageMagick.MagickWand.FFI.WandImage
   where
 

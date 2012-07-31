@@ -11,8 +11,6 @@ module Graphics.ImageMagick.MagickWand.PixelIterator
   ) where
 
 import Foreign
-import Foreign.C.Types
-import Control.Monad
 import Control.Monad.Trans.Resource
 import Control.Monad.IO.Class
 import Data.Vector.Storable (Vector)

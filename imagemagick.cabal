@@ -1,0 +1,40 @@
+Name:                imagemagick
+Version:             0.1
+Synopsis:            bindins to imagemagick library
+License:             GPL-3 
+License-file:        LICENSE
+Author:              Alexander Vershilov
+Maintainer:          alexander.vershilov@gmail.com
+-- Copyright:           
+Category:            Graphics
+Build-type:          Simple
+
+-- Extra files to be distributed with the package, such as examples or
+-- a README.
+-- Extra-source-files:  
+
+-- Constraint on the version of Cabal needed to build this package.
+Cabal-version:       >=1.2
+
+
+Library
+  Exposed-modules:     Graphics.ImageMagick.MagickWand
+  
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , system-filepath == 0.4.*
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick
+  Other-modules:        Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
+                      , Graphics.ImageMagick.MagickWand.FFI.MagickWand
+                      , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
+                      , Graphics.ImageMagick.MagickWand.FFI.PixelWand
+                      , Graphics.ImageMagick.MagickWand.FFI.Types
+                      , Graphics.ImageMagick.MagickWand.FFI.WandImage
+                      , Graphics.ImageMagick.MagickWand.FFI.WandProperties
+  Build-tools:          hsc2hs
+  
