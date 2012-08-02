@@ -4,13 +4,12 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , magickWand
   , cloneMagickWand
   , magickIterate
-  , resizeImage  -- TODO move to image
   , readImage 
   , writeImages
-  , getImageHeight -- TODO move to image
   , quantumRange
   , MagickRealType
-  -- move to another file
+  -- TODO: move somewhere
+  , lanczosFilter
   ) where
 
 import Prelude hiding (FilePath)
@@ -51,8 +50,6 @@ cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr Mag
 cloneMagickWand w = allocate (F.cloneMagickWand w) destroy
   where destroy x = F.destroyMagickWand x >> return ()
 
-resizeImage :: (MonadResource m) => Ptr MagickWand -> CInt -> CInt -> FilterTypes -> CDouble -> m Bool
-resizeImage pw w h f s = liftIO $ F.magickResizeImage pw w h f s >>= return . (==mTrue)
 
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m Bool
 readImage w fn = liftIO $ do
@@ -65,5 +62,3 @@ writeImages w fn b = liftIO $ do
   return (x==mTrue)
   where b' = if b then mTrue else mFalse
 
-getImageHeight :: (MonadResource m) => Ptr MagickWand -> m Int                    -- TODO move to another file
-getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
