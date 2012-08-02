@@ -13,16 +13,24 @@ main = do
   [img,img'] <- getArgs
   withMagickWandGenesis $ do
     (_,w) <- magickWand
-    readImage w (decodeString img')
+    
+    -- Read the image
+    readImage w (decodeString img)
 
     -- Cut them in half but make sure they don't underflow
     width  <- fmap safeHalf (getImageWidth w)
     height <- fmap safeHalf (getImageHeight w)
 
+    -- Resize the image using the Lanczos filter
+    -- The blur factor is a 'Double', where > 1 is blurry, < 1 is sharp
+    -- I haven't figured out how you would change the blur parameter of MagickResizeImage
+    -- on the command line so I have set it to its default of one.
     resizeImage w width height lanczosFilter 1
 
+    -- Set the compression quality to 95 (high quality = low compression)
     setImageCompressionQuality w 95
 
+    -- Write the new image 
     writeImages w (decodeString img') True
 
   where 
