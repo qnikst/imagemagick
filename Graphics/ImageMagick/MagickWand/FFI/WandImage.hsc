@@ -1,15 +1,16 @@
-{-# LANGUAGE CPP, ForeignFunctionInterface #-}
+{-# LANGUAGE CPP                      #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 module Graphics.ImageMagick.MagickWand.FFI.WandImage
   where
 
-import Foreign
-import Foreign.C.Types
+import           Foreign
+import           Foreign.C.Types
 
-import Graphics.ImageMagick.MagickWand.FFI.Types 
+import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
 
--- | MagickGetImageHeight() returns the image height. 
+-- | MagickGetImageHeight() returns the image height.
 foreign import ccall "MagickGetImageHeight" magickGetImageHeight
   :: Ptr MagickWand -> IO (CSize)
 
@@ -34,8 +35,8 @@ foreign import ccall "MagickGetImageBackgroundColor" magickGetImageBackgroundCol
 foreign import ccall "MagickSetImageBackgroundColor" magickSetImageBackgroundColor
   :: Ptr MagickWand -> Ptr PixelWand -> IO (MagickBooleanType)
 
--- | MagickExtentImage() extends the image as defined by the geometry, gravity, 
--- and wand background color. Set the (x,y) offset of the geometry to move the 
+-- | MagickExtentImage() extends the image as defined by the geometry, gravity,
+-- and wand background color. Set the (x,y) offset of the geometry to move the
 -- original wand relative to the extended wand.
 foreign import ccall "MagickExtentImage" magickExtentImage
   :: Ptr MagickWand  -- ^ wand
@@ -44,4 +45,19 @@ foreign import ccall "MagickExtentImage" magickExtentImage
   -> CSize           -- ^ x offset
   -> CSize           -- ^ y offset
   -> IO ()
+
+-- | MagickFloodfillPaintImage() changes the color value of any pixel
+-- that matches target and is an immediate neighbor. If the method FillToBorderMethod
+-- is specified, the color value is changed for any neighbor pixel that does
+-- not match the bordercolor member of image.
+foreign import ccall "MagickFloodfillPaintImage" magickFloodfillPaintImage
+  :: Ptr MagickWand    -- ^ wand
+  -> ChannelType       -- ^ channel
+  -> Ptr PixelWand     -- ^ fill
+  -> CDouble           -- ^ fuzz
+  -> Ptr PixelWand     -- ^ bordercolor
+  -> CSize             -- ^ x offset
+  -> CSize             -- ^ y offset
+  -> MagickBooleanType -- ^ invert
+  -> IO (MagickBooleanType)
 
