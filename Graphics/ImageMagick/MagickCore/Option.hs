@@ -5,6 +5,7 @@ module Graphics.ImageMagick.MagickCore.Option
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                            (ByteString)
+import           Data.ByteString                            as S
 
 import qualified Graphics.ImageMagick.MagickCore.FFI.Option as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
