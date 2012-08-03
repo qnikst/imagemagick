@@ -26,3 +26,22 @@ foreign import ccall "MagickGetImageCompressionQuality" magickGetImageCompressio
 foreign import ccall "MagickSetImageCompressionQuality" magickSetImageCompressionQuality
   :: Ptr MagickWand -> CSize -> IO (MagickBooleanType)
 
+-- | MagickGetImageBackgroundColor() returns the image background color.
+foreign import ccall "MagickGetImageBackgroundColor" magickGetImageBackgroundColor
+  :: Ptr MagickWand -> Ptr PixelWand -> IO (MagickBooleanType)
+
+-- | MagickSetImageBackgroundColor() sets the image background color.
+foreign import ccall "MagickSetImageBackgroundColor" magickSetImageBackgroundColor
+  :: Ptr MagickWand -> Ptr PixelWand -> IO (MagickBooleanType)
+
+-- | MagickExtentImage() extends the image as defined by the geometry, gravity, 
+-- and wand background color. Set the (x,y) offset of the geometry to move the 
+-- original wand relative to the extended wand.
+foreign import ccall "MagickExtentImage" magickExtentImage
+  :: Ptr MagickWand  -- ^ wand
+  -> CSize           -- ^ width
+  -> CSize           -- ^ height
+  -> CSize           -- ^ x offset
+  -> CSize           -- ^ y offset
+  -> IO ()
+
