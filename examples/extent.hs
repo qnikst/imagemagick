@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-import Graphics.ImageMagick.MagickWand
-import Filesystem.Path.CurrentOS
-import System.Environment
+import           Filesystem.Path.CurrentOS
+import           Graphics.ImageMagick.MagickWand
+import           System.Environment
 
 main = do
   [img,img'] <- getArgs
@@ -12,7 +12,7 @@ main = do
 
     p `setColor` "blue"
 
-    w `readImage` (decodeString img)
+    w `readImage` decodeString img
 
     width <- getImageWidth w
     height <- getImageHeight w

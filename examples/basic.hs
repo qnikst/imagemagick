@@ -1,8 +1,8 @@
-import System.Environment
-import Graphics.ImageMagick.MagickWand.Internal -- TODO: types
-import Graphics.ImageMagick.MagickWand
-import Control.Monad
-import Filesystem.Path.CurrentOS
+import           Control.Monad
+import           Filesystem.Path.CurrentOS
+import           Graphics.ImageMagick.MagickWand
+import           Graphics.ImageMagick.MagickWand.Internal
+import           System.Environment
 
 
 main = do
@@ -10,7 +10,7 @@ main = do
   withMagickWandGenesis $ do
     (_,w) <- magickWand
     stR <- readImage w $ decodeString img
---      unless stR $ throwWandException 
+--      unless stR $ throwWandException
     magickIterate w $ \p -> do
         resizeImage p 106 80 lanczosFilter 1.0
         return ()

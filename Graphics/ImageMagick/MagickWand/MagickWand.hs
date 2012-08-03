@@ -1,10 +1,10 @@
-{-# LANGUAGE PackageImports, FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts #-}
 module Graphics.ImageMagick.MagickWand.MagickWand
   ( withMagickWandGenesis
   , magickWand
   , cloneMagickWand
   , magickIterate
-  , readImage 
+  , readImage
   , writeImages
   , quantumRange
   , MagickRealType
@@ -12,18 +12,16 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , lanczosFilter
   ) where
 
-import Prelude hiding (FilePath)
-import Control.Exception
-import Control.Monad
-import Control.Monad.IO.Class
-import Control.Monad.Trans.Resource
-import Graphics.ImageMagick.MagickWand.FFI.Types
-import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand  as F
-import qualified Graphics.ImageMagick.MagickWand.FFI.WandImage   as F
-import Filesystem.Path.CurrentOS
-import Data.ByteString
-import Foreign
-import Foreign.C 
+import           Control.Exception
+import           Control.Monad
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.Resource
+import           Data.ByteString
+import           Filesystem.Path.CurrentOS
+import           Foreign hiding (void)
+import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand as F
+import           Graphics.ImageMagick.MagickWand.FFI.Types
+import           Prelude                                        hiding (FilePath)
 
 -- | Create magic wand environment and closes it at the
 -- end of the work, should wrap all MagickWand functions
@@ -35,12 +33,12 @@ withMagickWandGenesis f = bracket start finish (\_ -> runResourceT f)
     finish = liftIO . const F.magickWandTerminus
 
 magickWand :: (MonadResource m) => m (ReleaseKey, Ptr MagickWand)
-magickWand = allocate F.newMagickWand destroy 
-  where destroy x = F.destroyMagickWand x >> return ()
+magickWand = allocate F.newMagickWand destroy
+  where destroy = void . F.destroyMagickWand
 
 magickIterate :: (MonadResource m) => Ptr MagickWand -> (Ptr MagickWand -> m ()) -> m ()
 magickIterate w f = liftIO (F.magickResetIterator w) >> go -- TODO: use fix
-  where 
+  where
     go = do
       i <- liftIO $ F.magickNextImage w
       unless (i==mTrue) $ f w >> go
@@ -48,7 +46,7 @@ magickIterate w f = liftIO (F.magickResetIterator w) >> go -- TODO: use fix
 
 cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr MagickWand)
 cloneMagickWand w = allocate (F.cloneMagickWand w) destroy
-  where destroy x = F.destroyMagickWand x >> return ()
+  where destroy = void . F.destroyMagickWand
 
 
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m Bool

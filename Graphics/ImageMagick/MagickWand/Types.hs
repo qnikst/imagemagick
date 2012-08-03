@@ -5,9 +5,9 @@ module Graphics.ImageMagick.MagickWand.Types
   , PMagickWand
   ) where
 
-import Foreign
-import Control.Monad.Trans.Resource
-import Graphics.ImageMagick.MagickWand.FFI.Types
+import           Control.Monad.Trans.Resource
+import           Foreign
+import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 type PPixelIterator = Ptr PixelIterator
 type PPixelWand     = Ptr PixelWand

@@ -1,11 +1,11 @@
-{-# LANGUAGE PackageImports, FlexibleContexts #-}
-import Control.Monad
-import Control.Monad.IO.Class
-import Control.Monad.Trans.Resource
-import Graphics.ImageMagick.MagickWand
-import Filesystem.Path.CurrentOS
-import System.Environment
-import qualified Data.Vector.Storable as V
+{-# LANGUAGE FlexibleContexts #-}
+import           Control.Monad
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.Resource
+import qualified Data.Vector.Storable            as V
+import           Filesystem.Path.CurrentOS
+import           Graphics.ImageMagick.MagickWand
+import           System.Environment
 
 {- Example application for making contrast image
  - Example is taken from imagemagick documentation
@@ -15,7 +15,7 @@ main = do
   withMagickWandGenesis $ do
     (_,w) <- magickWand
     tR <- readImage w $ decodeString img
-    -- unless tR throw 
+    -- unless tR throw
     (_,w')  <- cloneMagickWand w
     (_,it)  <- pixelIterator w
     (_,it') <- pixelIterator w'
@@ -26,7 +26,7 @@ main = do
       V.zipWithM_ (contrast it') pixels pixels'
       writeImages w' (decodeString img') True
   where
-    contrast :: (MonadResource m) => PPixelIterator -> PPixelWand -> PPixelWand -> m (Bool)
+    contrast :: (MonadResource m) => PPixelIterator -> PPixelWand -> PPixelWand -> m Bool
     contrast i p p' = do
         c <- pixelGetMagickColor p
         setPixelRed   c =<< fmap sigmoidalContrast (getPixelRed c)
@@ -38,6 +38,6 @@ main = do
     quantumScale :: MagickRealType
     quantumScale = 1 / quantumRange
     sigmoidalContrast :: MagickRealType -> MagickRealType
-    sigmoidalContrast x = (quantumRange*1/(1+ exp (10.0*(0.5-quantumScale*x) ))-0.0066928509)*1.0092503
+    sigmoidalContrast x = (quantumRange/(1+ exp (10.0*(0.5-quantumScale*x) ))-0.0066928509)*1.0092503
 
-      
+

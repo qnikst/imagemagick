@@ -1,4 +1,4 @@
-{-# LANGUAGE CPP, ForeignFunctionInterface, NoMonomorphismRestriction #-}
+{-# LANGUAGE CPP, ForeignFunctionInterface, NoMonomorphismRestriction, RankNTypes #-}
 
 module Graphics.ImageMagick.MagickWand.FFI.Types
   where
@@ -7,8 +7,6 @@ module Graphics.ImageMagick.MagickWand.FFI.Types
 
 import Foreign
 import Foreign.C.Types
-import Data.Word
-import Data.Int
 
 data PixelIterator
 data MagickWand
@@ -23,11 +21,17 @@ type SignedQuantum    = #type SignedQuantum
 type QuantumAny       = #type QuantumAny
 type Quantum          = #type  Quantum
 
+magickEpsilon :: forall a. Fractional a => a
 magickEpsilon   = 1e-10 -- #const MagickEpsilon
+magickHuge :: forall a. Num a => a
 magickHuge      = #const MagickHuge
+maxColormapSize :: forall a. Num a => a
 maxColormapSize = #const MaxColormapSize
+maxMap :: forall a. Num a => a
 maxMap          = #const MaxMap
+quantumFormat :: forall a. Num a => a
 quantumFormat   = #const QuantumFormat
+quantumRange :: forall a. Num a => a
 quantumRange    = #const QuantumRange
 
 
