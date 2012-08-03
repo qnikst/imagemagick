@@ -14,7 +14,7 @@ Build-type:          Simple
 -- Extra-source-files:  
 
 -- Constraint on the version of Cabal needed to build this package.
-Cabal-version:       >=1.2
+Cabal-version:       >=1.8
 
 
 Library
@@ -49,16 +49,7 @@ executable            floodfill
                       , vector == 0.9.*
                       , bytestring == 0.9.*
                       , system-filepath == 0.4.*
-
+                      , imagemagick
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Other-modules:        Graphics.ImageMagick.MagickCore.FFI.Option
-                      , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
-                      , Graphics.ImageMagick.MagickWand.FFI.MagickWand
-                      , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
-                      , Graphics.ImageMagick.MagickWand.FFI.PixelWand
-                      , Graphics.ImageMagick.MagickWand.FFI.Types
-                      , Graphics.ImageMagick.MagickWand.FFI.WandImage
-                      , Graphics.ImageMagick.MagickWand.FFI.WandProperties
-  Build-tools:        hsc2hs
