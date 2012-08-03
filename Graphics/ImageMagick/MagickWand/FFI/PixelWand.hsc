@@ -1,5 +1,4 @@
 {-# LANGUAGE CPP, ForeignFunctionInterface #-}
-
 module Graphics.ImageMagick.MagickWand.FFI.PixelWand 
   where
 
@@ -39,7 +38,7 @@ foreign import ccall "NewPixelWands" newPixelWands
 
 -- | PixelSetColor() sets the color of the pixel wand with a string (e.g. "blue", "#0000ff", "rgb(0,0,255)", "cmyk(100,100,100,10)", etc.).
 foreign import ccall "PixelSetColor" pixelSetColor
-  :: Ptr PixelWand -> CString -> IO (MagickBoolean) 
+  :: Ptr PixelWand -> CString -> IO (MagickBooleanType) 
 
 
 {- 
