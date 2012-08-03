@@ -7,6 +7,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , getImageBackgroundColor
   , setImageBackgroundColor
   , extentImage
+  , floodfillPaintImage
   ) where
 
 import           Control.Monad.IO.Class
@@ -47,3 +48,7 @@ setImageBackgroundColor w p = fromMBool $! F.magickSetImageBackgroundColor w p
 extentImage :: (MonadResource m) => PMagickWand -> Int -> Int -> Int -> Int -> m ()
 extentImage w width height offsetX offsetY =
   liftIO $ F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
+
+floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m Bool
+floodfillPaintImage w channel fill fuzz border x y invert =
+  fromMBool $! F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
