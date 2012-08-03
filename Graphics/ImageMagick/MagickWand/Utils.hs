@@ -11,6 +11,9 @@ import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 fromMBool :: (MonadResource m) => IO MagickBooleanType -> m Bool
 fromMBool = liftM (==mTrue) . liftIO
+{-# INLINE fromMBool #-}
 
 toMBool :: Bool -> MagickBooleanType
-toMBool v = if v then mTrue else mFalse
+toMBool True  = mTrue
+toMBool False = mFalse
+{-# INLINE toMBool #-}

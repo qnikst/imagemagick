@@ -1,13 +1,14 @@
-{-# LANGUAGE CPP, ForeignFunctionInterface #-}
+{-# LANGUAGE CPP                      #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 
 module Graphics.ImageMagick.MagickWand.FFI.MagickWand
   where
 
-import Foreign
-import Foreign.C.Types
-import Foreign.C.String
+import           Foreign
+import           Foreign.C.String
+import           Foreign.C.Types
 
-import Graphics.ImageMagick.MagickWand.FFI.Types 
+import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
 
@@ -22,8 +23,8 @@ foreign import ccall "wand/MagickWand.h MagickWandTerminus" magickWandTerminus
 
 -- * Constructing magic wand
 
--- | NewMagickWand() returns a wand required for all other methods in the API. 
--- A fatal exception is thrown if there is not enough memory to allocate the wand. 
+-- | NewMagickWand() returns a wand required for all other methods in the API.
+-- A fatal exception is thrown if there is not enough memory to allocate the wand.
 -- Use DestroyMagickWand() to dispose of the wand when it is no longer needed.
 foreign import ccall "wand/MagickWand.h NewMagickWand" newMagickWand
   :: IO (Ptr MagickWand)
@@ -42,7 +43,7 @@ foreign import ccall "wand/MagickWand.h CloneMagickWand" cloneMagickWand
 
 -- * Clearing and destroying
 
--- | ClearMagickWand() clears resources associated with the wand, 
+-- | ClearMagickWand() clears resources associated with the wand,
 -- leaving the wand blank, and ready to be used for a new set of images.
 foreign import ccall "wand/MagickWand.h ClearMagickWand" clearMagickWand
   :: Ptr MagickWand -> IO ()
@@ -57,26 +58,26 @@ foreign import ccall "wand/MagickWand.h &DestroyMagickWand" pDestroyMagickWand
 
 -- | IsMagickWand() returns MagickTrue if the wand is verified as a magick wand.
 foreign import ccall "wand/MagickWand.h  IsMagickWand" isMagicWand
-  :: Ptr MagickWand -> IO (MagickBooleanType)
+  :: Ptr MagickWand -> IO MagickBooleanType
 
 -- * Exceptions
 
 -- | MagickClearException() clears any exceptions associated with the wand.
 --
 foreign import ccall "wand/MagickWand.h MagickClearException" magicClearException
-  :: Ptr MagickWand -> IO (MagickBooleanType)
+  :: Ptr MagickWand -> IO MagickBooleanType
 
 
 -- **  Iterator
 
 -- | MagickResetIterator() resets the wand iterator.
--- It is typically used either before iterating though images, or before calling 
+-- It is typically used either before iterating though images, or before calling
 -- specific functions such as MagickAppendImages() to append all images together.
 --
--- Afterward you can use MagickNextImage() to iterate over all the images in a 
+-- Afterward you can use MagickNextImage() to iterate over all the images in a
 -- wand container, starting with the first image.
--- 
--- Using this before MagickAddImages() or MagickReadImages() will cause new images 
+--
+-- Using this before MagickAddImages() or MagickReadImages() will cause new images
 -- to be inserted between the first and second image.
 
 foreign import ccall "wand/MagickWand.h MagickResetIterator" magickResetIterator
@@ -296,28 +297,27 @@ the magick wand.
 
 -- * Image functions
 
--- | MagickReadImage() reads an image or image sequence. The images are inserted at 
--- the current image pointer position. Use MagickSetFirstIterator(), MagickSetLastIterator, 
--- or MagickSetImageIndex() to specify the current image pointer position at the beginning 
+-- | MagickReadImage() reads an image or image sequence. The images are inserted at
+-- the current image pointer position. Use MagickSetFirstIterator(), MagickSetLastIterator,
+-- or MagickSetImageIndex() to specify the current image pointer position at the beginning
 -- of the image list, the end, or anywhere in-between respectively.
 
 foreign import ccall "wand/MagickWand.h MagickReadImage" magickReadImage
   :: Ptr MagickWand -> CString -> IO MagickBooleanType
 
 -- | MagickNextImage() sets the next image in the wand as the current image.
--- It is typically used after MagickResetIterator(), after which its first use will 
+-- It is typically used after MagickResetIterator(), after which its first use will
 -- set the first image as the current image (unless the wand is empty).
 --
--- It will return MagickFalse when no more images are left to be returned which 
+-- It will return MagickFalse when no more images are left to be returned which
 -- happens when the wand is empty, or the current image is the last image.
--- 
--- When the above condition (end of image list) is reached, the iterator is 
--- automatically set so that you can start using MagickPreviousImage() to again 
--- iterate over the images in the reverse direction, starting with the last image 
+--
+-- When the above condition (end of image list) is reached, the iterator is
+-- automatically set so that you can start using MagickPreviousImage() to again
+-- iterate over the images in the reverse direction, starting with the last image
 -- (again). You can jump to this condition immeditally using MagickSetLastIterator().
-
 foreign import ccall "wand/MagickWand.h MagickNextImage" magickNextImage
-  :: Ptr MagickWand -> IO (MagickBooleanType)
+  :: Ptr MagickWand -> IO MagickBooleanType
 
 
 {-
@@ -330,23 +330,28 @@ foreign import ccall "wand/MagickWand.h MagickNextImage" magickNextImage
 
 -- | MagickResizeImage() scales an image to the desired dimensions with one of these filters:
 --
--- Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are 
+-- Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are
 -- IIR (infinite impulse response). Bessel and Sinc are windowed (brought down to zero) with the Blackman filter.
 
 foreign import ccall "wand/MagickWand.h MagickResizeImage" magickResizeImage
-  :: Ptr MagickWand 
+  :: Ptr MagickWand
   -> CInt                         -- ^ (size_t) columns
   -> CInt                         -- ^ (size_t) rows
   -> FilterTypes                  -- ^ filter
   -> CDouble                      -- ^ blur factor where 1 > blurry, < 1 sharp
-  -> IO (MagickBooleanType)
+  -> IO MagickBooleanType
 
 -- | MagickWriteImages() writes an image or image sequence.
-
 foreign import ccall "wand/MagickWand.h MagickWriteImages" magickWriteImages
   :: Ptr MagickWand
   -> CString                      -- ^ filename
   -> MagickBooleanType            -- ^ join images into a single multi-image file.
-  -> IO (MagickBooleanType)
+  -> IO MagickBooleanType
 
+-- |  MagickSetSize() sets the size of the magick wand. Set it before you read a raw image format such as RGB, GRAY, or CMYK.
+foreign import ccall "MagickSetSize" magickSetSize
+  :: Ptr MagickWand
+  -> CSize                        -- ^ columns
+  -> CSize                        -- ^ rows
+  -> IO MagickBooleanType
 

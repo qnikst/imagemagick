@@ -20,7 +20,16 @@ Cabal-version:       >=1.8
 Library
   Exposed-modules:      Graphics.ImageMagick.MagickCore
                       , Graphics.ImageMagick.MagickWand
-  
+                      , Graphics.ImageMagick.MagickCore.FFI.Option
+                      , Graphics.ImageMagick.MagickCore.FFI.Composite
+                      , Graphics.ImageMagick.MagickCore.FFI.MagickCore
+                      , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
+                      , Graphics.ImageMagick.MagickWand.FFI.MagickWand
+                      , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
+                      , Graphics.ImageMagick.MagickWand.FFI.PixelWand
+                      , Graphics.ImageMagick.MagickWand.FFI.Types
+                      , Graphics.ImageMagick.MagickWand.FFI.WandImage
+                      , Graphics.ImageMagick.MagickWand.FFI.WandProperties
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -30,19 +39,24 @@ Library
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick
-  Other-modules:        Graphics.ImageMagick.MagickCore.FFI.Option
-                      , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
-                      , Graphics.ImageMagick.MagickWand.FFI.MagickWand
-                      , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
-                      , Graphics.ImageMagick.MagickWand.FFI.PixelWand
-                      , Graphics.ImageMagick.MagickWand.FFI.Types
-                      , Graphics.ImageMagick.MagickWand.FFI.WandImage
-                      , Graphics.ImageMagick.MagickWand.FFI.WandProperties
   Build-tools:          hsc2hs
   
 
 executable            floodfill
   Main-is:            examples/floodfill.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            clipmask
+  Main-is:            examples/clipmask.hs
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

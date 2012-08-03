@@ -8,12 +8,19 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , setImageBackgroundColor
   , extentImage
   , floodfillPaintImage
+  , negateImage
+  , negateImageChannel
+  , getImageClipMask
+  , setImageClipMask
+  , compositeImage
+  , compositeImageChannel
   ) where
 
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Foreign
 import           Foreign.C.Types
+import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.WandImage  as F
@@ -52,3 +59,24 @@ extentImage w width height offsetX offsetY =
 floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m Bool
 floodfillPaintImage w channel fill fuzz border x y invert =
   fromMBool $! F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
+
+negateImage :: (MonadResource m) => PMagickWand -> Bool -> m Bool
+negateImage p b = fromMBool $! F.magickNegateImage p (toMBool b)
+
+negateImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Bool -> m Bool
+negateImageChannel p c b = fromMBool $! F.magickNegateImageChannel p c (toMBool b)
+
+
+getImageClipMask :: (MonadResource m) => PMagickWand -> m PMagickWand
+getImageClipMask = liftIO . F.magickGetImageClipMask
+
+setImageClipMask :: (MonadResource m) => PMagickWand -> PMagickWand -> m Bool
+setImageClipMask = (fromMBool .) . F.magickSetImageClipMask
+
+
+compositeImage :: (MonadResource m) => PMagickWand -> PMagickWand -> CompositeOperator -> Int -> Int -> m Bool
+compositeImage p s c w h = fromMBool $ F.magickCompositeImage p s c (fromIntegral w) (fromIntegral h)
+
+compositeImageChannel :: (MonadResource m) => PMagickWand -> PMagickWand -> ChannelType -> CompositeOperator -> Int -> Int -> m Bool
+compositeImageChannel p s ch c w h = fromMBool $ F.magickCompositeImageChannel p s ch c (fromIntegral w) (fromIntegral h)
+

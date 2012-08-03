@@ -3,6 +3,7 @@ module Graphics.ImageMagick.MagickWand.Types
   , PPixelWand
   , PPixelPacket
   , PMagickWand
+  , MagickRealType
   ) where
 
 import           Control.Monad.Trans.Resource
