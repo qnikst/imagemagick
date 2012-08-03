@@ -14,6 +14,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , setImageClipMask
   , compositeImage
   , compositeImageChannel
+  , transparentPaintImage
   ) where
 
 import           Control.Monad.IO.Class
@@ -80,3 +81,17 @@ compositeImage p s c w h = fromMBool $ F.magickCompositeImage p s c (fromIntegra
 compositeImageChannel :: (MonadResource m) => PMagickWand -> PMagickWand -> ChannelType -> CompositeOperator -> Int -> Int -> m Bool
 compositeImageChannel p s ch c w h = fromMBool $ F.magickCompositeImageChannel p s ch c (fromIntegral w) (fromIntegral h)
 
+-- | transparentPaintImage changes any pixel that matches color with the color defined by fill.
+transparentPaintImage :: (MonadResource m) 
+  => PMagickWand
+  -> PPixelWand           -- ^ change this color to specified opacity value withing the image
+  -> Double               -- ^ the level of transarency: 1.0 fully opaque 0.0 fully transparent
+  -> Double               -- ^ By default target must match a particular pixel color exactly. 
+                          -- However, in many cases two colors may differ by a small amount. 
+                          -- The fuzz member of image defines how much tolerance is acceptable 
+                          -- to consider two colors as the same. For example, set fuzz to 10 and 
+                          -- the color red at intensities of 100 and 102 respectively are now 
+                          -- interpreted as the same color for the purposes of the floodfill.
+  -> Bool                 -- paint any pixel that does not match the target color.
+  -> m Bool 
+transparentPaintImage w p alfa fuzz invert = fromMBool $ F.magickTransparentPaintImage w p alfa fuzz (toMBool invert) 
