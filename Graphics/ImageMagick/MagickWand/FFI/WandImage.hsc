@@ -45,7 +45,7 @@ foreign import ccall "MagickExtentImage" magickExtentImage
   -> CSize           -- ^ height
   -> CSize           -- ^ x offset
   -> CSize           -- ^ y offset
-  -> IO (MagickBooleanType)
+  -> IO MagickBooleanType
 
 -- | MagickFloodfillPaintImage() changes the color value of any pixel
 -- that matches target and is an immediate neighbor. If the method FillToBorderMethod
@@ -110,14 +110,25 @@ foreign import ccall "MagickTransparentPaintImage" magickTransparentPaintImage
   :: Ptr MagickWand
   -> Ptr PixelWand        -- ^ change this color to specified opacity value withing the image
   -> Double               -- ^ the level of transarency: 1.0 fully opaque 0.0 fully transparent
-  -> Double               -- ^ By default target must match a particular pixel color exactly. 
-                          -- However, in many cases two colors may differ by a small amount. 
-                          -- The fuzz member of image defines how much tolerance is acceptable 
-                          -- to consider two colors as the same. For example, set fuzz to 10 and 
-                          -- the color red at intensities of 100 and 102 respectively are now 
+  -> Double               -- ^ By default target must match a particular pixel color exactly.
+                          -- However, in many cases two colors may differ by a small amount.
+                          -- The fuzz member of image defines how much tolerance is acceptable
+                          -- to consider two colors as the same. For example, set fuzz to 10 and
+                          -- the color red at intensities of 100 and 102 respectively are now
                           -- interpreted as the same color for the purposes of the floodfill.
   -> MagickBooleanType    -- paint any pixel that does not match the target color.
   -> IO MagickBooleanType
 
+-- | MagickNewImage() adds a blank image canvas of the specified size and background color to the wand.
+foreign import ccall "MagickNewImage" magickNewImage
+  :: Ptr MagickWand
+  -> CSize                -- ^ width
+  -> CSize                -- ^ height
+  -> Ptr PixelWand        -- ^ background color
+  -> IO MagickBooleanType
 
-          
+-- |  MagickDrawImage() renders the drawing wand on the current image.
+foreign import ccall "MagickDrawImage" magickDrawImage
+    :: Ptr MagickWand -> Ptr DrawingWand -> IO MagickBooleanType
+
+

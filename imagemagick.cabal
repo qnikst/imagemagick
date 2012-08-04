@@ -25,6 +25,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Exception
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
+                      , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
                       , Graphics.ImageMagick.MagickWand.FFI.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
                       , Graphics.ImageMagick.MagickWand.FFI.PixelWand
@@ -71,6 +72,19 @@ executable            clipmask
 
 executable            paint-trans
   Main-is:            examples/trans_paint.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            round-mask
+  Main-is:            examples/round_mask.hs
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

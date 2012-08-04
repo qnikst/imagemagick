@@ -11,6 +11,7 @@ import Foreign.C.Types
 data PixelIterator
 data MagickWand
 data PixelWand
+data DrawingWand
 data Image
 
 type MagickRealType = #type MagickRealType

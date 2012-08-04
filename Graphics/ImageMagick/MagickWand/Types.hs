@@ -4,6 +4,7 @@ module Graphics.ImageMagick.MagickWand.Types
   ( PPixelIterator
   , PPixelWand
   , PPixelPacket
+  , PDrawingWand
   , PMagickWand
   , MagickRealType
   , ImageWandException(..)
@@ -26,6 +27,7 @@ import           Graphics.ImageMagick.MagickWand.FFI.Types
 type PPixelIterator = Ptr PixelIterator
 type PPixelWand     = Ptr PixelWand
 type PMagickWand    = Ptr MagickWand
+type PDrawingWand   = Ptr DrawingWand
 type PPixelPacket   = ForeignPtr MagickPixelPacket
 
 data ImageWandException = ImageWandException ExceptionType String

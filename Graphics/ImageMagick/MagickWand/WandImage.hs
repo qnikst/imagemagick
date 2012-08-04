@@ -15,6 +15,8 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , compositeImage
   , compositeImageChannel
   , transparentPaintImage
+  , newImage
+  , drawImage
   ) where
 
 import           Control.Monad.IO.Class
@@ -41,20 +43,20 @@ resizeImage pw w h f s = withException_ pw $! F.magickResizeImage pw (fromIntegr
 getImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageCompressionQuality = liftIO . fmap fromIntegral . F.magickGetImageCompressionQuality
 
-setImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> Int -> m () 
+setImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> Int -> m ()
 setImageCompressionQuality w s = withException_ w $! F.magickSetImageCompressionQuality w (fromIntegral s)
 
 getImageBackgroundColor :: (MonadResource m) => PMagickWand -> m PPixelWand
-getImageBackgroundColor w = pixelWand >>= \p -> getImageBackgroundColor1 w p >> return p 
+getImageBackgroundColor w = pixelWand >>= \p -> getImageBackgroundColor1 w p >> return p
 
 getImageBackgroundColor1 :: (MonadResource m) => PMagickWand -> PPixelWand -> m ()
 getImageBackgroundColor1 w p = withException_ w $! F.magickGetImageBackgroundColor w p
 
-setImageBackgroundColor :: (MonadResource m) => PMagickWand -> PPixelWand -> m () 
+setImageBackgroundColor :: (MonadResource m) => PMagickWand -> PPixelWand -> m ()
 setImageBackgroundColor w p = withException_ w $! F.magickSetImageBackgroundColor w p
 
 extentImage :: (MonadResource m) => PMagickWand -> Int -> Int -> Int -> Int -> m ()
-extentImage w width height offsetX offsetY = withException_ w $! 
+extentImage w width height offsetX offsetY = withException_ w $!
   F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
 
 floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m ()
@@ -73,24 +75,39 @@ getImageClipMask = liftIO . F.magickGetImageClipMask
 setImageClipMask :: (MonadResource m) => PMagickWand -> PMagickWand -> m ()
 setImageClipMask w s = withException_ w $ F.magickSetImageClipMask w s
 
-compositeImage :: (MonadResource m) => PMagickWand -> PMagickWand -> CompositeOperator -> Int -> Int -> m () 
+compositeImage :: (MonadResource m) => PMagickWand -> PMagickWand -> CompositeOperator -> Int -> Int -> m ()
 compositeImage p s c w h = withException_ p $ F.magickCompositeImage p s c (fromIntegral w) (fromIntegral h)
 
 compositeImageChannel :: (MonadResource m) => PMagickWand -> PMagickWand -> ChannelType -> CompositeOperator -> Int -> Int -> m ()
-compositeImageChannel p s ch c w h = withException_ p $ 
+compositeImageChannel p s ch c w h = withException_ p $
   F.magickCompositeImageChannel p s ch c (fromIntegral w) (fromIntegral h)
 
 -- | transparentPaintImage changes any pixel that matches color with the color defined by fill.
-transparentPaintImage :: (MonadResource m) 
+transparentPaintImage :: (MonadResource m)
   => PMagickWand
   -> PPixelWand           -- ^ change this color to specified opacity value withing the image
   -> Double               -- ^ the level of transarency: 1.0 fully opaque 0.0 fully transparent
-  -> Double               -- ^ By default target must match a particular pixel color exactly. 
-                          -- However, in many cases two colors may differ by a small amount. 
-                          -- The fuzz member of image defines how much tolerance is acceptable 
-                          -- to consider two colors as the same. For example, set fuzz to 10 and 
-                          -- the color red at intensities of 100 and 102 respectively are now 
+  -> Double               -- ^ By default target must match a particular pixel color exactly.
+                          -- However, in many cases two colors may differ by a small amount.
+                          -- The fuzz member of image defines how much tolerance is acceptable
+                          -- to consider two colors as the same. For example, set fuzz to 10 and
+                          -- the color red at intensities of 100 and 102 respectively are now
                           -- interpreted as the same color for the purposes of the floodfill.
   -> Bool                 -- paint any pixel that does not match the target color.
-  -> m () 
-transparentPaintImage w p alfa fuzz invert = withException_ w $ F.magickTransparentPaintImage w p alfa fuzz (toMBool invert) 
+  -> m ()
+transparentPaintImage w p alfa fuzz invert = withException_ w $ F.magickTransparentPaintImage w p alfa fuzz (toMBool invert)
+
+-- | newImage adds a blank image canvas of the specified size and background color to the wand.
+newImage :: (MonadResource m)
+  => PMagickWand
+  -> CSize                -- ^ width
+  -> CSize                -- ^ height
+  -> Ptr PixelWand        -- ^ background color
+  -> m ()
+newImage p width height b = withException_ p $! F.magickNewImage p (fromIntegral width) (fromIntegral height) b
+
+-- |  drawImage renders the drawing wand on the current image.
+drawImage :: (MonadResource m) => PMagickWand -> PDrawingWand -> m ()
+drawImage p d = withException_ p $ F.magickDrawImage p d
+
+
