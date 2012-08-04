@@ -8,6 +8,7 @@ import           Foreign
 import           Foreign.C.String
 import           Foreign.C.Types
 
+import           Graphics.ImageMagick.MagickCore.FFI.Exception
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
@@ -64,9 +65,18 @@ foreign import ccall "wand/MagickWand.h  IsMagickWand" isMagicWand
 
 -- | MagickClearException() clears any exceptions associated with the wand.
 --
-foreign import ccall "wand/MagickWand.h MagickClearException" magicClearException
+foreign import ccall "wand/MagickWand.h MagickClearException" magickClearException
   :: Ptr MagickWand -> IO MagickBooleanType
 
+-- | MagickGetException() returns the severity, reason, and description of
+--   any error that occurs when using other methods in this API.
+foreign import ccall "MagickGetException" magickGetException
+  :: Ptr MagickWand -> Ptr ExceptionType -> IO CString
+
+-- | MagickGetExceptionType() returns the exception type associated with the wand.
+--   If no exception has occurred, UndefinedExceptionType is returned.
+foreign import ccall "MagickGetExceptionType" magickGetExceptionType
+  :: Ptr MagickWand -> IO ExceptionType
 
 -- **  Iterator
 
@@ -85,11 +95,6 @@ foreign import ccall "wand/MagickWand.h MagickResetIterator" magickResetIterator
 
 
 {-
-MagickGetException() returns the severity, reason, and description of any error that occurs when using other methods in this API.
-char *MagickGetException(const MagickWand *wand,ExceptionType *severity)
-
-MagickGetExceptionType() returns the exception type associated with the wand. If no exception has occurred, UndefinedExceptionType is returned.
-  ExceptionType MagickGetExceptionType(const MagickWand *wand)
 
 MagickGetIteratorIndex() returns the position of the iterator in the image list.
   ssize_t MagickGetIteratorIndex(MagickWand *wand)

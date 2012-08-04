@@ -3,3 +3,4 @@ module Graphics.ImageMagick.MagickCore.Types
   ) where 
 
 import Graphics.ImageMagick.MagickCore.FFI.Composite as X
+import Graphics.ImageMagick.MagickCore.FFI.Exception as X

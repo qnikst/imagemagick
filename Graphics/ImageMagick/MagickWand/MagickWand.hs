@@ -51,18 +51,13 @@ cloneMagickWand w = allocate (F.cloneMagickWand w) destroy
   where destroy = void . F.destroyMagickWand
 
 
-readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m Bool
-readImage w fn = liftIO $ do
-      x <- useAsCString (encode fn) (F.magickReadImage w)
-      return (x==mTrue)
+readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
+readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
 
-writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m Bool
-writeImages w fn b = liftIO $ do
-  x <- useAsCString (encode fn) (\f -> F.magickWriteImages w f b')
-  return (x==mTrue)
-  where b' = if b then mTrue else mFalse
+writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
+writeImages w fn b = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImages w f (toMBool b))
 
-setSize :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> m Bool
-setSize w cols rows = fromMBool $ F.magickSetSize w (fromIntegral cols) (fromIntegral rows)
+setSize :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> m ()
+setSize w cols rows = withException_ w $ F.magickSetSize w (fromIntegral cols) (fromIntegral rows)
 
 
