@@ -20,6 +20,7 @@ import qualified Graphics.ImageMagick.MagickWand.FFI.PixelIterator as F
 import qualified Graphics.ImageMagick.MagickWand.FFI.PixelWand     as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
+import           Graphics.ImageMagick.MagickWand.Utils
 
 
 pixelIterator :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, PPixelIterator)
@@ -40,8 +41,8 @@ pixelGetMagickColor w = liftIO $ do
           withForeignPtr c (F.pixelGetMagickColor w)
           return c
 
-pixelSetMagickColor :: (MonadIO m) => PPixelWand -> PPixelPacket -> m ()
+pixelSetMagickColor :: (MonadResource m) => PPixelWand -> PPixelPacket -> m ()
 pixelSetMagickColor w c = liftIO $ withForeignPtr c (F.pixelSetMagickColor w)
 
-pixelSyncIterator :: (MonadIO m) => PPixelIterator -> m Bool
-pixelSyncIterator p =  liftIO (F.pixelSyncIterator p) >>= \x -> return  (x==mTrue)
+pixelSyncIterator :: (MonadResource m) => PPixelIterator -> m ()
+pixelSyncIterator p =  withException_ p $ F.pixelSyncIterator p

@@ -7,6 +7,7 @@ import Foreign
 import Foreign.C.Types
 import Foreign.C.String
 
+import           Graphics.ImageMagick.MagickCore.FFI.Exception
 import Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
@@ -34,6 +35,17 @@ foreign import ccall "wand/MagickWand.h NewPixelIterator" newPixelIterator
 -- | PixelClearIteratorException() clear any exceptions associated with the iterator.
 foreign import ccall "wand/MagickWand.h PixelClearIteratorException" pixelClearIteratorException
   :: Ptr PixelIterator -> IO MagickBooleanType
+
+-- | PixelGetIteratorException() returns the severity, reason, and description of any 
+-- error that occurs when using other methods in this API.
+foreign import ccall "PixelGetIteratorException" pixelGetIteratorException
+  :: Ptr PixelIterator -> Ptr ExceptionType -> IO CString
+
+-- | PixelGetIteratorExceptionType() the exception type associated with the iterator. 
+--   If no exception has occurred, UndefinedExceptionType is returned.
+foreign import ccall "PixelGetIteratorExceptionType" pixelGetIteratorExceptionType
+  :: Ptr PixelIterator -> IO ExceptionType
+
 
 -- | NewPixelRegionIterator() returns a new pixel iterator.
 foreign import ccall "wand/MagickWand.h NewPixelRegionIterator" newPixelRegionIterator 
