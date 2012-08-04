@@ -3,12 +3,11 @@ module Graphics.ImageMagick.MagickWand.PixelWand
   , setColor
   ) where
 
-import           Control.Monad (void)
+import           Control.Monad                                 (void)
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
-import           Data.ByteString                               (ByteString)
-import           Data.ByteString                               as S
--- import           Foreign
+import           Data.ByteString                               (ByteString, useAsCString)
+
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types

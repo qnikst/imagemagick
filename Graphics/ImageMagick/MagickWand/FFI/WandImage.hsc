@@ -119,6 +119,31 @@ foreign import ccall "MagickTransparentPaintImage" magickTransparentPaintImage
   -> MagickBooleanType    -- paint any pixel that does not match the target color.
   -> IO MagickBooleanType
 
+-- | MagickBorderImage() surrounds the image with a border of the color
+-- defined by the bordercolor pixel wand.
+foreign import ccall "MagickBorderImage" magickBorderImage
+  :: Ptr MagickWand    -- ^ wand
+  -> Ptr PixelWand     -- ^ bordercolor
+  -> CSize             -- ^ width
+  -> CSize             -- ^ height
+  -> IO MagickBooleanType
+
+-- | MagickShaveImage() shaves pixels from the image edges. It allocates
+-- the memory necessary for the new Image structure and returns a pointer
+-- to the new image.
+foreign import ccall "MagickShaveImage" magickShaveImage
+  :: Ptr MagickWand    -- ^ wand
+  -> CSize             -- ^ columns
+  -> CSize             -- ^ rows
+  -> IO MagickBooleanType
+
+-- | MagickSetImageAlphaChannel() activates, deactivates, resets, or
+-- sets the alpha channel.
+foreign import ccall "MagickSetImageAlphaChannel" magickSetImageAlphaChannel
+  :: Ptr MagickWand    -- ^ wand
+  -> AlphaChannelType  -- ^ alpha_type
+  -> IO MagickBooleanType
+
 -- | MagickNewImage() adds a blank image canvas of the specified size and background color to the wand.
 foreign import ccall "MagickNewImage" magickNewImage
   :: Ptr MagickWand
@@ -130,5 +155,3 @@ foreign import ccall "MagickNewImage" magickNewImage
 -- |  MagickDrawImage() renders the drawing wand on the current image.
 foreign import ccall "MagickDrawImage" magickDrawImage
     :: Ptr MagickWand -> Ptr DrawingWand -> IO MagickBooleanType
-
-

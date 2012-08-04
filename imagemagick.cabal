@@ -44,8 +44,8 @@ Library
   Build-tools:          hsc2hs
   
 
-executable            floodfill
-  Main-is:            examples/floodfill.hs
+executable            cyclops
+  Main-is:            examples/cyclops.hs
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

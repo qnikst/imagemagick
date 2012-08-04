@@ -62,6 +62,25 @@ newtype ChannelType = ChannelType { unChannelType :: CInt }
  , defaultChannels = DefaultChannels
 }
 
+newtype AlphaChannelType = AlphaChannelType { unAlphaChannelType :: CInt }
+  deriving (Eq, Show)
+
+#{enum AlphaChannelType, AlphaChannelType
+  , undefinedAlphaChannel = UndefinedAlphaChannel
+  , activateAlphaChannel = ActivateAlphaChannel
+  , backgroundAlphaChannel = BackgroundAlphaChannel
+  , copyAlphaChannel = CopyAlphaChannel
+  , deactivateAlphaChannel = DeactivateAlphaChannel
+  , extractAlphaChannel = ExtractAlphaChannel
+  , opaqueAlphaChannel = OpaqueAlphaChannel
+  , resetAlphaChannel = ResetAlphaChannel  /* deprecated */
+  , setAlphaChannel = SetAlphaChannel
+  , shapeAlphaChannel = ShapeAlphaChannel
+  , transparentAlphaChannel = TransparentAlphaChannel
+  , lattenAlphaChannel = FlattenAlphaChannel
+  , removeAlphaChannel = RemoveAlphaChannel
+}
+
 newtype FilterTypes = FilterTypes { unPCREOption :: CInt }
     deriving (Eq,Show)
 
