@@ -35,51 +35,50 @@ getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
 getImageWidth :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageWidth w = liftIO $ fmap fromIntegral (F.magickGetImageWidth w)
 
-resizeImage :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> FilterTypes -> CDouble -> m Bool
-resizeImage pw w h f s = fromMBool $! F.magickResizeImage pw (fromIntegral w) (fromIntegral h) f s
+resizeImage :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> FilterTypes -> CDouble -> m ()  --TODO: fix CDouble
+resizeImage pw w h f s = withException_ pw $! F.magickResizeImage pw (fromIntegral w) (fromIntegral h) f s
 
 getImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageCompressionQuality = liftIO . fmap fromIntegral . F.magickGetImageCompressionQuality
 
-setImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> Int -> m Bool
-setImageCompressionQuality w s = fromMBool $! F.magickSetImageCompressionQuality w (fromIntegral s)
+setImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> Int -> m () 
+setImageCompressionQuality w s = withException_ w $! F.magickSetImageCompressionQuality w (fromIntegral s)
 
-getImageBackgroundColor :: (MonadResource m) => PMagickWand -> m (Maybe PPixelWand) -- TODO: use ErrorT
-getImageBackgroundColor w = pixelWand >>= \p -> getImageBackgroundColor1 w p >>= \x -> return $! if x then Just p else Nothing
+getImageBackgroundColor :: (MonadResource m) => PMagickWand -> m PPixelWand
+getImageBackgroundColor w = pixelWand >>= \p -> getImageBackgroundColor1 w p >> return p 
 
-getImageBackgroundColor1 :: (MonadResource m) => PMagickWand -> PPixelWand -> m Bool
-getImageBackgroundColor1 w p = fromMBool $! F.magickGetImageBackgroundColor w p
+getImageBackgroundColor1 :: (MonadResource m) => PMagickWand -> PPixelWand -> m ()
+getImageBackgroundColor1 w p = withException_ w $! F.magickGetImageBackgroundColor w p
 
-setImageBackgroundColor :: (MonadResource m) => PMagickWand -> PPixelWand -> m Bool
-setImageBackgroundColor w p = fromMBool $! F.magickSetImageBackgroundColor w p
+setImageBackgroundColor :: (MonadResource m) => PMagickWand -> PPixelWand -> m () 
+setImageBackgroundColor w p = withException_ w $! F.magickSetImageBackgroundColor w p
 
 extentImage :: (MonadResource m) => PMagickWand -> Int -> Int -> Int -> Int -> m ()
-extentImage w width height offsetX offsetY =
-  liftIO $ F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
+extentImage w width height offsetX offsetY = withException_ w $! 
+  F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
 
-floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m Bool
-floodfillPaintImage w channel fill fuzz border x y invert =
-  fromMBool $! F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
+floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m ()
+floodfillPaintImage w channel fill fuzz border x y invert = withException_ w $!
+  F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
 
-negateImage :: (MonadResource m) => PMagickWand -> Bool -> m Bool
-negateImage p b = fromMBool $! F.magickNegateImage p (toMBool b)
+negateImage :: (MonadResource m) => PMagickWand -> Bool -> m ()
+negateImage p b = withException_ p $! F.magickNegateImage p (toMBool b)
 
-negateImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Bool -> m Bool
-negateImageChannel p c b = fromMBool $! F.magickNegateImageChannel p c (toMBool b)
-
+negateImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Bool -> m ()
+negateImageChannel p c b = withException_ p $! F.magickNegateImageChannel p c (toMBool b)
 
 getImageClipMask :: (MonadResource m) => PMagickWand -> m PMagickWand
 getImageClipMask = liftIO . F.magickGetImageClipMask
 
-setImageClipMask :: (MonadResource m) => PMagickWand -> PMagickWand -> m Bool
-setImageClipMask = (fromMBool .) . F.magickSetImageClipMask
+setImageClipMask :: (MonadResource m) => PMagickWand -> PMagickWand -> m ()
+setImageClipMask w s = withException_ w $ F.magickSetImageClipMask w s
 
+compositeImage :: (MonadResource m) => PMagickWand -> PMagickWand -> CompositeOperator -> Int -> Int -> m () 
+compositeImage p s c w h = withException_ p $ F.magickCompositeImage p s c (fromIntegral w) (fromIntegral h)
 
-compositeImage :: (MonadResource m) => PMagickWand -> PMagickWand -> CompositeOperator -> Int -> Int -> m Bool
-compositeImage p s c w h = fromMBool $ F.magickCompositeImage p s c (fromIntegral w) (fromIntegral h)
-
-compositeImageChannel :: (MonadResource m) => PMagickWand -> PMagickWand -> ChannelType -> CompositeOperator -> Int -> Int -> m Bool
-compositeImageChannel p s ch c w h = fromMBool $ F.magickCompositeImageChannel p s ch c (fromIntegral w) (fromIntegral h)
+compositeImageChannel :: (MonadResource m) => PMagickWand -> PMagickWand -> ChannelType -> CompositeOperator -> Int -> Int -> m ()
+compositeImageChannel p s ch c w h = withException_ p $ 
+  F.magickCompositeImageChannel p s ch c (fromIntegral w) (fromIntegral h)
 
 -- | transparentPaintImage changes any pixel that matches color with the color defined by fill.
 transparentPaintImage :: (MonadResource m) 
@@ -93,5 +92,5 @@ transparentPaintImage :: (MonadResource m)
                           -- the color red at intensities of 100 and 102 respectively are now 
                           -- interpreted as the same color for the purposes of the floodfill.
   -> Bool                 -- paint any pixel that does not match the target color.
-  -> m Bool 
-transparentPaintImage w p alfa fuzz invert = fromMBool $ F.magickTransparentPaintImage w p alfa fuzz (toMBool invert) 
+  -> m () 
+transparentPaintImage w p alfa fuzz invert = withException_ w $ F.magickTransparentPaintImage w p alfa fuzz (toMBool invert) 

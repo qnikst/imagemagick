@@ -7,6 +7,7 @@ import Foreign
 import Foreign.C.Types
 import Foreign.C.String
 
+import Graphics.ImageMagick.MagickCore.FFI.Exception
 import Graphics.ImageMagick.MagickWand.FFI.Types 
 
 #include <wand/MagickWand.h>
@@ -20,12 +21,11 @@ foreign import ccall "DestroyPixelWand" destroyPixelWand
 -- | PixelGetMagickColor() gets the magick color of the pixel wand.
 
 foreign import ccall "PixelGetMagickColor" pixelGetMagickColor
-  :: Ptr PixelWand -> Ptr (MagickPixelPacket) -> IO ()
+  :: Ptr PixelWand -> Ptr MagickPixelPacket -> IO ()
 
 -- | PixelSetMagickColor() sets the color of the pixel wand.
-
 foreign import ccall "PixelSetMagickColor" pixelSetMagickColor
-  :: Ptr PixelWand -> Ptr (MagickPixelPacket) -> IO ()
+  :: Ptr PixelWand -> Ptr MagickPixelPacket -> IO ()
 
 foreign import ccall "ClearPixelWand" clearPixelWand
   :: Ptr PixelWand -> IO ()
@@ -43,8 +43,21 @@ foreign import ccall "NewPixelWands" newPixelWands
 
 -- | PixelSetColor() sets the color of the pixel wand with a string (e.g. "blue", "#0000ff", "rgb(0,0,255)", "cmyk(100,100,100,10)", etc.).
 foreign import ccall "PixelSetColor" pixelSetColor
-  :: Ptr PixelWand -> CString -> IO (MagickBooleanType) 
+  :: Ptr PixelWand -> CString -> IO MagickBooleanType
 
+-- | PixelClearException() clear any exceptions associated with the iterator.
+foreign import ccall "PixelClearException" pixelClearException
+  :: Ptr PixelWand -> IO MagickBooleanType
+
+-- | PixelGetException() returns the severity, reason, and description of any 
+--   error that occurs when using other methods in this API.
+foreign import ccall "PixelGetException" pixelGetException
+  :: Ptr PixelWand -> Ptr ExceptionType -> IO CString
+
+-- | PixelGetExceptionType() the exception type associated with the wand. 
+--   If no exception has occurred, UndefinedExceptionType is returned.
+foreign import ccall "PixelGetExceptionType" pixelGetExceptionType
+  :: Ptr PixelWand -> IO ExceptionType
 
 {- 
 ClonePixelWands() makes an exact copy of the specified wands.
@@ -109,13 +122,6 @@ A description of each parameter follows:
 wand
 
 the magick wand.
-PixelClearException
-
-PixelClearException() clear any exceptions associated with the iterator.
-
-The format of the PixelClearException method is:
-
-  MagickBooleanType PixelClearException(PixelWand *wand)
 
 A description of each parameter follows:
 wand
@@ -253,33 +259,6 @@ A description of each parameter follows:
 wand
 
 the pixel wand.
-PixelGetException
-
-PixelGetException() returns the severity, reason, and description of any error that occurs when using other methods in this API.
-
-The format of the PixelGetException method is:
-
-  char *PixelGetException(const PixelWand *wand,ExceptionType *severity)
-
-A description of each parameter follows:
-wand
-
-the pixel wand.
-severity
-
-the severity of the error is returned here.
-PixelGetExceptionType
-
-PixelGetExceptionType() the exception type associated with the wand. If no exception has occurred, UndefinedExceptionType is returned.
-
-The format of the PixelGetExceptionType method is:
-
-  ExceptionType PixelGetExceptionType(const PixelWand *wand)
-
-A description of each parameter follows:
-wand
-
-the magick wand.
 PixelGetFuzz
 
 PixelGetFuzz() returns the normalized fuzz value of the pixel wand.

@@ -45,7 +45,7 @@ foreign import ccall "MagickExtentImage" magickExtentImage
   -> CSize           -- ^ height
   -> CSize           -- ^ x offset
   -> CSize           -- ^ y offset
-  -> IO ()
+  -> IO (MagickBooleanType)
 
 -- | MagickFloodfillPaintImage() changes the color value of any pixel
 -- that matches target and is an immediate neighbor. If the method FillToBorderMethod

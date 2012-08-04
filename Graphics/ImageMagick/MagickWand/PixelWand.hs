@@ -12,12 +12,13 @@ import           Data.ByteString                               as S
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
+import           Graphics.ImageMagick.MagickWand.Utils
 
 pixelWand :: (MonadResource m) => m PPixelWand
 pixelWand = fmap snd (allocate F.newPixelWand destroy)
   where destroy = void . F.destroyPixelWand
 
-setColor :: (MonadResource m) => PPixelWand -> ByteString -> m Bool
-setColor p s = liftIO $ useAsCString s (F.pixelSetColor p) >>= return . (==mTrue)
+setColor :: (MonadResource m) => PPixelWand -> ByteString -> m ()
+setColor p s = withException_ p $ useAsCString s (F.pixelSetColor p)
 
 
