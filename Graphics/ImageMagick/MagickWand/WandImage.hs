@@ -17,6 +17,9 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , transparentPaintImage
   , newImage
   , drawImage
+  , borderImage
+  , shaveImage
+  , setImageAlphaChannel
   ) where
 
 import           Control.Monad.IO.Class
@@ -59,9 +62,9 @@ extentImage :: (MonadResource m) => PMagickWand -> Int -> Int -> Int -> Int -> m
 extentImage w width height offsetX offsetY = withException_ w $!
   F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
 
-floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m ()
-floodfillPaintImage w channel fill fuzz border x y invert = withException_ w $!
-  F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
+floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m Bool
+floodfillPaintImage w channel fill fuzz border x y invert =
+  fromMBool $! F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
 
 negateImage :: (MonadResource m) => PMagickWand -> Bool -> m ()
 negateImage p b = withException_ p $! F.magickNegateImage p (toMBool b)
@@ -110,4 +113,11 @@ newImage p width height b = withException_ p $! F.magickNewImage p (fromIntegral
 drawImage :: (MonadResource m) => PMagickWand -> PDrawingWand -> m ()
 drawImage p d = withException_ p $ F.magickDrawImage p d
 
+borderImage :: (MonadResource m) => PMagickWand -> PPixelWand -> Int -> Int -> m ()
+borderImage w bordercolor height width = withException_ w $ F.magickBorderImage w bordercolor (fromIntegral width) (fromIntegral height)
 
+shaveImage :: (MonadResource m) => PMagickWand -> Int -> Int -> m ()
+shaveImage w columns rows = withException_ w $ F.magickShaveImage w (fromIntegral columns) (fromIntegral rows)
+
+setImageAlphaChannel :: (MonadResource m) => PMagickWand -> AlphaChannelType -> m ()
+setImageAlphaChannel w alpha_type = withException_ w $ F.magickSetImageAlphaChannel w alpha_type
