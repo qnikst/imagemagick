@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 module Graphics.ImageMagick.MagickWand.MagickWand
   ( withMagickWandGenesis
+  , localGenesis
   , magickWand
   , cloneMagickWand
   , magickIterate
@@ -33,6 +34,9 @@ withMagickWandGenesis f = bracket start finish (\_ -> runResourceT f)
   where
     start = liftIO F.magickWandGenesis
     finish = liftIO . const F.magickWandTerminus
+
+-- | Open a nested block inside genesis (for tracking nested resources)
+localGenesis f = runResourceT f
 
 magickWand :: (MonadResource m) => m (ReleaseKey, Ptr MagickWand)
 magickWand = allocate F.newMagickWand destroy

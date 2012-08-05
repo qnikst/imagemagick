@@ -24,6 +24,8 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.Composite
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Exception
+                      , Graphics.ImageMagick.MagickCore.FFI.Fx
+                      , Graphics.ImageMagick.MagickCore.FFI.CacheView
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
                       , Graphics.ImageMagick.MagickWand.FFI.MagickWand
@@ -85,6 +87,19 @@ executable            paint-trans
 
 executable            round-mask
   Main-is:            examples/round_mask.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            make-tile
+  Main-is:            examples/make_tile.hs
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

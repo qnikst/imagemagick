@@ -33,8 +33,8 @@ drawRoundRectangle :: (MonadResource m) => PDrawingWand
      -> Double           -- ^ y ordinate of first coordinate
      -> Double           -- ^ x ordinate of second coordinate
      -> Double           -- ^ y ordinate of second coordinate
-     -> CDouble           -- ^ radius of corner in horizontal direction
-     -> CDouble           -- ^ radius of corner in vertical direction
+     -> Double           -- ^ radius of corner in horizontal direction
+     -> Double           -- ^ radius of corner in vertical direction
      -> m ()
 drawRoundRectangle p x1 y1 x2 y2 rx ry = liftIO $ F.drawRoundRectangle p (realToFrac x1)
                                                                          (realToFrac y1)

@@ -9,6 +9,7 @@ import           Foreign.C.String
 import           Foreign.C.Types
 
 import           Graphics.ImageMagick.MagickCore.FFI.Exception
+import           Graphics.ImageMagick.MagickCore.FFI.Fx
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
@@ -35,8 +36,6 @@ foreign import ccall "wand/MagickWand.h NewMagickWand" newMagickWand
 foreign import ccall "wand/MagickWand.h NewMagickWandFromImage" newMagickWandFromImage
   :: Ptr Image                  -- ^ Image
   -> IO (Ptr MagickWand)
-
-
 
 -- | CloneMagickWand() makes an exact copy of the specified wand.
 foreign import ccall "wand/MagickWand.h CloneMagickWand" cloneMagickWand
@@ -359,4 +358,6 @@ foreign import ccall "MagickSetSize" magickSetSize
   -> CSize                        -- ^ columns
   -> CSize                        -- ^ rows
   -> IO MagickBooleanType
+
+
 
