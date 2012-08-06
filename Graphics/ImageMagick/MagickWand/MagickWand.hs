@@ -6,6 +6,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , cloneMagickWand
   , magickIterate
   , readImage
+  , writeImage
   , writeImages
   , quantumRange
   , setSize
@@ -57,6 +58,9 @@ cloneMagickWand w = allocate (F.cloneMagickWand w) destroy
 
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
 readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
+
+writeImage  :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
+writeImage w fn = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImage w f)
 
 writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
 writeImages w fn b = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImages w f (toMBool b))

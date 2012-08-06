@@ -5,6 +5,8 @@ module Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
 
+import Control.Monad
+
 import Foreign
 import Foreign.C.Types
 
@@ -13,8 +15,21 @@ data MagickWand
 data PixelWand
 data DrawingWand
 data Image
+data PointInfo = PointInfo {piX, piY :: CDouble}
+               deriving (Eq, Show)
 
-type MagickRealType = #type MagickRealType
+instance Storable PointInfo where
+  sizeOf = const #size PointInfo
+  alignment _ = 1
+  poke p foo  = do
+    #{poke PointInfo, x} p $ piX foo
+    #{poke PointInfo, y} p $ piY foo
+
+  peek p = return PointInfo
+              `ap` (#{peek PointInfo, x} p)
+              `ap` (#{peek PointInfo, y} p)
+
+type MagickRealType   = #type MagickRealType
 type MagickStatusType = #type MagickStatusType
 type MagickOffsetType = #type MagickOffsetType
 type MagickSizeType   = #type MagickSizeType
@@ -131,11 +146,35 @@ newtype ClassType = ClassType { unClassType :: CInt}
   , pseudoClass    = PseudoClass
 }
 
+newtype LineCap = LineCap { unLineCap :: CInt }
+#{enum LineCap, LineCap
+  , udefinedCap = UndefinedCap
+  , buttCap = ButtCap
+  , roundCap = RoundCap
+  , squareCap = SquareCap
+}
+
+newtype LineJoin = LineJoin { unLineJoin :: CInt }
+#{enum LineJoin, LineJoin
+  , undefinedJoin = UndefinedJoin
+  , mitterJoin = MiterJoin
+  , roundJoin = RoundJoin
+  , bevelJoin = BevelJoin
+}
+
+newtype FillRule = FillRule { unFillRule :: CInt }
+#{enum FillRule, FillRule
+ , undefinedRule = UndefinedRule
+ , evenOddRule = EvenOddRule
+ , nonZeroRule = NonZeroRule
+}
+
 data MagickPixelPacket 
 
 instance Storable MagickPixelPacket where
   sizeOf = const #size MagickPixelPacket
   alignment _ = 1
+
 
 getPixelRed   = #peek MagickPixelPacket, red
 getPixelGreen = #peek MagickPixelPacket, green

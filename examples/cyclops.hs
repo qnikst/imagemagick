@@ -12,7 +12,7 @@ import           Graphics.ImageMagick.MagickWand
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 main :: IO ()
-main = do
+main =
   withMagickWandGenesis $ do
     (_,w) <- magickWand
     readImage w (decodeString src)

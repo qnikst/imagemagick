@@ -345,6 +345,14 @@ foreign import ccall "wand/MagickWand.h MagickResizeImage" magickResizeImage
   -> CDouble                      -- ^ blur factor where 1 > blurry, < 1 sharp
   -> IO MagickBooleanType
 
+-- | MagickWriteImage() writes an image to the specified filename.
+-- If the filename parameter is NULL, the image is written to the filename
+-- set by MagickReadImage() or MagickSetImageFilename().
+foreign import ccall "wand/MagickWand.h MagickWriteImage" magickWriteImage
+  :: Ptr MagickWand
+  -> CString                      -- ^ filename
+  -> IO MagickBooleanType
+
 -- | MagickWriteImages() writes an image or image sequence.
 foreign import ccall "wand/MagickWand.h MagickWriteImages" magickWriteImages
   :: Ptr MagickWand
