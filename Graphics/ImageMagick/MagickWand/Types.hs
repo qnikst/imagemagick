@@ -19,6 +19,7 @@ import           Data.Typeable
 import           Foreign
 import           Foreign.C.String
 import           Graphics.ImageMagick.MagickCore.Types
+import           Graphics.ImageMagick.MagickWand.FFI.DrawingWand   as F
 import           Graphics.ImageMagick.MagickWand.FFI.MagickWand    as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelIterator as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand     as F
@@ -34,7 +35,7 @@ data ImageWandException = ImageWandException ExceptionType String
   deriving (Typeable)
 
 instance Show (ImageWandException) where
-  show (ImageWandException e s) = s
+  show (ImageWandException _ s) = s
 
 instance Exception ImageWandException
 
@@ -59,5 +60,11 @@ instance ExceptionCarrier (Ptr PixelIterator) where
 instance ExceptionCarrier (Ptr PixelWand) where
   getException w = alloca $ \x -> do
       s <- peekCString =<< F.pixelGetException w x
+      x' <- peek x
+      return $ ImageWandException x' s
+
+instance ExceptionCarrier (Ptr DrawingWand) where
+  getException w = alloca $ \x -> do
+      s <- peekCString =<< F.drawGetException w x
       x' <- peek x
       return $ ImageWandException x' s
