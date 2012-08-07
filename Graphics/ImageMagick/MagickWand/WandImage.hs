@@ -30,6 +30,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , appendImages
   , addNoiseImage
   , writeImage
+  , writeImages
   , setVirtualPixelMethod
   ) where
 
@@ -174,6 +175,8 @@ writeImage :: (MonadResource m)
 writeImage w Nothing   = withException_ w $ F.magickWriteImage w nullPtr
 writeImage w (Just fn) = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImage w f)
 
+writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
+writeImages w fn b = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImages w f (toMBool b))
 
 -- | MagickBlurImage() blurs an image. We convolve the image with a gaussian 
 -- operator of the given radius and standard deviation (sigma). For reasonable 

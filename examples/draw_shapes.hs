@@ -137,4 +137,4 @@ main =
 
     drawImage w dw
 
-    writeImage w "chart_test.jpg"
+    writeImage w (Just "chart_test.jpg")
