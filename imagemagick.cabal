@@ -39,6 +39,7 @@ Library
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
@@ -53,6 +54,7 @@ executable            cyclops
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -66,6 +68,7 @@ executable            clipmask
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -79,6 +82,7 @@ executable            paint-trans
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -92,6 +96,7 @@ executable            round-mask
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -105,6 +110,7 @@ executable            make-tile
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -118,6 +124,21 @@ executable            draw-shapes
                       , transformers == 0.3.*
                       , vector == 0.9.*
                       , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            text-effects
+  Main-is:            examples/text_effects.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls

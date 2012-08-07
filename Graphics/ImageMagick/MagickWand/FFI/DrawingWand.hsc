@@ -38,6 +38,14 @@ foreign import ccall "DrawSetFillColor" drawSetFillColor
 foreign import ccall "DrawSetFillRule" drawSetFillRule
   :: Ptr DrawingWand -> FillRule -> IO ()
 
+-- | DrawSetFont() sets the fully-sepecified font to use when annotating with text.
+foreign import ccall "DrawSetFont" drawSetFont
+  :: Ptr DrawingWand -> CString -> IO ()
+
+-- | DrawSetFontSize() sets the font pointsize to use when annotating with text.
+foreign import ccall "DrawSetFontSize" drawSetFontSize
+  :: Ptr DrawingWand -> CDouble -> IO ()
+
 -- | DrawSetStrokeAntialias() controls whether stroked outlines are antialiased.
 -- Stroked outlines are antialiased by default. When antialiasing is disabled
 -- stroked pixels are thresholded to determine if the stroke color or
@@ -88,10 +96,24 @@ foreign import ccall "DrawSetStrokeOpacity" drawSetStrokeOpacity
   -> CDouble           -- ^ stroke_opacity
   -> IO ()
 
+-- | DrawSetStrokeOpacity() specifies the opacity of stroked object outlines.
+foreign import ccall "DrawSetTextAntialias" drawSetTextAntialias
+  :: Ptr DrawingWand
+  -> MagickBooleanType -- ^ antialias boolean. Set to false (0) to disable antialiasing.
+  -> IO ()
+
 -- | DrawSetStrokeWidth() sets the width of the stroke used to draw object outlines.
 foreign import ccall "DrawSetStrokeWidth" drawSetStrokeWidth
   :: Ptr DrawingWand
   -> CDouble           -- ^ stroke_width
+  -> IO ()
+
+-- | DrawAnnotation() draws text on the image.
+foreign import ccall "DrawAnnotation" drawAnnotation
+  :: Ptr DrawingWand
+  -> CDouble           -- ^ x ordinate to left of text
+  -> CDouble           -- ^ y ordinate to text baseline
+  -> CString           -- ^ text to draw
   -> IO ()
 
 -- | DrawCircle() draws a circle on the image.

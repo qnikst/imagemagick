@@ -26,18 +26,21 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , blurImageChannel
   , normalizeImage
   , normalizeImageChannel
+  , shadowImage
   , addImage
   , appendImages
   , addNoiseImage
   , writeImage
   , writeImages
   , setVirtualPixelMethod
+  , trimImage
+  , resetImagePage
   ) where
 
-import           Prelude hiding (FilePath)
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
-import           Data.ByteString (useAsCString)
+import           Data.ByteString                                (ByteString, useAsCString)
+import           Filesystem.Path.CurrentOS
 import           Foreign
 import           Foreign.C.Types
 import           Graphics.ImageMagick.MagickCore.Types
@@ -47,7 +50,7 @@ import qualified Graphics.ImageMagick.MagickWand.FFI.WandImage  as F
 import           Graphics.ImageMagick.MagickWand.PixelWand
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
-import           Filesystem.Path.CurrentOS
+import           Prelude                                        hiding (FilePath)
 
 getImageHeight :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
@@ -78,7 +81,7 @@ extentImage w width height offsetX offsetY = withException_ w $!
   F.magickExtentImage w (fromIntegral width) (fromIntegral height) (fromIntegral offsetX) (fromIntegral offsetY)
 
 floodfillPaintImage :: (MonadResource m) => PMagickWand -> ChannelType -> PPixelWand -> Double -> PPixelWand -> Int -> Int -> Bool -> m ()
-floodfillPaintImage w channel fill fuzz border x y invert = withException_ w $! 
+floodfillPaintImage w channel fill fuzz border x y invert = withException_ w $!
   F.magickFloodfillPaintImage w channel fill (realToFrac fuzz) border (fromIntegral x) (fromIntegral y) (toMBool invert)
 
 negateImage :: (MonadResource m) => PMagickWand -> Bool -> m ()
@@ -118,9 +121,9 @@ transparentPaintImage w p alfa fuzz invert = withException_ w $ F.magickTranspar
 -- | newImage adds a blank image canvas of the specified size and background color to the wand.
 newImage :: (MonadResource m)
   => PMagickWand
-  -> CSize                -- ^ width
-  -> CSize                -- ^ height
-  -> Ptr PixelWand        -- ^ background color
+  -> Int               -- ^ width
+  -> Int               -- ^ height
+  -> PPixelWand        -- ^ background color
   -> m ()
 newImage p width height b = withException_ p $! F.magickNewImage p (fromIntegral width) (fromIntegral height) b
 
@@ -147,9 +150,9 @@ addImage :: (MonadResource m) => PMagickWand -> PMagickWand -> m ()
 addImage w w' = withException_ w $ F.magickAddImage w w'
 
 -- | MagickAppendImages() append the images in a wand from the current image onwards,
--- creating a new wand with the single image result. This is affected by the gravity 
+-- creating a new wand with the single image result. This is affected by the gravity
 -- and background settings of the first image.
--- Typically you would call either MagickResetIterator() or MagickSetFirstImage() before 
+-- Typically you would call either MagickResetIterator() or MagickSetFirstImage() before
 -- calling this function to ensure that all the images in the wand's image list will be appended together.
 appendImages :: (MonadResource m)
              => PMagickWand
@@ -158,14 +161,14 @@ appendImages :: (MonadResource m)
 appendImages w b = allocate (F.magickAppendImages w (toMBool b)) (void . F.destroyMagickWand)
 
 -- |  MagickAddNoiseImage() adds random noise to the image.
---    
+--
 addNoiseImage :: (MonadResource m)
               => PMagickWand
               -> NoiseType -- ^ The type of noise: Uniform, Gaussian, Multiplicative, Impulse, Laplacian, or Poisson.
               -> m ()
 addNoiseImage w n = withException_ w $ F.magickAddNoiseImage w n
 
--- | writeImage() writes an image to the specified filename. If the filename 
+-- | writeImage() writes an image to the specified filename. If the filename
 -- parameter is Nothing, the image is written to the filename set by MagickReadImage
 -- or MagickSetImageFilename().
 writeImage :: (MonadResource m)
@@ -178,11 +181,11 @@ writeImage w (Just fn) = withException_ w $ useAsCString (encode fn) (\f -> F.ma
 writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
 writeImages w fn b = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImages w f (toMBool b))
 
--- | MagickBlurImage() blurs an image. We convolve the image with a gaussian 
--- operator of the given radius and standard deviation (sigma). For reasonable 
--- results, the radius should be larger than sigma. Use a radius of 0 and 
+-- | MagickBlurImage() blurs an image. We convolve the image with a gaussian
+-- operator of the given radius and standard deviation (sigma). For reasonable
+-- results, the radius should be larger than sigma. Use a radius of 0 and
 -- BlurImage() selects a suitable radius for you.
--- 
+--
 -- The format of the MagickBlurImage method is:
 blurImage :: (MonadResource m) => PMagickWand -> Double -> Double -> m ()
 blurImage w r s = withException_ w $ F.magickBlurImage w (realToFrac r) (realToFrac s)
@@ -190,10 +193,10 @@ blurImage w r s = withException_ w $ F.magickBlurImage w (realToFrac r) (realToF
 blurImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Double -> Double -> m ()
 blurImageChannel w c r s = withException_ w $ F.magickBlurImageChannel w c (realToFrac r) (realToFrac s)
 
--- | MagickNormalizeImage() enhances the contrast of a color image by adjusting 
+-- | MagickNormalizeImage() enhances the contrast of a color image by adjusting
 --   the pixels color to span the entire range of colors available
 --
---   You can also reduce the influence of a particular channel with a gamma 
+--   You can also reduce the influence of a particular channel with a gamma
 --   value of 0.
 normalizeImage :: (MonadResource m) => PMagickWand -> m ()
 normalizeImage w = withException_ w $ F.magickNormalizeImage w
@@ -201,8 +204,27 @@ normalizeImage w = withException_ w $ F.magickNormalizeImage w
 normalizeImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> m ()
 normalizeImageChannel w c = withException_ w $ F.magickNormalizeImageChannel w c
 
+-- | Simulates an image shadow.
+shadowImage :: (MonadResource m)
+  => PMagickWand  -- ^ the magick wand
+  -> Double       -- ^ percentage transparency
+  -> Double       -- ^ the standard deviation of the Gaussian, in pixels
+  -> Int          -- ^ the shadow x-offset
+  -> Int          -- ^ the shadow y-offset
+  -> m ()
+shadowImage w opacity sigma x y = withException_ w $ F.magickShadowImage w (realToFrac opacity) (realToFrac sigma)
+                                                                         (fromIntegral x) (fromIntegral y)
+
 -- | sets the image virtual pixel method.
---   the image virtual pixel method : UndefinedVirtualPixelMethod, ConstantVirtualPixelMethod, 
+--   the image virtual pixel method : UndefinedVirtualPixelMethod, ConstantVirtualPixelMethod,
 --   EdgeVirtualPixelMethod, MirrorVirtualPixelMethod, or TileVirtualPixelMethod.
 setVirtualPixelMethod :: (MonadResource m) => PMagickWand -> VirtualPixelMethod -> m VirtualPixelMethod
 setVirtualPixelMethod = (liftIO .). F.magickSetVirtualPixelMethod
+
+-- | Remove edges that are the background color from the image.
+trimImage :: (MonadResource m) => PMagickWand -> Double -> m ()
+trimImage w fuzz = withException_ w $ F.magickTrimImage w (realToFrac fuzz)
+
+-- | Resets the Wand page canvas and position.
+resetImagePage :: (MonadResource m) => PMagickWand -> ByteString -> m ()
+resetImagePage w page = withException_ w $ useAsCString page (F.magickResetImagePage w)

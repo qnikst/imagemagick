@@ -3,6 +3,8 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , getFillColor
   , setFillColor
   , setFillRule
+  , setFont
+  , setFontSize
   , setStrokeAntialias
   , setStrokeColor
   , setStrokeDashArray
@@ -10,6 +12,8 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , setStrokeLineJoin
   , setStrokeOpacity
   , setStrokeWidth
+  , setTextAntialias
+  , drawAnnotation
   , drawCircle
   , drawEllipse
   , drawLine
@@ -24,8 +28,11 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
 
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
+import           Data.ByteString                                 (ByteString, useAsCString)
+import           Data.Text                                       (Text)
+import           Data.Text.Encoding                              (encodeUtf8)
 import           Foreign                                         hiding (rotate)
-import           Foreign.C.Types
+import           Foreign.C.Types                                 ()
 import qualified Graphics.ImageMagick.MagickWand.FFI.DrawingWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
@@ -47,6 +54,14 @@ setFillColor = (liftIO .). F.drawSetFillColor
 -- | Sets the fill rule to use while drawing polygons.
 setFillRule :: (MonadResource m) => PDrawingWand -> FillRule -> m ()
 setFillRule = (liftIO .). F.drawSetFillRule
+
+-- | Sets the fully-sepecified font to use when annotating with text.
+setFont :: (MonadResource m) => PDrawingWand -> ByteString -> m ()
+setFont dw s = liftIO $ useAsCString s (F.drawSetFont dw)
+
+-- | Sets the font pointsize to use when annotating with text.
+setFontSize :: (MonadResource m) => PDrawingWand -> Double -> m ()
+setFontSize dw size = liftIO $ F.drawSetFontSize dw (realToFrac size)
 
 setStrokeAntialias :: (MonadResource m) => PDrawingWand -> Bool -> m ()
 setStrokeAntialias dw antialias = liftIO $ F.drawSetStrokeAntialias dw (toMBool antialias)
@@ -85,6 +100,19 @@ setStrokeOpacity dw op = liftIO $ F.drawSetStrokeOpacity dw (realToFrac op)
 -- | sets the width of the stroke used to draw object outlines.
 setStrokeWidth :: (MonadResource m) => PDrawingWand -> Double -> m ()
 setStrokeWidth dw width = liftIO $ F.drawSetStrokeWidth dw (realToFrac width)
+
+-- | Controls whether text is antialiased. Text is antialiased by default.
+setTextAntialias :: (MonadResource m) => PDrawingWand -> Bool -> m ()
+setTextAntialias dw antialias = liftIO $ F.drawSetTextAntialias dw (toMBool antialias)
+
+-- | Draws text on the image.
+drawAnnotation :: (MonadResource m) => PDrawingWand
+     -> Double           -- ^ x ordinate to left of text
+     -> Double           -- ^ y ordinate to text baseline
+     -> Text             -- ^ text to draw
+     -> m ()
+drawAnnotation dw x y txt = liftIO $ useAsCString (encodeUtf8 txt)
+                            (\cstr -> F.drawAnnotation dw (realToFrac x) (realToFrac y) cstr)
 
 -- | Draws a circle on the image.
 drawCircle :: (MonadResource m) => PDrawingWand
