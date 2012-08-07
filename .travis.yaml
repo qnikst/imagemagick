@@ -1,0 +1,3 @@
+install:
+  - cabal update --verbose=2
+  - cabal install --enable-tests
