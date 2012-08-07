@@ -1,3 +1,6 @@
+language: haskell
 install:
   - cabal update --verbose=2
-  - cabal install --enable-tests
+  - cabal configure --enable-tests
+  - cabal build
+  - cabal install
