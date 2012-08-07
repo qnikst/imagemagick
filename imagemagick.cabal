@@ -42,8 +42,8 @@ Library
                       , system-filepath == 0.4.*
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
-  pkgconfig-depends:  ImageMagick
-  Build-tools:          hsc2hs
+  pkgconfig-depends:  ImageMagick, MagickWand
+  Build-tools:        hsc2hs
   
 
 executable            cyclops
