@@ -1,2 +1,2 @@
 language: haskell
-before_script: apt-get install imagemagick
+before_script: apt-get install imagemagick-dev
