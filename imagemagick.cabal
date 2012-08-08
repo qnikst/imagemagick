@@ -22,6 +22,7 @@ Library
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickCore.FFI.Option
                       , Graphics.ImageMagick.MagickCore.FFI.Composite
+                      , Graphics.ImageMagick.MagickCore.FFI.Distort
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Exception
                       , Graphics.ImageMagick.MagickCore.FFI.Fx

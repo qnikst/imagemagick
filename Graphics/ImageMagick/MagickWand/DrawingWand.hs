@@ -2,6 +2,7 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   ( drawingWand
   , getFillColor
   , setFillColor
+  , setFillPatternURL
   , setFillRule
   , setFont
   , setFontSize
@@ -15,6 +16,7 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , setTextAntialias
   , drawAnnotation
   , drawCircle
+  , drawComposite
   , drawEllipse
   , drawLine
   , drawPolygon
@@ -24,6 +26,8 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , popDrawingWand
   , rotate
   , translate
+  , pushPattern
+  , popPattern
   ) where
 
 import           Control.Monad.IO.Class
@@ -33,6 +37,7 @@ import           Data.Text                                       (Text)
 import           Data.Text.Encoding                              (encodeUtf8)
 import           Foreign                                         hiding (rotate)
 import           Foreign.C.Types                                 ()
+import           Graphics.ImageMagick.MagickCore.FFI.Composite
 import qualified Graphics.ImageMagick.MagickWand.FFI.DrawingWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
@@ -50,6 +55,13 @@ getFillColor = (liftIO .). F.drawGetFillColor
 -- | DrawSetFillColor() sets the fill color to be used for drawing filled objects.
 setFillColor :: (MonadResource m) => PDrawingWand -> PPixelWand -> m ()
 setFillColor = (liftIO .). F.drawSetFillColor
+
+-- | Sets the URL to use as a fill pattern
+-- for filling objects. Only local URLs ("#identifier") are supported
+-- at this time. These local URLs are normally created by defining a named
+-- fill pattern with `pushPattern`/`popPattern`.
+setFillPatternURL :: (MonadResource m) => PDrawingWand -> Text -> m ()
+setFillPatternURL dw url = withException_ dw $! useAsCString (encodeUtf8 url) (F.drawSetFillPatternURL dw)
 
 -- | Sets the fill rule to use while drawing polygons.
 setFillRule :: (MonadResource m) => PDrawingWand -> FillRule -> m ()
@@ -123,6 +135,20 @@ drawCircle :: (MonadResource m) => PDrawingWand
      -> m ()
 drawCircle dw ox oy px py = liftIO $ F.drawCircle dw (realToFrac ox) (realToFrac oy)
                                                      (realToFrac px) (realToFrac py)
+
+-- | Composites an image onto the current image, using the specified
+-- composition operator, specified position, and at the specified size.
+drawComposite :: (MonadResource m) => PDrawingWand
+  -> CompositeOperator -- ^ composition operator
+  -> Double            -- ^ x ordinate of top left corner
+  -> Double            -- ^ y ordinate of top left corner
+  -> Double            -- ^ width to resize image to prior to compositing, specify zero to use existing width
+  -> Double            -- ^ height to resize image to prior to compositing, specify zero to use existing height
+  -> PMagickWand       -- ^ image to composite is obtained from this wand
+  -> m ()
+drawComposite dw compose x y w h dw' = withException_ dw $! F.drawComposite dw compose
+                                                                           (realToFrac x) (realToFrac y)
+                                                                           (realToFrac w) (realToFrac h) dw'
 
 -- | Draws an ellipse on the image.
 drawEllipse :: (MonadResource m) => PDrawingWand
@@ -205,3 +231,28 @@ rotate dw degrees = liftIO $ F.drawRotate dw (realToFrac degrees)
 -- which moves the coordinate system origin to the specified coordinate.
 translate :: (MonadResource m) => PDrawingWand -> Double -> Double -> m ()
 translate dw x y = liftIO $ F.drawTranslate dw (realToFrac x) (realToFrac y)
+
+
+-- | Indicates that subsequent commands up to a `popPattern` command comprise
+-- the definition of a named pattern. The pattern space is assigned top left
+-- corner coordinates, a width and height, and becomes its own drawing space.
+-- Anything which can be drawn may be used in a pattern definition.
+-- Named patterns may be used as stroke or brush definitions.
+pushPattern :: (MonadResource m) => PDrawingWand
+  -> Text             -- ^ pattern identification for later reference
+  -> Double           -- x ordinate of top left corner
+  -> Double           -- y ordinate of top left corner
+  -> Double           -- width of pattern space
+  -> Double           -- height of pattern space
+  -> m ()
+pushPattern dw name x y w h  = withException_ dw $!
+                               useAsCString (encodeUtf8 name) (\cstr ->
+                                                                F.drawPushPattern dw cstr
+                                                                                  (realToFrac x) (realToFrac y)
+                                                                                  (realToFrac w) (realToFrac h))
+
+-- | Terminates a pattern definition.
+popPattern :: (MonadResource m) => PDrawingWand -> m ()
+popPattern dw = withException_ dw $! F.drawPopPattern dw
+
+

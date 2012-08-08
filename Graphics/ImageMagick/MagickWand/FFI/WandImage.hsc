@@ -10,6 +10,7 @@ import           Foreign.C.Types
 
 import           Graphics.ImageMagick.MagickCore.FFI.CacheView
 import           Graphics.ImageMagick.MagickCore.FFI.Composite
+import           Graphics.ImageMagick.MagickCore.FFI.Distort
 import           Graphics.ImageMagick.MagickCore.FFI.Fx
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
@@ -246,3 +247,37 @@ foreign import ccall "MagickTrimImage" magickTrimImage
 -- | MagickResetImagePage() resets the Wand page canvas and position.
 foreign import ccall "MagickResetImagePage" magickResetImagePage
   :: Ptr MagickWand -> CString -> IO MagickBooleanType
+
+-- | MagickDistortImage() distorts an image using various distortion methods,
+-- by mapping color lookups of the source image to a new destination image usally
+-- of the same size as the source image, unless 'bestfit' is set to true.
+-- If 'bestfit' is enabled, and distortion allows it, the destination image
+-- is adjusted to ensure the whole source 'image' will just fit within the final
+-- destination image, which will be sized and offset accordingly. Also in many cases
+-- the virtual offset of the source image will be taken into account in the mapping.
+foreign import ccall "MagickDistortImage" magickDistortImage
+  :: Ptr MagickWand
+  -> DistortImageMethod -- ^ the method of image distortion
+  -> CSize              -- ^ the number of arguments given for this distortion method
+  -> Ptr CDouble        -- ^ the arguments for this distortion method
+  -> MagickBooleanType  -- ^ attempt to resize destination to fit distorted source
+  -> IO MagickBooleanType
+
+-- | MagickShadeImage() shines a distant light on an image to create
+-- a three-dimensional effect. You control the positioning of the light
+-- with azimuth and elevation; azimuth is measured in degrees off the x axis
+-- and elevation is measured in pixels above the Z axis.
+foreign import ccall "MagickShadeImage" magickShadeImage
+  :: Ptr MagickWand
+  -> MagickBooleanType -- ^ a value other than zero shades the intensity of each pixel
+  -> CDouble           -- ^ azimuth of the light source direction
+  -> CDouble           -- ^ evelation of the light source direction
+  -> IO MagickBooleanType
+
+-- | MagickColorizeImage() blends the fill color with each pixel in the image.
+foreign import ccall "MagickColorizeImage" magickColorizeImage
+  :: Ptr MagickWand
+  -> Ptr PixelWand     -- ^ the colorize pixel wand
+  -> Ptr PixelWand     -- ^ the opacity pixel wand
+  -> IO MagickBooleanType
+

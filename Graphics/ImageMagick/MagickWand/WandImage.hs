@@ -35,6 +35,9 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , setVirtualPixelMethod
   , trimImage
   , resetImagePage
+  , distortImage
+  , shadeImage
+  , colorizeImage
   ) where
 
 import           Control.Monad.IO.Class
@@ -43,6 +46,7 @@ import           Data.ByteString                                (ByteString, use
 import           Filesystem.Path.CurrentOS
 import           Foreign
 import           Foreign.C.Types
+import           Graphics.ImageMagick.MagickCore.FFI.Distort
 import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
@@ -228,3 +232,31 @@ trimImage w fuzz = withException_ w $ F.magickTrimImage w (realToFrac fuzz)
 -- | Resets the Wand page canvas and position.
 resetImagePage :: (MonadResource m) => PMagickWand -> ByteString -> m ()
 resetImagePage w page = withException_ w $ useAsCString page (F.magickResetImagePage w)
+
+-- | Resets the Wand page canvas and position.
+distortImage :: (MonadResource m)
+  => PMagickWand
+  -> DistortImageMethod -- ^ the method of image distortion
+  -> [Double]           -- ^ the arguments for this distortion method
+  -> Bool               -- ^ attempt to resize destination to fit distorted source
+  -> m ()
+distortImage w method args bestfit = withException_ w $! withArrayLen (map realToFrac args) distort
+  where
+    distort len arr = F.magickDistortImage w method (fromIntegral len) arr (toMBool bestfit)
+
+-- | Sshines a distant light on an image to create
+-- a three-dimensional effect. You control the positioning of the light
+-- with azimuth and elevation; azimuth is measured in degrees off the x axis
+-- and elevation is measured in pixels above the Z axis.
+shadeImage :: (MonadResource m)
+  => PMagickWand
+  -> Bool   -- ^ a value other than zero shades the intensity of each pixel
+  -> Double -- ^ azimuth of the light source direction
+  -> Double -- ^ evelation of the light source direction
+  -> m ()
+shadeImage w gray azimuth elevation = withException_ w $ F.magickShadeImage w (toMBool gray)
+                                                                            (realToFrac azimuth) (realToFrac elevation)
+
+-- | Resets the Wand page canvas and position.
+colorizeImage :: (MonadResource m) => PMagickWand -> PPixelWand -> PPixelWand -> m ()
+colorizeImage w colorize opacity = withException_ w $! F.magickColorizeImage w colorize opacity

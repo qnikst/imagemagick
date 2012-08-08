@@ -7,6 +7,7 @@ import           Foreign
 import           Foreign.C.String
 import           Foreign.C.Types
 
+import           Graphics.ImageMagick.MagickCore.FFI.Composite
 import           Graphics.ImageMagick.MagickCore.FFI.Exception
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
@@ -33,6 +34,13 @@ foreign import ccall "DrawGetFillColor" drawGetFillColor
 -- | DrawSetFillColor() sets the fill color to be used for drawing filled objects.
 foreign import ccall "DrawSetFillColor" drawSetFillColor
   :: Ptr DrawingWand -> Ptr PixelWand -> IO ()
+
+-- | DrawSetFillPatternURL() sets the URL to use as a fill pattern
+-- for filling objects. Only local URLs ("#identifier") are supported
+-- at this time. These local URLs are normally created by defining a named
+-- fill pattern with DrawPushPattern/DrawPopPattern.
+foreign import ccall "DrawSetFillPatternURL" drawSetFillPatternURL
+  :: Ptr DrawingWand -> CString -> IO MagickBooleanType
 
 -- | DrawSetFillRule() sets the fill rule to use while drawing polygons.
 foreign import ccall "DrawSetFillRule" drawSetFillRule
@@ -125,6 +133,19 @@ foreign import ccall "DrawCircle" drawCircle
   -> CDouble           -- ^ perimeter y ordinate
   -> IO ()
 
+-- | DrawComposite() composites an image onto the current image, using
+-- the specified composition operator, specified position, and at the specified size.
+foreign import ccall "DrawComposite" drawComposite
+  :: Ptr DrawingWand
+  -> CompositeOperator -- ^ composition operator
+  -> CDouble           -- ^ x ordinate of top left corner
+  -> CDouble           -- ^ y ordinate of top left corner
+  -> CDouble           -- ^ width to resize image to prior to compositing, specify zero to use existing width
+  -> CDouble           -- ^ height to resize image to prior to compositing, specify zero to use existing height
+  -> Ptr MagickWand    -- ^ image to composite is obtained from this wand
+  -> IO MagickBooleanType
+
+
 -- | DrawEllipse() draws an ellipse  on the image.
 foreign import ccall "DrawEllipse" drawEllipse
   :: Ptr DrawingWand
@@ -205,3 +226,24 @@ foreign import ccall "DrawTranslate" drawTranslate
   -> CDouble           -- ^ new x ordinate for coordinate system origin
   -> CDouble           -- ^ new y ordinate for coordinate system origin
   -> IO ()
+
+-- | DrawPushPattern() indicates that subsequent commands up to
+-- a DrawPopPattern() command comprise the definition of a named pattern.
+-- The pattern space is assigned top left corner coordinates, a width and height,
+-- and becomes its own drawing space. Anything which can be drawn may be used
+-- in a pattern definition. Named patterns may be used as stroke or brush definitions.
+foreign import ccall "DrawPushPattern" drawPushPattern
+  :: Ptr DrawingWand
+  -> CString           -- ^ pattern identification for later reference
+  -> CDouble           -- x ordinate of top left corner
+  -> CDouble           -- y ordinate of top left corner
+  -> CDouble           -- width of pattern space
+  -> CDouble           -- height of pattern space
+  -> IO MagickBooleanType
+
+-- | DrawPopPattern() terminates a pattern definition.
+foreign import ccall "DrawPopPattern" drawPopPattern
+  :: Ptr DrawingWand
+  -> IO MagickBooleanType
+
+

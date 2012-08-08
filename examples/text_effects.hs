@@ -8,39 +8,22 @@ http://www.imagemagick.org/Usage/fonts/
 -}
 
 import           Control.Monad.Trans.Resource
+import           Data.Text                                   (Text)
+import qualified Data.Text                                   as T
+import           Filesystem.Path.CurrentOS
+import           Graphics.ImageMagick.MagickCore.FFI.Distort
 import           Graphics.ImageMagick.MagickWand
+import           Prelude                                     hiding (FilePath)
 
-{-
-// Given a pattern name (which MUST have a leading #) and a pattern file,
-// set up a pattern URL for later reference in the specified drawing wand
-// Currently only used in Text Effect 2
-void set_tile_pattern(DrawingWand *d_wand,char *pattern_name,char *pattern_file)
-{
-	MagickWand *t_wand;
-	long w,h;
+-- Text effect 1 - shadow effect using MagickShadowImage
+-- This is derived from Anthony's Soft Shadow effect
+-- convert -size 300x100 xc:none -font Candice -pointsize 72 \
+--           -fill white  -stroke black  -annotate +25+65 'Anthony' \
+--           \( +clone -background navy  -shadow 70x4+5+5 \) +swap \
+--           -background lightblue -flatten  -trim +repage  font_shadow_soft.jpg
 
-	t_wand=NewMagickWand();
-	MagickReadImage(t_wand,pattern_file);
-	// Read the tile's width and height
-	w = MagickGetImageWidth(t_wand);
-	h = MagickGetImageHeight(t_wand);
-
-	DrawPushPattern(d_wand, pattern_name+1, 0, 0, w, h);
-	DrawComposite(d_wand, SrcOverCompositeOp, 0, 0, 0, 0, t_wand);
-	DrawPopPattern(d_wand);
-	DrawSetFillPatternURL(d_wand, pattern_name);
-}
--}
-
-  -- Text effect 1 - shadow effect using MagickShadowImage
-  -- This is derived from Anthony's Soft Shadow effect
-  -- convert -size 300x100 xc:none -font Candice -pointsize 72 \
-  --           -fill white  -stroke black  -annotate +25+65 'Anthony' \
-  --           \( +clone -background navy  -shadow 70x4+5+5 \) +swap \
-  --           -background lightblue -flatten  -trim +repage  font_shadow_soft.jpg
-
-  -- NOTE - if an image has a transparent background, adding a border of any colour other
-  -- than "none" will remove all the transparency and replace it with the border's colour
+-- NOTE - if an image has a transparent background, adding a border of any colour other
+-- than "none" will remove all the transparency and replace it with the border's colour
 textEffect1 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
 textEffect1 w dw pw = do
   pw `setColor` "none"
@@ -90,6 +73,24 @@ textEffect1 w dw pw = do
   --  and write the result
   writeImage cloneW (Just "text_shadow.png")
 
+
+-- Given a pattern name (which MUST have a leading #) and a pattern file,
+-- set up a pattern URL for later reference in the specified drawing wand
+-- Currently only used in Text Effect 2
+setTilePattern :: (MonadResource m) => PDrawingWand -> Text -> FilePath -> m ()
+setTilePattern dw patternName patternFile = do
+  (_,w) <- magickWand
+  readImage w patternFile
+  -- Read the tile's width and height
+  width <- getImageWidth w
+  height <- getImageHeight w
+
+  pushPattern dw (T.tail patternName) 0 0 (realToFrac width) (realToFrac height)
+  drawComposite dw srcOverCompositeOp 0 0 0 0 w
+  popPattern dw
+  dw `setFillPatternURL` patternName
+
+
 -- Text effect 2 - tiled text using the builtin checkerboard pattern
 -- Anthony's Tiled Font effect
 -- convert -size 320x100 xc:lightblue -font Candice -pointsize 72 \
@@ -97,14 +98,145 @@ textEffect1 w dw pw = do
 --           font_tile.jpg
 textEffect2 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
 textEffect2 w dw pw = do
-{-
-	MagickWand *magick_wand = NULL;
-	MagickWand *c_wand = NULL;
-	DrawingWand *d_wand = NULL;
-	PixelWand *p_wand = NULL;
+  setTilePattern dw "#check" "pattern:checkboard"
 
-	// Used for text effect #3
-	double dargs[1] = {120.};
+  pw `setColor` "lightblue"
+  -- Create a new transparent image
+  newImage w 320 100 pw
+
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Now draw the text
+  drawAnnotation dw 28 68 "Magick"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+  -- Trim the image
+  trimImage w 0
+  -- Add a transparent border
+  pw `setColor` "lightblue"
+  borderImage w pw 5 5
+  -- and write it
+  writeImage w (Just "text_pattern.png")
+
+-- Text effect 3 -  arc font (similar to http://www.imagemagick.org/Usage/fonts/#arc)
+-- convert -size 320x100 xc:lightblue -font Candice -pointsize 72 \
+--           -annotate +25+65 'Anthony' -distort Arc 120 \
+--           -trim +repage -bordercolor lightblue -border 10  font_arc.jpg
+textEffect3 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
+textEffect3 w dw pw = do
+  -- Create a 320x100 lightblue canvas
+  pw `setColor` "lightblue"
+  newImage w 320 100  pw
+
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Now draw the text
+  drawAnnotation dw 25 65 "Magick"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+
+  let dargs = [120]
+  distortImage w arcDistortion dargs False
+  -- Trim the image
+  trimImage w 0
+  -- Add the border
+  pw `setColor` "lightblue"
+  borderImage w pw 10 10
+
+  -- and write it
+  writeImage w (Just "text_arc.png")
+
+
+-- Text effect 4 - bevelled font http://www.imagemagick.org/Usage/fonts/#bevel
+-- convert -size 320x100 xc:black -font Candice -pointsize 72 \
+--              -fill white   -annotate +25+65 'Anthony' \
+--              -shade 140x60  font_beveled.jpg
+textEffect4 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
+textEffect4 w dw pw = do
+  -- Create a 320x100 canvas
+  pw `setColor` "gray"
+  newImage w 320 100 pw
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Set up a 72 point white font
+  pw `setColor` "white"
+  dw `setFillColor` pw
+  -- Now draw the text
+  drawAnnotation dw 25 65 "Magick"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+  -- the "gray" parameter must be true to get the effect shown on Anthony's page
+  shadeImage w True 140 60
+
+  pw `setColor` "yellow"
+  dw `setFillColor` pw
+  pw' <- pixelWand
+  pw' `setColor` "gold"
+  colorizeImage w pw pw'
+
+  -- and write it
+  writeImage w (Just "text_bevel.png")
+
+
+-- Text effect 5 and 6 - Plain text and then Barrel distortion
+textEffects5_6 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
+textEffects5_6 w dw pw = do
+  -- Create a 320x100 transparent canvas
+  pw `setColor` "none"
+  newImage w 320 100 pw
+
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Now draw the text
+  drawAnnotation dw 25 65 "Magick"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+  writeImage w (Just"text_plain.png")
+
+  -- Trim the image
+  trimImage w 0
+  -- Add the border
+  pw `setColor` "none"
+  borderImage w pw 10 10
+  -- MagickSetImageMatte(magick_wand,MagickTrue);
+  -- MagickSetImageVirtualPixelMethod(magick_wand,TransparentVirtualPixelMethod);
+  -- d_args[0] = 0.1;d_args[1] = -0.25;d_args[2] = -0.25; [3] += .1
+  -- The first value should be positive. If it is negative the image is *really* distorted
+  -- d_args[0] = 0.0;
+  -- d_args[1] = 0.0;
+  -- d_args[2] = 0.5;
+  -- d_args[3] should normally be chosen such the sum of all 4 values is 1
+  -- so that the result is the same size as the original
+  -- You can override the sum with a different value
+  -- If the sum is greater than 1 the resulting image will be smaller than the original
+  -- d_args[3] = 1 - (d_args[0] + d_args[1] + d_args[2]);
+  -- Make the result image smaller so that it isn't as likely
+  -- to overflow the edges
+  -- d_args[3] += 0.1;
+  -- 0.0,0.0,0.5,0.5,0.0,0.0,-0.5,1.9
+  -- d_args[3] = 0.5;
+  -- d_args[4] = 0.0;
+  -- d_args[5] = 0.0;
+  -- d_args[6] = -0.5;
+  -- d_args[7] = 1.9;
+
+  let d_args = [0, 0, 0.5, 1 - (0 + 0 + 0.5), 0, 0, -0.5, 1.9]
+  -- DON'T FORGET to set the correct number of arguments here
+  distortImage w barrelDistortion d_args True
+  -- MagickResetImagePage(magick_wand,"");
+  -- Trim the image again
+  trimImage w 0
+  -- Add the border
+  pw `setColor` "none"
+  borderImage w pw 10 10
+  -- and write it
+  writeImage w (Just "text_barrel.png")
+
+{-
 
 	// Used for text effect #5
 	double d_args[8] = {
@@ -114,185 +246,13 @@ textEffect2 w dw pw = do
 		-0.5,1.9
 	};
 
-	MagickWandGenesis();
-
----------------
-
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(c_wand)c_wand = DestroyMagickWand(c_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
-
 --------------
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
-
-	set_tile_pattern(d_wand,"#check","pattern:checkerboard");
-
-	PixelSetColor(p_wand,"lightblue");
-	// Create a new transparent image
-	MagickNewImage(magick_wand,320,100,p_wand);
-
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Now draw the text
-	DrawAnnotation(d_wand,28,68,"Magick");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-	// Trim the image
-	MagickTrimImage(magick_wand,0);
-	// Add a transparent border
-	PixelSetColor(p_wand,"lightblue");
-	MagickBorderImage(magick_wand,p_wand,5,5);
-	// and write it
-	MagickWriteImage(magick_wand,"text_pattern.png");
-
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
-
-// Text effect 3 -  arc font (similar to http://www.imagemagick.org/Usage/fonts/#arc)
-//convert -size 320x100 xc:lightblue -font Candice -pointsize 72 \
-//           -annotate +25+65 'Anthony' -distort Arc 120 \
-//           -trim +repage -bordercolor lightblue -border 10  font_arc.jpg
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
-
-	// Create a 320x100 lightblue canvas
-	PixelSetColor(p_wand,"lightblue");
-	MagickNewImage(magick_wand,320,100,p_wand);
-
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Now draw the text
-	DrawAnnotation(d_wand,25,65,"Magick");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-
-	MagickDistortImage(magick_wand,ArcDistortion,1,dargs,MagickFalse);
-	// Trim the image
-	MagickTrimImage(magick_wand,0);
-	// Add the border
-	PixelSetColor(p_wand,"lightblue");
-	MagickBorderImage(magick_wand,p_wand,10,10);
-
-	// and write it
-	MagickWriteImage(magick_wand,"text_arc.png");
-
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
-
-// Text effect 4 - bevelled font http://www.imagemagick.org/Usage/fonts/#bevel
-// convert -size 320x100 xc:black -font Candice -pointsize 72 \
-//              -fill white   -annotate +25+65 'Anthony' \
-//              -shade 140x60  font_beveled.jpg
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
-
-	// Create a 320x100 canvas
-	PixelSetColor(p_wand,"gray");
-	MagickNewImage(magick_wand,320,100,p_wand);
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Set up a 72 point white font
-	PixelSetColor(p_wand,"white");
-	DrawSetFillColor(d_wand,p_wand);
-	// Now draw the text
-	DrawAnnotation(d_wand,25,65,"Magick");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-	// the "gray" parameter must be true to get the effect shown on Anthony's page
-	MagickShadeImage(magick_wand,MagickTrue,140,60);
-
-#ifdef COLORIZE
-	PixelSetColor(p_wand,"yellow");
-	DrawSetFillColor(d_wand,p_wand);
-	cp_wand = NewPixelWand();
-	PixelSetColor(cp_wand,"gold");
-	MagickColorizeImage(magick_wand,p_wand,cp_wand);
-#endif
-	// and write it
-	MagickWriteImage(magick_wand,"text_bevel.png");
-
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
-#ifdef COLORIZE
-	if(cp_wand)cp_wand = DestroyPixelWand(cp_wand);
-#endif
 
 
-// Text effect 5 and 6 - Plain text and then Barrel distortion
-	// This one uses d_args
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
 
-	// Create a 320x100 transparent canvas
-	PixelSetColor(p_wand,"none");
-	MagickNewImage(magick_wand,320,100,p_wand);
 
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Now draw the text
-	DrawAnnotation(d_wand,25,65,"Magick");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-	MagickWriteImage(magick_wand,"text_plain.png");
 
-	// Trim the image
-	MagickTrimImage(magick_wand,0);
-	// Add the border
-	PixelSetColor(p_wand,"none");
-	MagickBorderImage(magick_wand,p_wand,10,10);
-//	MagickSetImageMatte(magick_wand,MagickTrue);
-//	MagickSetImageVirtualPixelMethod(magick_wand,TransparentVirtualPixelMethod);
-// 	d_args[0] = 0.1;d_args[1] = -0.25;d_args[2] = -0.25; [3] += .1
-	// The first value should be positive. If it is negative the image is *really* distorted
-	d_args[0] = 0.0;
-	d_args[1] = 0.0;
-	d_args[2] = 0.5;
-	// d_args[3] should normally be chosen such the sum of all 4 values is 1
-	// so that the result is the same size as the original
-	// You can override the sum with a different value
-	// If the sum is greater than 1 the resulting image will be smaller than the original
-	d_args[3] = 1 - (d_args[0] + d_args[1] + d_args[2]);
-	// Make the result image smaller so that it isn't as likely
-	// to overflow the edges
-	// d_args[3] += 0.1;
-	// 0.0,0.0,0.5,0.5,0.0,0.0,-0.5,1.9
-	d_args[3] = 0.5;
-	d_args[4] = 0.0;
-	d_args[5] = 0.0;
-	d_args[6] = -0.5;
-	d_args[7] = 1.9;
-	// DON'T FORGET to set the correct number of arguments here
-	MagickDistortImage(magick_wand,BarrelDistortion,8,d_args,MagickTrue);
-//	MagickResetImagePage(magick_wand,"");
-	// Trim the image again
-	MagickTrimImage(magick_wand,0);
-	// Add the border
-	PixelSetColor(p_wand,"none");
-	MagickBorderImage(magick_wand,p_wand,10,10);
-	// and write it
-	MagickWriteImage(magick_wand,"text_barrel.png");
 
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
 
 // Text effect 7 - Polar distortion
 	// This one uses d_args[0]
@@ -377,3 +337,6 @@ main :: IO ()
 main = withMagickWandGenesis $ do
   runEffect textEffect1
   runEffect textEffect2
+  runEffect textEffect3
+  runEffect textEffect4
+  runEffect textEffects5_6
