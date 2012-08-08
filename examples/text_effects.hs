@@ -236,6 +236,31 @@ textEffects5_6 w dw pw = do
   -- and write it
   writeImage w (Just "text_barrel.png")
 
+-- Text effect 7 - Polar distortion
+textEffect7 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
+textEffect7 w dw pw = do
+  -- Create a 320x200 transparent canvas
+  pw `setColor` "none"
+  newImage w 320 200 pw
+
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Now draw the text
+  drawAnnotation dw 25 65 "Magick"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+
+  -- DON'T FORGET to set the correct number of arguments here
+  distortImage w polarDistortion [0] True
+  -- MagickResetImagePage(magick_wand,"");
+  -- Trim the image again
+  trimImage w 0
+  -- Add the border
+  pw `setColor` "none"
+  borderImage w pw 10 10
+  -- and write it
+  writeImage w (Just "text_polar.png")
 {-
 
 	// Used for text effect #5
@@ -254,36 +279,7 @@ textEffects5_6 w dw pw = do
 
 
 
-// Text effect 7 - Polar distortion
-	// This one uses d_args[0]
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
 
-	// Create a 320x200 transparent canvas
-	PixelSetColor(p_wand,"none");
-	MagickNewImage(magick_wand,320,200,p_wand);
-
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Now draw the text
-	DrawAnnotation(d_wand,25,65,"Magick");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-
-	d_args[0] = 0.0;
-
-	// DON'T FORGET to set the correct number of arguments here
-	MagickDistortImage(magick_wand,PolarDistortion,1,d_args,MagickTrue);
-//	MagickResetImagePage(magick_wand,"");
-	// Trim the image again
-	MagickTrimImage(magick_wand,0);
-	// Add the border
-	PixelSetColor(p_wand,"none");
-	MagickBorderImage(magick_wand,p_wand,10,10);
-	// and write it
-	MagickWriteImage(magick_wand,"text_polar.png");
 
 	/* Clean up */
 	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
@@ -340,3 +336,4 @@ main = withMagickWandGenesis $ do
   runEffect textEffect3
   runEffect textEffect4
   runEffect textEffects5_6
+  runEffect textEffect7
