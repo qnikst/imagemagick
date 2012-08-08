@@ -5,10 +5,10 @@
 -- convert -size 640x480 xc:none -fill white -draw 'roundRectangle 15,15 624,464 15,15' logo: -compose SrcIn -composite mask_result.png
 --
 
-import Graphics.ImageMagick.MagickWand
+import           Graphics.ImageMagick.MagickWand
 
-main = do
-
+main :: IO ()
+main =
    withMagickWandGenesis $ do
       (_,mWand) <- magickWand
       (_,lWand) <- magickWand
