@@ -261,65 +261,29 @@ textEffect7 w dw pw = do
   borderImage w pw 10 10
   -- and write it
   writeImage w (Just "text_polar.png")
-{-
 
-	// Used for text effect #5
-	double d_args[8] = {
-		-0.02,0.0,
-		0.0,1.02,
-		0.0,0.0,
-		-0.5,1.9
-	};
+-- Text effect 8 - Shepard's distortion
+textEffect8 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
+textEffect8 w dw pw = do
+  -- Create a 320x200 transparent canvas
+  pw `setColor` "none"
+  newImage w 640 480 pw
 
---------------
+  -- Set up a 72 point font
+  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFontSize` 72
+  -- Now draw the text
+  drawAnnotation dw 50 240 "Magick Rocks"
+  -- Draw the image on to the magick_wand
+  drawImage w dw
+  let d_args = [ 150.0, 190.0, 100.0, 290.0, 500.0, 200.0, 430.0, 130.0 ]
+  distortImage w shepardsDistortion d_args True
 
-
-
-
-
-
-
-
-
-	/* Clean up */
-	if(magick_wand)magick_wand = DestroyMagickWand(magick_wand);
-	if(d_wand)d_wand = DestroyDrawingWand(d_wand);
-	if(p_wand)p_wand = DestroyPixelWand(p_wand);
-
-// Text effect 8 - Shepard's distortion
-	// This one uses d_args[0]
-	magick_wand = NewMagickWand();
-	d_wand = NewDrawingWand();
-	p_wand = NewPixelWand();
-
-	// Create a 320x200 transparent canvas
-	PixelSetColor(p_wand,"none");
-	MagickNewImage(magick_wand,640,480,p_wand);
-
-	// Set up a 72 point font
-	DrawSetFont (d_wand, "Verdana-Bold-Italic" ) ;
-	DrawSetFontSize(d_wand,72);
-	// Now draw the text
-	DrawAnnotation(d_wand,50,240,"Magick Rocks");
-	// Draw the image on to the magick_wand
-	MagickDrawImage(magick_wand,d_wand);
-	d_args[0] = 150.0;
-	d_args[1] = 190.0;
-	d_args[2] = 100.0;
-	d_args[3] = 290.0;
-	d_args[4] = 500.0;
-	d_args[5] = 200.0;
-	d_args[6] = 430.0;
-	d_args[7] = 130.0;
-	// DON'T FORGET to set the correct number of arguments here
-	MagickDistortImage(magick_wand,ShepardsDistortion,8,d_args,MagickTrue);
-
-	// Trim the image
-	MagickTrimImage(magick_wand,0);
-	// Add the border
-	PixelSetColor(p_wand,"none");
-	MagickBorderImage(magick_wand,p_wand,10,10);
--}
+  -- Trim the image
+  trimImage w 0
+  -- Add the border
+  pw `setColor` "none"
+  borderImage w pw 10 10
   -- and write it
   writeImage w (Just "text_shepards.png")
 
@@ -337,3 +301,4 @@ main = withMagickWandGenesis $ do
   runEffect textEffect4
   runEffect textEffects5_6
   runEffect textEffect7
+  runEffect textEffect8
