@@ -1,14 +1,15 @@
-{-# LANGUAGE CPP, ForeignFunctionInterface #-}
+{-# LANGUAGE CPP                      #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 
-module Graphics.ImageMagick.MagickWand.FFI.PixelWand 
+module Graphics.ImageMagick.MagickWand.FFI.PixelWand
   where
 
-import Foreign
-import Foreign.C.Types
-import Foreign.C.String
+import           Foreign
+import           Foreign.C.String
+import           Foreign.C.Types
 
-import Graphics.ImageMagick.MagickCore.FFI.Exception
-import Graphics.ImageMagick.MagickWand.FFI.Types 
+import           Graphics.ImageMagick.MagickCore.Types
+import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
 
@@ -35,11 +36,11 @@ foreign import ccall "ClonePixelWand" clonePixelWand
 
 -- | NewPixelWand() returns a new pixel wand.
 foreign import ccall "NewPixelWand" newPixelWand
-  :: IO (Ptr PixelWand) 
+  :: IO (Ptr PixelWand)
 
 -- | NewPixelWands() returns an array of pixel wands.
 foreign import ccall "NewPixelWands" newPixelWands
-  :: CSize -> IO (Ptr (Ptr PixelWand)) 
+  :: CSize -> IO (Ptr (Ptr PixelWand))
 
 -- | PixelSetColor() sets the color of the pixel wand with a string (e.g. "blue", "#0000ff", "rgb(0,0,255)", "cmyk(100,100,100,10)", etc.).
 foreign import ccall "PixelSetColor" pixelSetColor
@@ -49,17 +50,17 @@ foreign import ccall "PixelSetColor" pixelSetColor
 foreign import ccall "PixelClearException" pixelClearException
   :: Ptr PixelWand -> IO MagickBooleanType
 
--- | PixelGetException() returns the severity, reason, and description of any 
+-- | PixelGetException() returns the severity, reason, and description of any
 --   error that occurs when using other methods in this API.
 foreign import ccall "PixelGetException" pixelGetException
   :: Ptr PixelWand -> Ptr ExceptionType -> IO CString
 
--- | PixelGetExceptionType() the exception type associated with the wand. 
+-- | PixelGetExceptionType() the exception type associated with the wand.
 --   If no exception has occurred, UndefinedExceptionType is returned.
 foreign import ccall "PixelGetExceptionType" pixelGetExceptionType
   :: Ptr PixelWand -> IO ExceptionType
 
-{- 
+{-
 ClonePixelWands() makes an exact copy of the specified wands.
 
 The format of the ClonePixelWands method is:

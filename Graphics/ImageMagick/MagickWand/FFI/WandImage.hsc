@@ -7,11 +7,7 @@ import           Foreign
 import           Foreign.C.String
 import           Foreign.C.Types
 
-
-import           Graphics.ImageMagick.MagickCore.FFI.CacheView
-import           Graphics.ImageMagick.MagickCore.FFI.Composite
-import           Graphics.ImageMagick.MagickCore.FFI.Distort
-import           Graphics.ImageMagick.MagickCore.FFI.Fx
+import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
@@ -281,3 +277,90 @@ foreign import ccall "MagickColorizeImage" magickColorizeImage
   -> Ptr PixelWand     -- ^ the opacity pixel wand
   -> IO MagickBooleanType
 
+-- | MagickFxImage() evaluate expression for each pixel in the image.
+foreign import ccall "MagickFxImage" magickFxImage
+  :: Ptr MagickWand
+  -> CString     -- ^ the expression
+  -> IO (Ptr MagickWand)
+
+-- | MagickFxImageChannel() evaluate expression for each pixel in the image.
+foreign import ccall "MagickFxImageChannel" magickFxImageChannel
+  :: Ptr MagickWand
+  -> ChannelType -- ^ the image channel(s)
+  -> CString     -- ^ the expression
+  -> IO (Ptr MagickWand)
+
+-- | MagickSigmoidalContrastImage() adjusts the contrast of an image with a
+-- non-linear sigmoidal contrast algorithm. Increase the contrast of the image
+-- using a sigmoidal transfer function without saturating highlights or shadows.
+-- Contrast indicates how much to increase the contrast (0 is none; 3 is typical;
+-- 20 is pushing it); mid-point indicates where midtones fall in the resultant
+-- image (0 is white; 50 is middle-gray; 100 is black). Set sharpen to `True`
+-- to increase the image contrast otherwise the contrast is reduced.
+foreign import ccall "MagickSigmoidalContrastImage" magickSigmoidalContrastImage
+  :: Ptr MagickWand
+  -> MagickBooleanType -- ^ increase or decrease image contrast
+  -> CDouble           -- ^ strength of the contrast, the larger the number the more 'threshold-like' it becomes
+  -> CDouble           -- ^ midpoint of the function as a color value 0 to `quantumRange`
+  -> IO MagickBooleanType
+
+-- | see `magickSigmoidalContrastImage`
+foreign import ccall "MagickSigmoidalContrastImageChannel" magickSigmoidalContrastImageChannel
+  :: Ptr MagickWand
+  -> ChannelType       -- ^ identify which channel to level: `redChannel`, `greenChannel`
+  -> MagickBooleanType -- ^ increase or decrease image contrast
+  -> CDouble           -- ^ strength of the contrast, the larger the number the more 'threshold-like' it becomes
+  -> CDouble           -- ^ midpoint of the function as a color value 0 to `quantumRange`
+  -> IO MagickBooleanType
+
+-- | MagickEvaluateImage() applies an arithmetic, relational, or logical
+-- expression to an image. Use these operators to lighten or darken an image,
+-- to increase or decrease contrast in an image, or to produce the "negative"
+-- of an image.
+foreign import ccall "MagickEvaluateImage" magickEvaluateImage
+  :: Ptr MagickWand
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> CDouble                -- ^ value
+  -> IO MagickBooleanType
+
+-- | see `magickEvaluateImage`
+foreign import ccall "MagickEvaluateImages" magickEvaluateImages
+  :: Ptr MagickWand
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> IO MagickBooleanType
+
+-- | see `magickEvaluateImage`
+foreign import ccall "MagickEvaluateImageChannel" magickEvaluateImageChannel
+  :: Ptr MagickWand
+  -> ChannelType            -- ^ the channel(s)
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> CDouble                -- ^ value
+  -> IO MagickBooleanType
+
+-- | MagickRollImage() offsets an image as defined by x and y.
+foreign import ccall "MagickRollImage" magickRollImage
+  :: Ptr MagickWand
+  -> CDouble                -- ^ the x offset
+  -> CDouble                -- ^ the y offset
+  -> IO MagickBooleanType
+
+-- | MagickAnnotateImage() annotates an image with text.
+foreign import ccall "MagickAnnotateImage" magickAnnotateImage
+  :: Ptr MagickWand
+  -> Ptr DrawingWand -- ^ the draw wand
+  -> CDouble         -- ^ x ordinate to left of text
+  -> CDouble         -- ^ y ordinate to text baseline
+  -> CDouble         -- ^ rotate text relative to this angle
+  -> CString         -- ^ text to draw
+  -> IO MagickBooleanType
+
+-- | MagickMergeImageLayers() composes all the image layers from the current
+-- given image onward to produce a single image of the merged layers.
+-- The inital canvas's size depends on the given ImageLayerMethod, and is
+-- initialized using the first images background color. The images are then
+-- compositied onto that image in sequence using the given composition that
+-- has been assigned to each individual image.
+foreign import ccall "MagickMergeImageLayers" magickMergeImageLayers
+  :: Ptr MagickWand
+  -> ImageLayerMethod -- ^ the method of selecting the size of the initial canvas
+  -> IO (Ptr MagickWand)

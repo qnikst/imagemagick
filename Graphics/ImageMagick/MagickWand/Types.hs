@@ -14,7 +14,7 @@ module Graphics.ImageMagick.MagickWand.Types
   ) where
 
 import           Control.Exception.Base
-import           Control.Monad.Trans.Resource
+import           Control.Monad.Trans.Resource                      ()
 import           Data.Typeable
 import           Foreign
 import           Foreign.C.String

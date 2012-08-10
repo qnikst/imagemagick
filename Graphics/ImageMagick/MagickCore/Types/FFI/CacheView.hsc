@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP                      #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
 
-module Graphics.ImageMagick.MagickCore.FFI.CacheView
+module Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
     where
 
 import           Foreign.C.Types

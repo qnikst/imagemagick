@@ -38,19 +38,31 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , distortImage
   , shadeImage
   , colorizeImage
+  , fxImage
+  , fxImageChannel
+  , sigmoidalContrastImage
+  , sigmoidalContrastImageChannel
+  , evaluateImage
+  , evaluateImageChannel
+  , evaluateImages
+  , rollImage
+  , annotateImage
+  , mergeImageLayers
   ) where
 
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                                (ByteString, useAsCString)
+import           Data.Text                                      (Text)
+import           Data.Text.Encoding                             (encodeUtf8)
 import           Filesystem.Path.CurrentOS
 import           Foreign
 import           Foreign.C.Types
-import           Graphics.ImageMagick.MagickCore.FFI.Distort
 import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.WandImage  as F
+import           Graphics.ImageMagick.MagickWand.MagickWand
 import           Graphics.ImageMagick.MagickWand.PixelWand
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
@@ -260,3 +272,78 @@ shadeImage w gray azimuth elevation = withException_ w $ F.magickShadeImage w (t
 -- | Resets the Wand page canvas and position.
 colorizeImage :: (MonadResource m) => PMagickWand -> PPixelWand -> PPixelWand -> m ()
 colorizeImage w colorize opacity = withException_ w $! F.magickColorizeImage w colorize opacity
+
+-- | Evaluate expression for each pixel in the image.
+fxImage :: (MonadResource m) => PMagickWand -> Text -> m (ReleaseKey, Ptr MagickWand)
+fxImage w expr = wandResource (useAsCString (encodeUtf8 expr) (F.magickFxImage w))
+
+-- | Evaluate expression for each pixel in the image.
+fxImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Text -> m (ReleaseKey, Ptr MagickWand)
+fxImageChannel w channel expr = wandResource (useAsCString (encodeUtf8 expr) (F.magickFxImageChannel w channel))
+
+-- | Adjusts the contrast of an image with a  non-linear sigmoidal contrast algorithm.
+-- Increase the contrast of the image using a sigmoidal transfer function without
+-- saturating highlights or shadows. Contrast indicates how much to increase the contrast
+-- (0 is none; 3 is typical; 20 is pushing it); mid-point indicates where midtones fall
+-- in the resultant image (0 is white; 50 is middle-gray; 100 is black). Set sharpen to `True`
+-- to increase the image contrast otherwise the contrast is reduced.
+sigmoidalContrastImage :: (MonadResource m) => PMagickWand -> Bool -> Double -> Double -> m ()
+sigmoidalContrastImage w sharpen alpha beta =
+  withException_ w $! F.magickSigmoidalContrastImage w (toMBool sharpen) (realToFrac alpha) (realToFrac beta)
+
+-- see `sigmoidalContrastImage`
+sigmoidalContrastImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> Bool -> Double -> Double -> m ()
+sigmoidalContrastImageChannel w channel sharpen alpha beta =
+  withException_ w $! F.magickSigmoidalContrastImageChannel w channel (toMBool sharpen) (realToFrac alpha) (realToFrac beta)
+
+-- | Applies an arithmetic, relational, or logical expression to an image.
+-- Use these operators to lighten or darken an image, to increase or decrease
+-- contrast in an image, or to produce the "negative" of an image.
+evaluateImage :: (MonadResource m)
+  => PMagickWand
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> CDouble                -- ^ value
+  -> m ()
+evaluateImage w op value = withException_ w $! F.magickEvaluateImage w op value
+
+-- | see `evaluateImage`
+evaluateImages :: (MonadResource m)
+  => PMagickWand
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> m ()
+evaluateImages w op = withException_ w $! F.magickEvaluateImages w op
+
+-- | see `evaluateImage`
+evaluateImageChannel :: (MonadResource m)
+  => PMagickWand
+  -> ChannelType            -- ^ the channel(s)
+  -> MagickEvaluateOperator -- ^ a channel operator
+  -> CDouble                -- ^ value
+  -> m ()
+evaluateImageChannel w channel op value = withException_ w $! F.magickEvaluateImageChannel w channel op value
+
+-- | Offsets an image as defined by x and y.
+rollImage :: (MonadResource m) => PMagickWand -> Double -> Double -> m ()
+rollImage w x y = withException_ w $! F.magickRollImage w (realToFrac x) (realToFrac y)
+
+-- | Annotates an image with text.
+annotateImage :: (MonadResource m)
+  => PMagickWand
+  -> PDrawingWand -- ^ the draw wand
+  -> Double       -- ^ x ordinate to left of text
+  -> Double       -- ^ y ordinate to text baseline
+  -> Double       -- ^ rotate text relative to this angle
+  -> Text         -- ^ text to draw
+  -> m ()
+annotateImage w dw x y angle text =
+  withException_ w $! useAsCString (encodeUtf8 text)
+                                   (F.magickAnnotateImage w dw (realToFrac x) (realToFrac y) (realToFrac angle))
+
+-- | Composes all the image layers from the current given image onward to
+-- produce a single image of the merged layers. The inital canvas's size
+-- depends on the given ImageLayerMethod, and is initialized using the first
+-- images background color. The images are then compositied onto that image
+-- in sequence using the given composition that has been assigned to each
+-- individual image.
+mergeImageLayers :: (MonadResource m) => PMagickWand -> ImageLayerMethod -> m (ReleaseKey, PMagickWand)
+mergeImageLayers w method = wandResource (F.magickMergeImageLayers w method)

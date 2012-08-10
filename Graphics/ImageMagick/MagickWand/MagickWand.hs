@@ -3,6 +3,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   ( withMagickWandGenesis
   , localGenesis
   , magickWand
+  , wandResource
   , cloneMagickWand
   , magickIterate
   , readImage
@@ -49,9 +50,13 @@ magickIterate w f = liftIO (F.magickResetIterator w) >> go -- TODO: use fix
       unless (i==mTrue) $ f w >> go
 
 
-cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr MagickWand)
-cloneMagickWand w = allocate (F.cloneMagickWand w) destroy
+wandResource :: (MonadResource m) => (IO (Ptr MagickWand)) -> m (ReleaseKey, Ptr MagickWand)
+wandResource f = allocate f destroy
   where destroy = void . F.destroyMagickWand
+
+
+cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr MagickWand)
+cloneMagickWand w = wandResource (F.cloneMagickWand w)
 
 
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()

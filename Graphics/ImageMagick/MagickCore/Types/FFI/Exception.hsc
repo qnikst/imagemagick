@@ -2,7 +2,7 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Graphics.ImageMagick.MagickCore.FFI.Exception
+module Graphics.ImageMagick.MagickCore.Types.FFI.Exception
     where
 
 import           Foreign.Storable

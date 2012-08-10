@@ -4,12 +4,10 @@ module Graphics.ImageMagick.MagickWand.PixelWand
   ) where
 
 import           Control.Monad                                 (void)
-import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                               (ByteString, useAsCString)
 
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
-import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
 

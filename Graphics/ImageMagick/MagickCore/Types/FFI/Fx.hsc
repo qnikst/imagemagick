@@ -2,7 +2,7 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Graphics.ImageMagick.MagickCore.FFI.Fx
+module Graphics.ImageMagick.MagickCore.Types.FFI.Fx
     where
 
 import           Foreign.C.Types

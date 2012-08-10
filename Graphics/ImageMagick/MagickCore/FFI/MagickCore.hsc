@@ -1,6 +1,6 @@
-module Graphics.ImageMagick.MagickCore.FFI.MagickCore 
+module Graphics.ImageMagick.MagickCore.FFI.MagickCore
   where
 
-import Graphics.ImageMagick.MagickCore.FFI.Composite
+import           Graphics.ImageMagick.MagickCore.Types
 
 

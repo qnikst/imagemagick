@@ -1,6 +1,6 @@
 {-# LANGUAGE CPP                      #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
-module Graphics.ImageMagick.MagickCore.FFI.Distort
+module Graphics.ImageMagick.MagickCore.Types.FFI.Distort
     where
 
 import           Foreign.C.Types

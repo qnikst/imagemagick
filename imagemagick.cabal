@@ -19,14 +19,19 @@ Cabal-version:       >=1.8
 
 Library
   Exposed-modules:      Graphics.ImageMagick.MagickCore
-                      , Graphics.ImageMagick.MagickWand
-                      , Graphics.ImageMagick.MagickCore.FFI.Option
-                      , Graphics.ImageMagick.MagickCore.FFI.Composite
-                      , Graphics.ImageMagick.MagickCore.FFI.Distort
+                      , Graphics.ImageMagick.MagickCore.FFI.Log
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
-                      , Graphics.ImageMagick.MagickCore.FFI.Exception
-                      , Graphics.ImageMagick.MagickCore.FFI.Fx
-                      , Graphics.ImageMagick.MagickCore.FFI.CacheView
+                      , Graphics.ImageMagick.MagickCore.FFI.Option
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Exception
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Fx
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Geometry
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Layer
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Log
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
+                      , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
                       , Graphics.ImageMagick.MagickWand.FFI.MagickWand
@@ -135,6 +140,20 @@ executable            draw-shapes
 executable            text-effects
   Main-is:            examples/text_effects.hs
   Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            gel
+  Main-is:            examples/gel.hs
+  Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
                       , vector == 0.9.*

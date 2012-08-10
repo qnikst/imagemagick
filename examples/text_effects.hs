@@ -8,12 +8,12 @@ http://www.imagemagick.org/Usage/fonts/
 -}
 
 import           Control.Monad.Trans.Resource
-import           Data.Text                                   (Text)
-import qualified Data.Text                                   as T
+import           Data.Text                             (Text)
+import qualified Data.Text                             as T
 import           Filesystem.Path.CurrentOS
-import           Graphics.ImageMagick.MagickCore.FFI.Distort
+import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand
-import           Prelude                                     hiding (FilePath)
+import           Prelude                               hiding (FilePath)
 
 -- Text effect 1 - shadow effect using MagickShadowImage
 -- This is derived from Anthony's Soft Shadow effect

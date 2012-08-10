@@ -7,8 +7,7 @@ import           Foreign
 import           Foreign.C.String
 import           Foreign.C.Types
 
-import           Graphics.ImageMagick.MagickCore.FFI.Composite
-import           Graphics.ImageMagick.MagickCore.FFI.Exception
+import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
@@ -53,6 +52,10 @@ foreign import ccall "DrawSetFont" drawSetFont
 -- | DrawSetFontSize() sets the font pointsize to use when annotating with text.
 foreign import ccall "DrawSetFontSize" drawSetFontSize
   :: Ptr DrawingWand -> CDouble -> IO ()
+
+-- | DrawSetGravity() sets the text placement gravity to use when annotating with text.
+foreign import ccall "DrawSetGravity" drawSetGravity
+  :: Ptr DrawingWand -> GravityType -> IO ()
 
 -- | DrawSetStrokeAntialias() controls whether stroked outlines are antialiased.
 -- Stroked outlines are antialiased by default. When antialiasing is disabled

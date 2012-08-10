@@ -6,6 +6,7 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , setFillRule
   , setFont
   , setFontSize
+  , setGravity
   , setStrokeAntialias
   , setStrokeColor
   , setStrokeDashArray
@@ -37,7 +38,7 @@ import           Data.Text                                       (Text)
 import           Data.Text.Encoding                              (encodeUtf8)
 import           Foreign                                         hiding (rotate)
 import           Foreign.C.Types                                 ()
-import           Graphics.ImageMagick.MagickCore.FFI.Composite
+import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.DrawingWand as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
@@ -74,6 +75,10 @@ setFont dw s = liftIO $ useAsCString s (F.drawSetFont dw)
 -- | Sets the font pointsize to use when annotating with text.
 setFontSize :: (MonadResource m) => PDrawingWand -> Double -> m ()
 setFontSize dw size = liftIO $ F.drawSetFontSize dw (realToFrac size)
+
+-- | Sets the text placement gravity to use when annotating with text.
+setGravity :: (MonadResource m) => PDrawingWand -> GravityType -> m ()
+setGravity = (liftIO .). F.drawSetGravity
 
 setStrokeAntialias :: (MonadResource m) => PDrawingWand -> Bool -> m ()
 setStrokeAntialias dw antialias = liftIO $ F.drawSetStrokeAntialias dw (toMBool antialias)

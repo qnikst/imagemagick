@@ -8,8 +8,7 @@ import           Foreign
 import           Foreign.C.String
 import           Foreign.C.Types
 
-import           Graphics.ImageMagick.MagickCore.FFI.Exception
-import           Graphics.ImageMagick.MagickCore.FFI.Fx
+import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
