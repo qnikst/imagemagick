@@ -30,6 +30,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Geometry
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Layer
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Log
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
@@ -167,6 +168,20 @@ executable            gel
 
 executable            reflect
   Main-is:            examples/reflect.hs
+  Build-depends:        base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            3dlogo
+  Main-is:            examples/3dlogo.hs
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

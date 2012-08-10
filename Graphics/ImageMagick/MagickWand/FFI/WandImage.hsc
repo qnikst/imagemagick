@@ -364,3 +364,21 @@ foreign import ccall "MagickMergeImageLayers" magickMergeImageLayers
   :: Ptr MagickWand
   -> ImageLayerMethod -- ^ the method of selecting the size of the initial canvas
   -> IO (Ptr MagickWand)
+
+-- | MagickTintImage() applies a color vector to each pixel in the image. The 
+-- length of the vector is 0 for black and white and at its maximum for the 
+-- midtones. The vector weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
+foreign import ccall "MagickTintImage" magickTintImage 
+  :: Ptr MagickWand
+  -> Ptr PixelWand    -- ^ the tint pixel wand.
+  -> Ptr PixelWand    -- ^ opacity pixel wand
+  -> IO MagickBooleanType
+
+
+-- | MagickSetImageMatte() sets the image matte channel.
+foreign import ccall "MagickSetImageMatte" magickSetImageMatte
+  :: Ptr MagickWand
+  -> MagickBooleanType
+  -> IO MagickBooleanType
+
+

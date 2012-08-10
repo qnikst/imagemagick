@@ -48,6 +48,10 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , rollImage
   , annotateImage
   , mergeImageLayers
+  , tintImage
+  , gaussianBlurImageChannel
+  , gaussianBlurImage
+  , setImageMatte
   ) where
 
 import           Control.Monad.IO.Class
@@ -347,3 +351,37 @@ annotateImage w dw x y angle text =
 -- individual image.
 mergeImageLayers :: (MonadResource m) => PMagickWand -> ImageLayerMethod -> m (ReleaseKey, PMagickWand)
 mergeImageLayers w method = wandResource (F.magickMergeImageLayers w method)
+
+-- | Applies a color vector to each pixel in the image. The length of the 
+-- vector is 0 for black and white and at its maximum for the midtones. 
+-- The vector weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
+--
+-- The format of the MagickTintImage method is:
+tintImage :: (MonadResource m) => PMagickWand 
+          -> PPixelWand    -- ^ tint pixel
+          -> PPixelWand    -- ^ opacity pixel
+          -> m ()
+tintImage w t o = withException_ w $ F.magickTintImage w t o
+
+
+-- |  MagickGaussianBlurImage() blurs an image. We convolve the image with a Gaussian operator 
+-- of the given radius and standard deviation (sigma). For reasonable results, the radius should 
+-- be larger than sigma. Use a radius of 0 and MagickGaussianBlurImage() selects a suitable radius for you.
+gaussianBlurImage :: (MonadResource m) => PMagickWand
+                  -> Double
+                  -> Double
+                  -> m ()
+gaussianBlurImage w r s = withException_ w $ F.magickGaussianBlurImage w (realToFrac r) (realToFrac s)
+  
+gaussianBlurImageChannel :: (MonadResource m) => PMagickWand
+                  -> ChannelType
+                  -> Double
+                  -> Double
+                  -> m ()
+gaussianBlurImageChannel w c r s = withException_ w $ F.magickGaussianBlurImageChannel w c (realToFrac r) (realToFrac s)
+
+setImageMatte :: (MonadResource m) => PMagickWand
+              -> Bool
+              -> m ()
+setImageMatte w b = withException_ w $ F.magickSetImageMatte w (toMBool b)
+

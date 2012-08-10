@@ -360,4 +360,19 @@ foreign import ccall "MagickSetSize" magickSetSize
   -> IO MagickBooleanType
 
 
+-- |  MagickGaussianBlurImage() blurs an image. We convolve the image with a Gaussian operator 
+-- of the given radius and standard deviation (sigma). For reasonable results, the radius should 
+-- be larger than sigma. Use a radius of 0 and MagickGaussianBlurImage() selects a suitable radius for you.
+foreign import ccall "MagickGaussianBlurImage" magickGaussianBlurImage
+  :: Ptr MagickWand 
+  -> CDouble    -- ^ radius
+  -> CDouble    -- ^ sigma
+  -> IO MagickBooleanType
+  
+foreign import ccall "MagickGaussianBlurImage" magickGaussianBlurImageChannel
+  :: Ptr MagickWand 
+  -> ChannelType 
+  -> CDouble    -- ^ radius
+  -> CDouble    -- ^ sigma
+  -> IO MagickBooleanType
 
