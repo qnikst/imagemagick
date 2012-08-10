@@ -74,8 +74,8 @@ getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
 getImageWidth :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageWidth w = liftIO $ fmap fromIntegral (F.magickGetImageWidth w)
 
-resizeImage :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> FilterTypes -> CDouble -> m ()  --TODO: fix CDouble
-resizeImage pw w h f s = withException_ pw $! F.magickResizeImage pw (fromIntegral w) (fromIntegral h) f s
+resizeImage :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> FilterTypes -> Double -> m ()
+resizeImage pw w h f s = withException_ pw $! F.magickResizeImage pw (fromIntegral w) (fromIntegral h) f (realToFrac s)
 
 getImageCompressionQuality :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageCompressionQuality = liftIO . fmap fromIntegral . F.magickGetImageCompressionQuality
