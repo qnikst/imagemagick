@@ -365,10 +365,10 @@ foreign import ccall "MagickMergeImageLayers" magickMergeImageLayers
   -> ImageLayerMethod -- ^ the method of selecting the size of the initial canvas
   -> IO (Ptr MagickWand)
 
--- | MagickTintImage() applies a color vector to each pixel in the image. The 
--- length of the vector is 0 for black and white and at its maximum for the 
+-- | MagickTintImage() applies a color vector to each pixel in the image. The
+-- length of the vector is 0 for black and white and at its maximum for the
 -- midtones. The vector weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
-foreign import ccall "MagickTintImage" magickTintImage 
+foreign import ccall "MagickTintImage" magickTintImage
   :: Ptr MagickWand
   -> Ptr PixelWand    -- ^ the tint pixel wand.
   -> Ptr PixelWand    -- ^ opacity pixel wand
@@ -381,4 +381,11 @@ foreign import ccall "MagickSetImageMatte" magickSetImageMatte
   -> MagickBooleanType
   -> IO MagickBooleanType
 
-
+-- | MagickCropImage() extracts a region of the image.
+foreign import ccall "MagickCropImage" magickCropImage
+  :: Ptr MagickWand
+  -> CSize         -- ^ the region width
+  -> CSize         -- ^ the region height
+  -> CSize         -- ^ the region x-offset
+  -> CSize         -- ^ the region y-offset
+  -> IO MagickBooleanType
