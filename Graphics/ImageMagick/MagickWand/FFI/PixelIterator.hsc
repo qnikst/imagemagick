@@ -89,18 +89,6 @@ foreign import ccall "wand/MagickWand.h PixelGetNextIteratorRow" pixelGetNextIte
             number_wands
 
             the number of pixel wands.
-            PixelResetIterator
-
-            PixelResetIterator() resets the pixel iterator. Use it in conjunction with PixelGetNextIteratorRow() to iterate over all the pixels in a pixel container.
-
-            The format of the PixelResetIterator method is:
-
-              void PixelResetIterator(PixelIterator *iterator)
-
-              A description of each parameter follows:
-              iterator
-
-              the pixel iterator.
               PixelSetFirstIteratorRow
 
               PixelSetFirstIteratorRow() sets the pixel iterator to the first pixel row.
@@ -141,4 +129,9 @@ foreign import ccall "wand/MagickWand.h PixelGetNextIteratorRow" pixelGetNextIte
 -}
 
 foreign import ccall "PixelSyncIterator" pixelSyncIterator
-  :: Ptr PixelIterator -> IO (MagickBooleanType)
+  :: Ptr PixelIterator -> IO MagickBooleanType
+
+-- | PixelResetIterator() resets the pixel iterator. Use it in conjunction 
+-- with PixelGetNextIteratorRow() to iterate over all the pixels in a pixel container.
+foreign import ccall "PixelResetIterator" pixelResetIterator
+  :: Ptr PixelIterator -> IO ()

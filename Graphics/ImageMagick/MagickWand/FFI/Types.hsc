@@ -9,6 +9,7 @@ import Control.Monad
 
 import Foreign
 import Foreign.C.Types
+import Graphics.ImageMagick.MagickCore.Types.FFI.Types
 
 data PixelIterator
 data MagickWand
@@ -29,26 +30,6 @@ instance Storable PointInfo where
               `ap` (#{peek PointInfo, x} p)
               `ap` (#{peek PointInfo, y} p)
 
-type MagickRealType   = #type MagickRealType
-type MagickStatusType = #type MagickStatusType
-type MagickOffsetType = #type MagickOffsetType
-type MagickSizeType   = #type MagickSizeType
-type SignedQuantum    = #type SignedQuantum
-type QuantumAny       = #type QuantumAny
-type Quantum          = #type  Quantum
-
-magickEpsilon :: forall a. Fractional a => a
-magickEpsilon   = 1e-10 -- #const MagickEpsilon
-magickHuge :: forall a. Num a => a
-magickHuge      = #const MagickHuge
-maxColormapSize :: forall a. Num a => a
-maxColormapSize = #const MaxColormapSize
-maxMap :: forall a. Num a => a
-maxMap          = #const MaxMap
-quantumFormat :: forall a. Num a => a
-quantumFormat   = #const QuantumFormat
-quantumRange :: forall a. Num a => a
-quantumRange    = #const QuantumRange
 
 
 newtype ChannelType = ChannelType { unChannelType :: CInt }

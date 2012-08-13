@@ -12,3 +12,4 @@ import           Graphics.ImageMagick.MagickCore.Types.FFI.Layer       as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Log         as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Statistic   as X
+import           Graphics.ImageMagick.MagickCore.Types.FFI.Types       as X

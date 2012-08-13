@@ -7,7 +7,6 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , cloneMagickWand
   , magickIterate
   , readImage
-  , quantumRange
   , setSize
   -- TODO: move somewhere
   , lanczosFilter

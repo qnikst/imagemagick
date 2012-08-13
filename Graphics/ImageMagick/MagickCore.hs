@@ -3,3 +3,4 @@ module Graphics.ImageMagick.MagickCore
 
 import           Graphics.ImageMagick.MagickCore.Option as G
 import           Graphics.ImageMagick.MagickCore.Types  as G
+import           Graphics.ImageMagick.MagickCore.Gem    as G

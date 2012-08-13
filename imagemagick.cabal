@@ -22,6 +22,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.Log
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Option
+                      , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
@@ -32,6 +33,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Log
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Types
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
@@ -56,6 +58,7 @@ Library
 
 executable            cyclops
   Main-is:            examples/cyclops.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -70,6 +73,7 @@ executable            cyclops
 
 executable            clipmask
   Main-is:            examples/clipmask.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -84,6 +88,7 @@ executable            clipmask
 
 executable            paint-trans
   Main-is:            examples/trans_paint.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -98,6 +103,7 @@ executable            paint-trans
 
 executable            round-mask
   Main-is:            examples/round_mask.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -112,6 +118,7 @@ executable            round-mask
 
 executable            make-tile
   Main-is:            examples/make_tile.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -126,6 +133,7 @@ executable            make-tile
 
 executable            draw-shapes
   Main-is:            examples/draw_shapes.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -140,6 +148,7 @@ executable            draw-shapes
 
 executable            text-effects
   Main-is:            examples/text_effects.hs
+  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -154,6 +163,7 @@ executable            text-effects
 
 executable            gel
   Main-is:            examples/gel.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -168,6 +178,7 @@ executable            gel
 
 executable            reflect
   Main-is:            examples/reflect.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -182,6 +193,7 @@ executable            reflect
 
 executable            3dlogo
   Main-is:            examples/3dlogo.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -196,6 +208,7 @@ executable            3dlogo
 
 executable            affine
   Main-is:            examples/affine.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -210,6 +223,7 @@ executable            affine
 
 executable            grayscale
   Main-is:            examples/grayscale.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -221,3 +235,18 @@ executable            grayscale
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            modulate
+  Main-is:            examples/modulate.hs
+  Build-depends:        base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+

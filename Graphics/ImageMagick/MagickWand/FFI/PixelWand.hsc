@@ -10,6 +10,7 @@ import           Foreign.C.Types
 
 import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand.FFI.Types
+import           Graphics.ImageMagick.MagickCore.Types.FFI.Types
 
 #include <wand/MagickWand.h>
 
@@ -59,6 +60,30 @@ foreign import ccall "PixelGetException" pixelGetException
 --   If no exception has occurred, UndefinedExceptionType is returned.
 foreign import ccall "PixelGetExceptionType" pixelGetExceptionType
   :: Ptr PixelWand -> IO ExceptionType
+
+-- | PixelSetRedQuantum() sets the red color of the pixel wand.
+foreign import ccall "PixelSetRedQuantum" pixelSetRedQuantum
+  :: Ptr PixelWand -> Quantum -> IO ()
+
+-- | PixelGetRedQuantum() returns the red color of the pixel wand.
+foreign import ccall "PixelGetRedQuantum" pixelGetRedQuantum
+  :: Ptr PixelWand -> IO Quantum
+
+-- | PixelGetGreenQuantum() returns the green color of the pixel wand.
+foreign import ccall "PixelGetGreenQuantum" pixelGetGreenQuantum
+  :: Ptr PixelWand -> IO Quantum
+
+-- | PixelSetGreenQuantum() sets the green color of the pixel wand.
+foreign import ccall "PixelSetGreenQuantum" pixelSetGreenQuantum
+  :: Ptr PixelWand -> Quantum -> IO ()
+
+-- | PixelGetBlueQuantum() returns the blue color of the pixel wand.
+foreign import ccall "PixelGetBlueQuantum" pixelGetBlueQuantum
+  :: Ptr PixelWand -> IO Quantum
+
+-- | PixelSetBlueQuantum() sets the blue color of the pixel wand.
+foreign import ccall "PixelSetBlueQuantum" pixelSetBlueQuantum
+  :: Ptr PixelWand -> Quantum -> IO ()
 
 {-
 ClonePixelWands() makes an exact copy of the specified wands.
@@ -188,18 +213,6 @@ A description of each parameter follows:
 wand
 
 the pixel wand.
-PixelGetBlueQuantum
-
-PixelGetBlueQuantum() returns the blue color of the pixel wand.
-
-The format of the PixelGetBlueQuantum method is:
-
-  Quantum PixelGetBlueQuantum(const PixelWand *wand)
-
-A description of each parameter follows:
-wand
-
-the pixel wand.
 PixelGetColorAsString
 
 PixelGetColorAsString() returnsd the color of the pixel wand as a string.
@@ -284,16 +297,6 @@ A description of each parameter follows:
 wand
 
 the pixel wand.
-PixelGetGreenQuantum
-
-PixelGetGreenQuantum() returns the green color of the pixel wand.
-
-The format of the PixelGetGreenQuantum method is:
-
-  Quantum PixelGetGreenQuantum(const PixelWand *wand)
-
-A description of each parameter follows:
-wand
 
 the pixel wand.
 PixelGetHSL
@@ -414,13 +417,6 @@ A description of each parameter follows:
 wand
 
 the pixel wand.
-PixelGetRedQuantum
-
-PixelGetRedQuantum() returns the red color of the pixel wand.
-
-The format of the PixelGetRedQuantum method is:
-
-  Quantum PixelGetRedQuantum(const PixelWand *wand)
 
 A description of each parameter follows:
 wand
@@ -526,21 +522,6 @@ the pixel wand.
 blue
 
 the blue color.
-PixelSetBlueQuantum
-
-PixelSetBlueQuantum() sets the blue color of the pixel wand.
-
-The format of the PixelSetBlueQuantum method is:
-
-  void PixelSetBlueQuantum(PixelWand *wand,const Quantum blue)
-
-A description of each parameter follows:
-wand
-
-the pixel wand.
-blue
-
-the blue color.
 PixelSetColorCount
 
 PixelSetColorCount() sets the color count of the pixel wand.
@@ -623,21 +604,6 @@ PixelSetGreen() sets the normalized green color of the pixel wand.
 The format of the PixelSetGreen method is:
 
   void PixelSetGreen(PixelWand *wand,const double green)
-
-A description of each parameter follows:
-wand
-
-the pixel wand.
-green
-
-the green color.
-PixelSetGreenQuantum
-
-PixelSetGreenQuantum() sets the green color of the pixel wand.
-
-The format of the PixelSetGreenQuantum method is:
-
-  void PixelSetGreenQuantum(PixelWand *wand,const Quantum green)
 
 A description of each parameter follows:
 wand
@@ -776,21 +742,6 @@ PixelSetRed() sets the normalized red color of the pixel wand.
 The format of the PixelSetRed method is:
 
   void PixelSetRed(PixelWand *wand,const double red)
-
-A description of each parameter follows:
-wand
-
-the pixel wand.
-red
-
-the red color.
-PixelSetRedQuantum
-
-PixelSetRedQuantum() sets the red color of the pixel wand.
-
-The format of the PixelSetRedQuantum method is:
-
-  void PixelSetRedQuantum(PixelWand *wand,const Quantum red)
 
 A description of each parameter follows:
 wand
