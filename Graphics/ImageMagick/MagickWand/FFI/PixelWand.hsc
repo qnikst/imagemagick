@@ -9,8 +9,8 @@ import           Foreign.C.String
 import           Foreign.C.Types
 
 import           Graphics.ImageMagick.MagickCore.Types
-import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Types
+import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>
 
@@ -65,9 +65,17 @@ foreign import ccall "PixelGetExceptionType" pixelGetExceptionType
 foreign import ccall "PixelSetRedQuantum" pixelSetRedQuantum
   :: Ptr PixelWand -> Quantum -> IO ()
 
+-- | PixelGetRed) returns the normalized red color of the pixel wand.
+foreign import ccall "PixelGetRed" pixelGetRed
+  :: Ptr PixelWand -> IO CDouble
+
 -- | PixelGetRedQuantum() returns the red color of the pixel wand.
 foreign import ccall "PixelGetRedQuantum" pixelGetRedQuantum
   :: Ptr PixelWand -> IO Quantum
+
+-- | PixelGetGreen) returns the normalized green color of the pixel wand.
+foreign import ccall "PixelGetGreen" pixelGetGreen
+  :: Ptr PixelWand -> IO CDouble
 
 -- | PixelGetGreenQuantum() returns the green color of the pixel wand.
 foreign import ccall "PixelGetGreenQuantum" pixelGetGreenQuantum
@@ -76,6 +84,10 @@ foreign import ccall "PixelGetGreenQuantum" pixelGetGreenQuantum
 -- | PixelSetGreenQuantum() sets the green color of the pixel wand.
 foreign import ccall "PixelSetGreenQuantum" pixelSetGreenQuantum
   :: Ptr PixelWand -> Quantum -> IO ()
+
+-- | PixelGetBlue) returns the normalized blue color of the pixel wand.
+foreign import ccall "PixelGetBlue" pixelGetBlue
+  :: Ptr PixelWand -> IO CDouble
 
 -- | PixelGetBlueQuantum() returns the blue color of the pixel wand.
 foreign import ccall "PixelGetBlueQuantum" pixelGetBlueQuantum

@@ -70,6 +70,7 @@ executable            cyclops
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            clipmask
   Main-is:            examples/clipmask.hs
@@ -85,6 +86,7 @@ executable            clipmask
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            paint-trans
   Main-is:            examples/trans_paint.hs
@@ -115,6 +117,7 @@ executable            round-mask
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            make-tile
   Main-is:            examples/make_tile.hs
@@ -145,6 +148,7 @@ executable            draw-shapes
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            text-effects
   Main-is:            examples/text_effects.hs
@@ -160,6 +164,7 @@ executable            text-effects
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            gel
   Main-is:            examples/gel.hs
@@ -175,6 +180,7 @@ executable            gel
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            reflect
   Main-is:            examples/reflect.hs
@@ -190,6 +196,7 @@ executable            reflect
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            3dlogo
   Main-is:            examples/3dlogo.hs
@@ -205,6 +212,7 @@ executable            3dlogo
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            affine
   Main-is:            examples/affine.hs
@@ -220,6 +228,7 @@ executable            affine
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            grayscale
   Main-is:            examples/grayscale.hs
@@ -235,9 +244,25 @@ executable            grayscale
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
 executable            modulate
   Main-is:            examples/modulate.hs
+  Build-depends:        base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
+
+executable            landscape3d
+  Main-is:            examples/landscape_3d.hs
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

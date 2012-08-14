@@ -21,7 +21,6 @@ import           Data.Typeable
 import           Foreign
 import           Foreign.C.String
 import           Graphics.ImageMagick.MagickCore.Types
-import           Graphics.ImageMagick.MagickCore.Types.FFI.Types
 import           Graphics.ImageMagick.MagickWand.FFI.DrawingWand   as F
 import           Graphics.ImageMagick.MagickWand.FFI.MagickWand    as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelIterator as F
