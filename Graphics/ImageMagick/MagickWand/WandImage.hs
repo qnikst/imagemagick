@@ -1,6 +1,7 @@
 module Graphics.ImageMagick.MagickWand.WandImage
   ( getImageHeight
   , getImageWidth
+  , getImagePixelColor
   , resizeImage
   , getImageCompressionQuality
   , setImageCompressionQuality
@@ -53,6 +54,8 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , gaussianBlurImage
   , setImageMatte
   , cropImage
+  , shearImage
+  , scaleImage
   ) where
 
 import           Control.Monad.IO.Class
@@ -78,6 +81,15 @@ getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
 
 getImageWidth :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageWidth w = liftIO $ fmap fromIntegral (F.magickGetImageWidth w)
+
+-- | returns the color of the specified pixel into the pixelwand.
+getImagePixelColor :: (MonadResource m)
+  => PMagickWand
+  -> Int          -- ^ pixel x coordinate
+  -> Int          -- ^ pixel y coordinate
+  -> PPixelWand   -- ^ return the colormap color in this wand
+  -> m ()
+getImagePixelColor w x y pw = withException_ w $! F.magickGetImagePixelColor w (fromIntegral x) (fromIntegral y) pw
 
 resizeImage :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> FilterTypes -> Double -> m ()
 resizeImage pw w h f s = withException_ pw $! F.magickResizeImage pw (fromIntegral w) (fromIntegral h) f (realToFrac s)
@@ -395,3 +407,27 @@ cropImage :: (MonadResource m) => PMagickWand
   -> m ()
 cropImage w width height x y = withException_ w $ F.magickCropImage w (fromIntegral width) (fromIntegral height)
                                                                       (fromIntegral x) (fromIntegral y)
+
+-- | Slides one edge of an image along the X or Y axis, creating
+-- a parallelogram. An X direction shear slides an edge along
+-- the X axis, while a Y direction shear slides an edge along
+-- the Y axis. The amount of the shear is controlled by a shear
+-- angle. For X direction shears, x_shear is measured relative
+-- to the Y axis, and similarly, for Y direction shears y_shear is
+-- measured relative to the X axis. Empty triangles left over from
+-- shearing the image are filled with the background color.
+shearImage :: (MonadResource m) => PMagickWand
+  -> PPixelWand -- ^ the background pixel wand
+  -> Double     -- ^ the number of degrees to shear the image
+  -> Double     -- ^ the number of degrees to shear the image
+  -> m ()
+shearImage w pw x_shear y_shear =
+  withException_ w $ F.magickShearImage w pw (realToFrac x_shear) (realToFrac y_shear)
+
+-- | Scales the size of an image to the given dimensions.
+scaleImage :: (MonadResource m) => PMagickWand
+  -> Int        -- ^ the number of degrees to shear the image
+  -> Int        -- ^ the number of degrees to shear the image
+  -> m ()
+scaleImage w columns rows =
+  withException_ w $ F.magickScaleImage w (fromIntegral columns) (fromIntegral rows)

@@ -2,10 +2,13 @@ module Graphics.ImageMagick.MagickWand.PixelWand
   ( pixelWand
   , setColor
   , setRedQuantum
+  , getRed
   , getRedQuantum
   , setBlueQuantum
+  , getBlue
   , getBlueQuantum
   , setGreenQuantum
+  , getGreen
   , getGreenQuantum
   ) where
 
@@ -15,7 +18,6 @@ import           Control.Monad.Trans.Resource
 import           Data.ByteString                               (ByteString, useAsCString)
 
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
-import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
 
@@ -29,17 +31,26 @@ setColor p s = withException_ p $ useAsCString s (F.pixelSetColor p)
 setRedQuantum :: (MonadResource m) => PPixelWand -> Quantum -> m ()
 setRedQuantum = (liftIO .) . F.pixelSetRedQuantum
 
-getRedQuantum :: (MonadResource m) => PPixelWand -> m Quantum 
+getRed :: (MonadResource m) => PPixelWand -> m Double
+getRed = (fmap realToFrac) . liftIO . F.pixelGetRed
+
+getRedQuantum :: (MonadResource m) => PPixelWand -> m Quantum
 getRedQuantum =  liftIO . F.pixelGetRedQuantum
 
 setGreenQuantum :: (MonadResource m) => PPixelWand -> Quantum -> m ()
 setGreenQuantum = (liftIO .) . F.pixelSetGreenQuantum
 
-getGreenQuantum :: (MonadResource m) => PPixelWand -> m Quantum 
+getGreen :: (MonadResource m) => PPixelWand -> m Double
+getGreen = (fmap realToFrac) . liftIO . F.pixelGetGreen
+
+getGreenQuantum :: (MonadResource m) => PPixelWand -> m Quantum
 getGreenQuantum =  liftIO . F.pixelGetGreenQuantum
 
 setBlueQuantum :: (MonadResource m) => PPixelWand -> Quantum -> m ()
 setBlueQuantum = (liftIO .) . F.pixelSetBlueQuantum
 
-getBlueQuantum :: (MonadResource m) => PPixelWand -> m Quantum 
+getBlue :: (MonadResource m) => PPixelWand -> m Double
+getBlue = (fmap realToFrac) . liftIO . F.pixelGetBlue
+
+getBlueQuantum :: (MonadResource m) => PPixelWand -> m Quantum
 getBlueQuantum =  liftIO . F.pixelGetBlueQuantum

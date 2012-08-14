@@ -20,6 +20,14 @@ foreign import ccall "MagickGetImageHeight" magickGetImageHeight
 foreign import ccall "MagickGetImageWidth" magickGetImageWidth
   :: Ptr MagickWand -> IO CSize
 
+-- | MagickGetImagePixelColor() returns the color of the specified pixel.
+foreign import ccall "MagickGetImagePixelColor" magickGetImagePixelColor
+  :: Ptr MagickWand
+  -> CSize          -- ^ pixel x coordinate
+  -> CSize          -- ^ pixel y coordinate
+  -> Ptr PixelWand  -- ^ return the colormap color in this wand
+  -> IO MagickBooleanType
+
 -- |  MagickGetImageCompressionQuality() gets the image compression quality.
 
 foreign import ccall "MagickGetImageCompressionQuality" magickGetImageCompressionQuality
@@ -388,4 +396,25 @@ foreign import ccall "MagickCropImage" magickCropImage
   -> CSize         -- ^ the region height
   -> CSize         -- ^ the region x-offset
   -> CSize         -- ^ the region y-offset
+  -> IO MagickBooleanType
+
+-- | MagickShearImage() slides one edge of an image along the X or Y axis,
+-- creating a parallelogram. An X direction shear slides an edge along the X axis,
+-- while a Y direction shear slides an edge along the Y axis. The amount of
+-- the shear is controlled by a shear angle. For X direction shears, x_shear is
+-- measured relative to the Y axis, and similarly, for Y direction shears y_shear
+-- is measured relative to the X axis. Empty triangles left over from shearing
+-- the image are filled with the background color.
+foreign import ccall "MagickShearImage" magickShearImage
+  :: Ptr MagickWand
+  -> Ptr PixelWand -- ^ the background pixel wand
+  -> CDouble       -- ^ the number of degrees to shear the image
+  -> CDouble       -- ^ the number of degrees to shear the image
+  -> IO MagickBooleanType
+
+-- | MagickScaleImage() scales the size of an image to the given dimensions.
+foreign import ccall "MagickScaleImage" magickScaleImage
+  :: Ptr MagickWand
+  -> CSize       -- ^ the number of columns in the scaled image
+  -> CSize       -- ^ the number of rows in the scaled image
   -> IO MagickBooleanType
