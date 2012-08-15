@@ -31,3 +31,15 @@ newtype DistortImageMethod = DistortImageMethod { unDistortImageMethod :: CInt }
 }
 
 bilinearDistortion = bilinearForwardDistortion
+
+newtype SparseColorMethod = SparseColorMethod { unSparseColorMethod :: CInt }
+
+#{enum SparseColorMethod, SparseColorMethod,
+  undefinedColorInterpolate = UndefinedDistortion,
+  barycentricColorInterpolate = AffineDistortion,
+  bilinearColorInterpolate = BilinearReverseDistortion,
+  polynomialColorInterpolate = PolynomialDistortion,
+  shepardsColorInterpolate = ShepardsDistortion,
+  voronoiColorInterpolate = SentinelDistortion,
+  inverseColorInterpolate =InverseColorInterpolate
+}

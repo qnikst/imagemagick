@@ -7,8 +7,6 @@ module Graphics.ImageMagick.MagickWand.Types
   , PDrawingWand
   , PMagickWand
   , MagickRealType
-  , Quantum
-  , quantumRange
   , ImageWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)

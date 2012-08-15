@@ -8,6 +8,8 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , magickIterate
   , readImage
   , setSize
+  , setImageArtifact
+  , deleteImageArtifact
   -- TODO: move somewhere
   , lanczosFilter
   ) where
@@ -66,3 +68,14 @@ setSize :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> m ()
 setSize w cols rows = withException_ w $ F.magickSetSize w (fromIntegral cols) (fromIntegral rows)
 
 
+-- | MagickSetImageArtifact() associates a artifact with an image.
+-- The format of the MagickSetImageArtifact method is:
+setImageArtifact :: (MonadResource m) => PMagickWand -> ByteString -> ByteString -> m () -- TODO use normal types
+setImageArtifact w a v = withException_ w $ useAsCString a 
+                                          $ \a' -> useAsCString v 
+                                          $ F.magickSetImageArtifact w a'
+
+-- | MagickDeleteImageArtifact() deletes a wand artifact.
+deleteImageArtifact :: (MonadResource m) => PMagickWand -> ByteString -> m ()
+deleteImageArtifact w a = withException_ w $ useAsCString a
+                                           $ F.magickDeleteImageArtifact w

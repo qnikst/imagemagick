@@ -376,3 +376,17 @@ foreign import ccall "MagickGaussianBlurImage" magickGaussianBlurImageChannel
   -> CDouble    -- ^ sigma
   -> IO MagickBooleanType
 
+-- | MagickSetImageArtifact() associates a artifact with an image.
+-- The format of the MagickSetImageArtifact method is:
+foreign import ccall "MagickSetImageArtifact" magickSetImageArtifact
+  :: Ptr MagickWand
+  -> CString
+  -> CString
+  -> IO MagickBooleanType
+
+-- | MagickDeleteImageArtifact() deletes a wand artifact.
+foreign import ccall "MagickDeleteImageArtifact" magickDeleteImageArtifact
+  :: Ptr MagickWand
+  -> CString
+  -> IO MagickBooleanType
+

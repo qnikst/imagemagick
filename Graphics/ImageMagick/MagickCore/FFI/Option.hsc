@@ -7,7 +7,7 @@ module Graphics.ImageMagick.MagickCore.FFI.Option
 import           Foreign.C.String
 import           Foreign.C.Types
 
-import           Graphics.ImageMagick.MagickWand.FFI.Types
+import           Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType
 
 #include <magick/MagickCore.h>
 

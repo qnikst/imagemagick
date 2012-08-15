@@ -418,3 +418,48 @@ foreign import ccall "MagickScaleImage" magickScaleImage
   -> CSize       -- ^ the number of columns in the scaled image
   -> CSize       -- ^ the number of rows in the scaled image
   -> IO MagickBooleanType
+
+-- | MagickSparseColorImage(), given a set of coordinates, interpolates the 
+-- colors found at those coordinates, across the whole image, using various methods.
+-- 
+-- The format of the MagickSparseColorImage method is:
+--   ArcSparseColorion will always ignore source image offset, and always 'bestfit' 
+-- the destination image with the top left corner offset relative to the polar mapping center.
+--
+-- Bilinear has no simple inverse mapping so will not allow 'bestfit' style of image sparseion.
+--
+-- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more 
+-- than the minimum number of control point pairs are provided.
+--
+-- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control 
+-- point pairs are provided. While Affine sparseions will let you use any number of control 
+-- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a 
+-- translation and two pairs of control points will do a scale-rotate-translate, without any 
+-- shearing. 
+foreign import ccall "MagickSparseColorImage" magickSparseColorImage
+  :: Ptr MagickWand
+  -> ChannelType
+  -> SparseColorMethod
+  -> CSize
+  -> Ptr Double
+  -> IO MagickBooleanType
+
+-- | MagickFunctionImage() applys an arithmetic, relational, or logical expression to an image.
+-- Use these operators to lighten or darken an image, to increase or decrease contrast in an 
+-- image, or to produce the "negative" of an image.
+foreign import ccall "MagickFunctionImage" magickFunctionImage
+  :: Ptr MagickWand
+  -> MagickFunction
+  -> CSize
+  -> Ptr Double
+  -> IO MagickBooleanType
+
+foreign import ccall "MagickFunctionImageChannel" magickFunctionImageChannel
+  :: Ptr MagickWand
+  -> ChannelType
+  -> MagickFunction
+  -> CSize
+  -> Ptr Double
+  -> IO MagickBooleanType
+
+

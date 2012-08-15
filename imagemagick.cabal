@@ -34,6 +34,9 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Types
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.MagickFunction
+                      , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
@@ -248,6 +251,7 @@ executable            grayscale
 
 executable            modulate
   Main-is:            examples/modulate.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -263,6 +267,21 @@ executable            modulate
 
 executable            landscape3d
   Main-is:            examples/landscape_3d.hs
+  Buildable:          False
+  Build-depends:        base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
+executable            tilt-shift
+  Main-is:            examples/tilt_shift.hs
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

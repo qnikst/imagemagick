@@ -56,6 +56,9 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , cropImage
   , shearImage
   , scaleImage
+  , sparseColorImage
+  , functionImage
+  , functionImageChannel
   ) where
 
 import           Control.Monad.IO.Class
@@ -63,6 +66,8 @@ import           Control.Monad.Trans.Resource
 import           Data.ByteString                                (ByteString, useAsCString)
 import           Data.Text                                      (Text)
 import           Data.Text.Encoding                             (encodeUtf8)
+import           Data.Vector.Storable                           (Vector)
+import qualified Data.Vector.Storable                           as V
 import           Filesystem.Path.CurrentOS
 import           Foreign
 import           Foreign.C.Types
@@ -431,3 +436,41 @@ scaleImage :: (MonadResource m) => PMagickWand
   -> m ()
 scaleImage w columns rows =
   withException_ w $ F.magickScaleImage w (fromIntegral columns) (fromIntegral rows)
+
+
+-- | MagickSparseColorImage(), given a set of coordinates, interpolates the 
+-- colors found at those coordinates, across the whole image, using various methods.
+-- 
+-- The format of the MagickSparseColorImage method is:
+--   ArcSparseColorion will always ignore source image offset, and always 'bestfit' 
+-- the destination image with the top left corner offset relative to the polar mapping center.
+--
+-- Bilinear has no simple inverse mapping so will not allow 'bestfit' style of image sparseion.
+--
+-- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more 
+-- than the minimum number of control point pairs are provided.
+--
+-- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control 
+-- point pairs are provided. While Affine sparseions will let you use any number of control 
+-- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a 
+-- translation and two pairs of control points will do a scale-rotate-translate, without any 
+-- shearing. 
+sparseColorImage :: (MonadResource m) => PMagickWand
+                 -> ChannelType
+                 -> SparseColorMethod
+                 -> Vector Double
+                 -> m()
+sparseColorImage w c m v =
+  withException_ w $ V.unsafeWith v $ \v' -> F.magickSparseColorImage w c m (fromIntegral $ V.length v) v'
+
+
+-- | MagickFunctionImage() applys an arithmetic, relational, or logical expression to an image.
+-- Use these operators to lighten or darken an image, to increase or decrease contrast in an 
+-- image, or to produce the "negative" of an image.
+functionImage :: (MonadResource m) => PMagickWand -> MagickFunction -> Vector Double -> m ()
+functionImage w f v = 
+  withException_ w $ V.unsafeWith v $ \v' -> F.magickFunctionImage w f (fromIntegral $ V.length v) v'
+
+functionImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> MagickFunction -> Vector Double -> m ()
+functionImageChannel w c f v = 
+  withException_ w $ V.unsafeWith v $ \v' -> F.magickFunctionImageChannel w c f (fromIntegral $ V.length v) v'
