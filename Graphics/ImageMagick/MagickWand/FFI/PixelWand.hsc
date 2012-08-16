@@ -9,7 +9,6 @@ import           Foreign.C.String
 import           Foreign.C.Types
 
 import           Graphics.ImageMagick.MagickCore.Types
-import           Graphics.ImageMagick.MagickCore.Types.FFI.Types
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 #include <wand/MagickWand.h>

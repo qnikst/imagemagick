@@ -293,4 +293,18 @@ executable            tilt-shift
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
 
+executable            bunny
+  Main-is:            examples/bunny.hs
+  Build-depends:        base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand

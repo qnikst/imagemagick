@@ -76,22 +76,6 @@ foreign import ccall "MagickGetException" magickGetException
 foreign import ccall "MagickGetExceptionType" magickGetExceptionType
   :: Ptr MagickWand -> IO ExceptionType
 
--- **  Iterator
-
--- | MagickResetIterator() resets the wand iterator.
--- It is typically used either before iterating though images, or before calling
--- specific functions such as MagickAppendImages() to append all images together.
---
--- Afterward you can use MagickNextImage() to iterate over all the images in a
--- wand container, starting with the first image.
---
--- Using this before MagickAddImages() or MagickReadImages() will cause new images
--- to be inserted between the first and second image.
-
-foreign import ccall "wand/MagickWand.h MagickResetIterator" magickResetIterator
-  :: Ptr MagickWand -> IO ()
-
-
 {-
 
 MagickGetIteratorIndex() returns the position of the iterator in the image list.
@@ -360,18 +344,18 @@ foreign import ccall "MagickSetSize" magickSetSize
   -> IO MagickBooleanType
 
 
--- |  MagickGaussianBlurImage() blurs an image. We convolve the image with a Gaussian operator 
--- of the given radius and standard deviation (sigma). For reasonable results, the radius should 
+-- |  MagickGaussianBlurImage() blurs an image. We convolve the image with a Gaussian operator
+-- of the given radius and standard deviation (sigma). For reasonable results, the radius should
 -- be larger than sigma. Use a radius of 0 and MagickGaussianBlurImage() selects a suitable radius for you.
 foreign import ccall "MagickGaussianBlurImage" magickGaussianBlurImage
-  :: Ptr MagickWand 
+  :: Ptr MagickWand
   -> CDouble    -- ^ radius
   -> CDouble    -- ^ sigma
   -> IO MagickBooleanType
-  
+
 foreign import ccall "MagickGaussianBlurImage" magickGaussianBlurImageChannel
-  :: Ptr MagickWand 
-  -> ChannelType 
+  :: Ptr MagickWand
+  -> ChannelType
   -> CDouble    -- ^ radius
   -> CDouble    -- ^ sigma
   -> IO MagickBooleanType
@@ -390,3 +374,40 @@ foreign import ccall "MagickDeleteImageArtifact" magickDeleteImageArtifact
   -> CString
   -> IO MagickBooleanType
 
+-- | MagickSetIteratorIndex() set the iterator to the given position
+-- in the image list specified with the index parameter. A zero index
+-- will set the first image as current, and so on. Negative indexes
+-- can be used to specify an image relative to the end of the images
+-- in the wand, with -1 being the last image in the wand.
+--
+-- If the index is invalid (range too large for number of images in
+-- wand) the function will return MagickFalse, but no 'exception' will
+-- be raised, as it is not actually an error. In that case the current
+-- image will not change.
+--
+-- After using any images added to the wand using `magickAddImage` or
+-- `magickReadImage` will be added after the image indexed, regardless
+-- of if a zero (first image in list) or negative index (from end)
+-- is used.
+--
+-- Jumping to index 0 is similar to `magickResetIterator` but differs
+-- in how `magickNextImage` behaves afterward.
+foreign import ccall "MagickSetIteratorIndex" magickSetIteratorIndex
+  :: Ptr MagickWand
+  -> CSize          -- ^ the scene number
+  -> IO MagickBooleanType
+
+-- | MagickResetIterator() resets the wand iterator.
+--
+-- It is typically used either before iterating though images, or
+-- before calling specific functions such as `magickAppendImages`
+-- to append all images together.
+--
+-- Afterward you can use `magickNextImage` to iterate over all the
+-- images in a wand container, starting with the first image.
+--
+-- Using this before `magickAddImages` or `magickReadImages` will
+-- cause new images to be inserted between the first and second image.
+foreign import ccall "MagickResetIterator" magickResetIterator
+  :: Ptr MagickWand
+  -> IO ()
