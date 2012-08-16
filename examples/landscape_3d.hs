@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 -- | Example taken from: http://members.shaw.ca/el.supremo/MagickWand/landscape_3d.htm
 -- This is derived from a PHP script at:
 -- http://eclecticdjs.com/mike/tutorials/php/imagemagick/imagickpixeliterator/3D_landscape.php

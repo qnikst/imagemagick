@@ -462,4 +462,31 @@ foreign import ccall "MagickFunctionImageChannel" magickFunctionImageChannel
   -> Ptr Double
   -> IO MagickBooleanType
 
+-- | MagickCoalesceImages() composites a set of images while respecting
+-- any page offsets and disposal methods. GIF, MIFF, and MNG animation
+-- sequences typically start with an image background and each subsequent
+-- image varies in size and offset. MagickCoalesceImages() returns a new
+-- sequence where each image in the sequence is the same size as the
+-- first and composited with the next image in the sequence.
+foreign import ccall "MagickCoalesceImages" magickCoalesceImages
+  :: Ptr MagickWand
+  -> IO (Ptr MagickWand)
 
+-- | MagickGetNumberImages() returns the number of images associated
+-- with a magick wand.
+foreign import ccall "MagickGetNumberImages" magickGetNumberImages
+  :: Ptr MagickWand
+  -> IO CSize
+
+-- | MagickGetImage() gets the image at the current image index.
+foreign import ccall "MagickGetImage" magickGetImage
+  :: Ptr MagickWand
+  -> IO (Ptr MagickWand)
+
+-- | MagickCompareImageLayers() compares each image with the next in
+-- a sequence and returns the maximum bounding region of any pixel
+-- differences it discovers.
+foreign import ccall "MagickCompareImageLayers" magickCompareImageLayers
+  :: Ptr MagickWand
+  -> ImageLayerMethod
+  -> IO (Ptr MagickWand)

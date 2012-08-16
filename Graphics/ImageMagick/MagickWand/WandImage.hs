@@ -59,8 +59,13 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , sparseColorImage
   , functionImage
   , functionImageChannel
+  , coalesceImages
+  , getNumberImages
+  , getImage
+  , compareImageLayers
   ) where
 
+import           Control.Applicative                            ((<$>))
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                                (ByteString, useAsCString)
@@ -463,7 +468,6 @@ sparseColorImage :: (MonadResource m) => PMagickWand
 sparseColorImage w c m v =
   withException_ w $ V.unsafeWith v $ \v' -> F.magickSparseColorImage w c m (fromIntegral $ V.length v) v'
 
-
 -- | MagickFunctionImage() applys an arithmetic, relational, or logical expression to an image.
 -- Use these operators to lighten or darken an image, to increase or decrease contrast in an 
 -- image, or to produce the "negative" of an image.
@@ -474,3 +478,22 @@ functionImage w f v =
 functionImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> MagickFunction -> Vector Double -> m ()
 functionImageChannel w c f v = 
   withException_ w $ V.unsafeWith v $ \v' -> F.magickFunctionImageChannel w c f (fromIntegral $ V.length v) v'
+
+
+-- | MagickCoalesceImages() composites a set of images while respecting any page offsets and disposal methods. GIF, MIFF, and MNG animation sequences typically start with an image background and each subsequent image varies in size and offset. MagickCoalesceImages() returns a new sequence where each image in the sequence is the same size as the first and composited with the next image in the sequence.
+coalesceImages :: (MonadResource m) => PMagickWand
+  -> m (ReleaseKey, PMagickWand)
+coalesceImages = wandResource . F.magickCoalesceImages
+
+-- | returns the number of images associated with a magick wand.
+getNumberImages :: (MonadResource m) => PMagickWand -> m Int
+getNumberImages w = liftIO $ fromIntegral <$> F.magickGetNumberImages w
+
+-- | Gets the image at the current image index.
+getImage :: (MonadResource m) => PMagickWand -> m (ReleaseKey, PMagickWand)
+getImage = wandResource . F.magickGetImage
+
+-- | Compares each image with the next in a sequence and returns
+-- the maximum bounding region of any pixel differences it discovers.
+compareImageLayers :: (MonadResource m) => PMagickWand -> ImageLayerMethod -> m (ReleaseKey, PMagickWand)
+compareImageLayers = (wandResource .). F.magickCompareImageLayers
