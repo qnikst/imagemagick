@@ -20,6 +20,7 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
   , drawComposite
   , drawEllipse
   , drawLine
+  , drawPoint
   , drawPolygon
   , drawRectangle
   , drawRoundRectangle
@@ -262,7 +263,7 @@ popPattern :: (MonadResource m) => PDrawingWand -> m ()
 popPattern dw = withException_ dw $! F.drawPopPattern dw
 
 
--- | DrawColor() draws color on image using the current fill color, starting at 
+-- | DrawColor() draws color on image using the current fill color, starting at
 -- specified position, and using specified paint method. The available paint methods are:
 --
 --    PointMethod: Recolors the target pixel
@@ -271,3 +272,7 @@ popPattern dw = withException_ dw $! F.drawPopPattern dw
 --    ResetMethod: Recolor all pixels.
 drawColor :: (MonadResource m) => PDrawingWand -> Double -> Double -> PaintMethod -> m ()
 drawColor p x t m = liftIO $ F.drawColor p (realToFrac x) (realToFrac t) m
+
+-- | Draws a point using the current fill color.
+drawPoint :: (MonadResource m) => PDrawingWand -> Double -> Double -> m ()
+drawPoint dw x y = liftIO $ F.drawPoint dw (realToFrac x) (realToFrac y)

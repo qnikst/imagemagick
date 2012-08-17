@@ -1,5 +1,6 @@
 module Graphics.ImageMagick.MagickWand.PixelIterator
   ( pixelIterator
+  , pixelRegionIterator
   , pixelGetNextIteratorRow
   , pixelSyncIterator
   , pixelResetIterator
@@ -28,10 +29,18 @@ pixelIterator :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, PPixelIte
 pixelIterator w = allocate (F.newPixelIterator w) destroy
   where destroy = void . F.destroyPixelIterator
 
+pixelRegionIterator :: (MonadResource m)
+  => Ptr MagickWand -> Int -> Int -> Int -> Int -> m (ReleaseKey, PPixelIterator)
+pixelRegionIterator w x y width height =  allocate (F.newPixelRegionIterator w x' y' width' height') destroy
+  where destroy = void . F.destroyPixelIterator
+        x' = fromIntegral x
+        y' = fromIntegral y
+        width' = fromIntegral width
+        height' = fromIntegral height
 
 pixelGetNextIteratorRow :: (MonadResource m) => PPixelIterator  -> m (Maybe (Vector PPixelWand))
 pixelGetNextIteratorRow p = do
-    x <- allocate (createPixelWandVector (F.pixelGetNextIteratorRow p)) (const $ return ())  
+    x <- allocate (createPixelWandVector (F.pixelGetNextIteratorRow p)) (const $ return ())
     case x of
       (_, Just v) -> return (Just v)
       (_, Nothing) -> return Nothing
@@ -55,19 +64,19 @@ pixelResetIterator = liftIO . F.pixelResetIterator
 
 pixelIterateList :: (MonadResource m) => PPixelIterator -> m [Vector PPixelWand]
 pixelIterateList it = pixelResetIterator it >> liftIO go
-  where 
+  where
     go :: IO [Vector PPixelWand]
     go = unsafeInterleaveIO $ do
-          v <- createPixelWandVector (F.pixelGetNextIteratorRow it) 
-          case v of
-            Just v -> go >>= return . (:) v 
+          mv <- createPixelWandVector (F.pixelGetNextIteratorRow it)
+          case mv of
+            Just v -> go >>= return . (:) v
             Nothing -> return []
 
 
 createPixelWandVector :: (Ptr CSize -> IO (Ptr PPixelWand)) -> IO (Maybe (Vector (PPixelWand)))
 createPixelWandVector f = alloca $ \x -> do
           ptr <- f x
-          if ptr == nullPtr 
+          if ptr == nullPtr
               then return Nothing
               else do
                   n   <- fmap fromIntegral (peek x)

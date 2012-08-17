@@ -250,7 +250,7 @@ foreign import ccall "DrawPopPattern" drawPopPattern
   -> IO MagickBooleanType
 
 
--- | DrawColor() draws color on image using the current fill color, starting at 
+-- | DrawColor() draws color on image using the current fill color, starting at
 -- specified position, and using specified paint method. The available paint methods are:
 --
 --    PointMethod: Recolors the target pixel
@@ -262,4 +262,11 @@ foreign import ccall "DrawColor" drawColor
   -> CDouble
   -> CDouble
   -> PaintMethod
+  -> IO ()
+
+-- | DrawPoint() draws a point using the current fill color.
+foreign import ccall "DrawPoint" drawPoint
+  :: Ptr DrawingWand
+  -> CDouble         -- ^ target x coordinate
+  -> CDouble         -- ^ target y coordinate
   -> IO ()

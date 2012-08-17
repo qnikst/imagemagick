@@ -14,27 +14,31 @@ import           Graphics.ImageMagick.MagickWand.FFI.Types
 #include <wand/MagickWand.h>
 
 -- | ClearPixelIterator() clear resources associated with a PixelIterator.
-foreign import ccall "wand/MagickWand.h ClearPixelIterator" clearPixelIterator
+foreign import ccall "ClearPixelIterator" clearPixelIterator
   :: Ptr PixelIterator -> IO ()
 
 -- | ClonePixelIterator() makes an exact copy of the specified iterator.
-foreign import ccall "wand/MagickWand.h ClonePixelIterator" clonePixelIterator
+foreign import ccall "ClonePixelIterator" clonePixelIterator
   :: Ptr PixelIterator -> IO (Ptr PixelIterator)
 
 -- | DestroyPixelIterator() deallocates resources associated with a PixelIterator.
-foreign import ccall "wand/MagickWand.h DestroyPixelIterator" destroyPixelIterator
+foreign import ccall "DestroyPixelIterator" destroyPixelIterator
   :: Ptr PixelIterator -> IO (Ptr PixelIterator)
 
 -- | IsPixelIterator() returns MagickTrue if the iterator is verified as a pixel iterator.
-foreign import ccall "wand/MagickWand.h IsPixelIterator" isPixelIterator
+foreign import ccall "IsPixelIterator" isPixelIterator
   :: Ptr PixelIterator -> IO MagickBooleanType
 
-foreign import ccall "wand/MagickWand.h NewPixelIterator" newPixelIterator
+foreign import ccall "NewPixelIterator" newPixelIterator
   :: Ptr MagickWand -> IO (Ptr PixelIterator)
+
+-- | NewPixelRegionIterator() returns a new pixel iterator.
+foreign import ccall "NewPixelRegionIterator" newPixelRegionIterator
+  :: Ptr MagickWand -> CSize -> CSize -> CSize -> CSize -> IO (Ptr PixelIterator)
 
 
 -- | PixelClearIteratorException() clear any exceptions associated with the iterator.
-foreign import ccall "wand/MagickWand.h PixelClearIteratorException" pixelClearIteratorException
+foreign import ccall "PixelClearIteratorException" pixelClearIteratorException
   :: Ptr PixelIterator -> IO MagickBooleanType
 
 -- | PixelGetIteratorException() returns the severity, reason, and description of any
@@ -47,27 +51,17 @@ foreign import ccall "PixelGetIteratorException" pixelGetIteratorException
 foreign import ccall "PixelGetIteratorExceptionType" pixelGetIteratorExceptionType
   :: Ptr PixelIterator -> IO ExceptionType
 
-
--- | NewPixelRegionIterator() returns a new pixel iterator.
-foreign import ccall "wand/MagickWand.h NewPixelRegionIterator" newPixelRegionIterator
-  :: Ptr MagickWand
-  -> CSize                        -- ^ x        top X
-  -> CSize                        -- ^ y        top Y
-  -> CSize                        -- ^ width
-  -> CSize                        -- ^ Height
-  -> IO (Ptr PixelIterator)
-
 {- | PixelGetCurrentIteratorRow() returns the current row as an array of pixel wands from the pixel iterator.
 -}
-foreign import ccall "wand/MagickWand.h PixelGetCurrentIteratorRow" pixelGetCurrentIteratorRow
+foreign import ccall "PixelGetCurrentIteratorRow" pixelGetCurrentIteratorRow
   :: Ptr PixelIterator -> CSize -> Ptr (Ptr PixelWand)
 
 -- | PixelGetIteratorRow() returns the current pixel iterator row.
-foreign import ccall "wand/MagickWand.h PixelGetIteratorRow" pixelGetIteratorRow
+foreign import ccall "PixelGetIteratorRow" pixelGetIteratorRow
   :: Ptr PixelIterator -> IO ()
 
 -- | PixelGetNextIteratorRow() returns the next row as an array of pixel wands from the pixel iterator.
-foreign import ccall "wand/MagickWand.h PixelGetNextIteratorRow" pixelGetNextIteratorRow
+foreign import ccall "PixelGetNextIteratorRow" pixelGetNextIteratorRow
   :: Ptr PixelIterator  -- ^ iterator
   -> Ptr CSize          -- ^ number of pixel wands
   -> IO (Ptr (Ptr PixelWand))
@@ -131,7 +125,7 @@ foreign import ccall "wand/MagickWand.h PixelGetNextIteratorRow" pixelGetNextIte
 foreign import ccall "PixelSyncIterator" pixelSyncIterator
   :: Ptr PixelIterator -> IO MagickBooleanType
 
--- | PixelResetIterator() resets the pixel iterator. Use it in conjunction 
+-- | PixelResetIterator() resets the pixel iterator. Use it in conjunction
 -- with PixelGetNextIteratorRow() to iterate over all the pixels in a pixel container.
 foreign import ccall "PixelResetIterator" pixelResetIterator
   :: Ptr PixelIterator -> IO ()
