@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Graphics.ImageMagick.MagickWand.PixelWand
   ( pixelWand
   , setColor
@@ -10,6 +11,64 @@ module Graphics.ImageMagick.MagickWand.PixelWand
   , setGreenQuantum
   , getGreen
   , getGreenQuantum
+-- , clearPixelWand 
+-- , cloneWand 
+-- , cloneWands 
+-- , destroyWand 
+-- , destroyWands 
+-- , isWandSimilar 
+-- , isWand 
+-- , newWands 
+-- , getAlpha 
+-- , getAlphaQuantum 
+-- , getBlack 
+-- , getBlackQuantum 
+-- , getBlue 
+-- , getBlueQuantum 
+-- , getColorAsString 
+-- , getColorAsNormalizedString 
+-- , getColorCount 
+-- , getCyan 
+-- , getCyanQuantum 
+-- , getFuzz 
+-- , getHSL 
+-- , getIndex 
+-- , getMagenta 
+-- , getMagentaQuantum 
+-- , getMagickColor 
+-- , getOpacity 
+-- , getOpacityQuantum 
+-- , getQuantumColor 
+-- , getRed 
+-- , getRedQuantum 
+-- , getYellow 
+-- , getYellowQuantum 
+-- , setAlpha 
+-- , setAlphaQuantum 
+-- , setBlack 
+-- , setBlackQuantum 
+-- , setBlue 
+-- , setBlueQuantum 
+-- , setColor 
+-- , setColorCount 
+-- , setColorFromWand 
+-- , setCyan 
+-- , setCyanQuantum 
+-- , setFuzz 
+-- , setGreen 
+-- , setGreenQuantum 
+-- , setHSL 
+-- , setIndex 
+-- , setMagenta 
+-- , setMagentaQuantum 
+-- , setMagickColor 
+-- , setOpacity 
+-- , setOpacityQuantum 
+-- , setQuantumColor 
+-- , setRed 
+-- , setRedQuantum 
+-- , setYellow 
+-- , setYellowQuantum
   ) where
 
 import           Control.Monad                                 (void)

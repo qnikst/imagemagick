@@ -7,6 +7,15 @@ module Graphics.ImageMagick.MagickWand.PixelIterator
   , pixelIterateList
   , pixelGetMagickColor     -- TODO move to another file
   , pixelSetMagickColor     -- TODO move to another file
+  , clonePixelIterator 
+  , isPixelIterator 
+--  , pixelGetCurrentIteratorRow 
+--  , pixelGetIteratorRow 
+--  , pixelGetNextIteratorRow 
+--  , pixelGetPreviousIteratorRow 
+--  , pixelSetFirstIteratorRow 
+--  , pixelSetIteratorRow 
+--  , pixelSetLastIteratorRow 
   ) where
 
 import           Control.Monad
