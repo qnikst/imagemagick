@@ -74,6 +74,24 @@ executable            resize
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
 
+executable            extent
+  If flag(buildExamples)
+    Buildable:        True 
+  Else 
+    Buildable:        False
+  Main-is:            examples/extent.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
+
 executable            cyclops
   Main-is:            examples/cyclops.hs
   Buildable:          False
