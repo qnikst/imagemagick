@@ -2,19 +2,31 @@
 module Graphics.ImageMagick.MagickWand.MagickWand
   ( withMagickWandGenesis
   , localGenesis
+  -- * Creation
   , magickWand
   , wandResource
+--  , magickWandFromImage
+--  , isMagickWand 
   , cloneMagickWand
-  , magickIterate
+--  , clearMagickWand 
+  -- * Iratation 
   , readImage
   , setSize
-  , setImageArtifact
-  , deleteImageArtifact
+--  , getIteratorIndex 
   , setIteratorIndex
+--  , setFirstIterator 
+--  , setLastIterator 
   , resetIterator
+  , magickIterate
   , setOption
-  -- TODO: move somewhere
-  , lanczosFilter
+--  , queryConfigureOption 
+--  , queryConfigureOptions 
+--  , queryFontMetrics 
+--  , queryMultilineFontMetrics 
+--  , queryFonts 
+--  , relinquishMemory 
+  , setImageArtifact
+--  , deleteImageArtifact
   ) where
 
 import           Control.Exception

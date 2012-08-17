@@ -34,6 +34,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Types
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType
                       , Graphics.ImageMagick.MagickCore.Types.FFI.MagickFunction
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes
                       , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  

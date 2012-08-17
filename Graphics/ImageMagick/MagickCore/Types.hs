@@ -15,4 +15,5 @@ import           Graphics.ImageMagick.MagickCore.Types.FFI.Statistic      as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Types          as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType    as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.MagickFunction as X
+import           Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes    as X
 import           Graphics.ImageMagick.MagickCore.Types.MBits              as X
