@@ -23,8 +23,8 @@ main = do
         h <- getImageHeight mw
         let arglist = V.fromList [0,0, 
                         {-RGB black-} 0,0,0, 
-                        fromIntegral (h-1), -1, 
-                        {-RGB white-} 1, 1, 1]-- fill in the Y coordinate now that we can get the image dimensions
+                        0, fromIntegral (h-1), 
+                        {-RGB white-} 1, 1, 1]
         -- arglist[6] = ; --TODO
         sigmoidalContrastImage mw True 15 (quantumRange*30/100)
         (_, cw) <- cloneMagickWand mw
@@ -33,13 +33,6 @@ main = do
         functionImage cw polynomialFunction funclist
         -- -set option:compose:args 15
         setImageArtifact cw "compose:args" "15"
-        {-
-        MessageBox(NULL,"Artifact failed","",MB_OK);
-        mw = DestroyMagickWand(mw);
-        cw = DestroyMagickWand(cw);
-        MagickWandTerminus();
-        return;
-        -}
 
         compositeImage mw cw blurCompositeOp 0 0
         mw `writeImage` (Just "beijing_model.jpg")
