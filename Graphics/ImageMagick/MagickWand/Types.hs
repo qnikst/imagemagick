@@ -6,7 +6,6 @@ module Graphics.ImageMagick.MagickWand.Types
   , PPixelPacket
   , PDrawingWand
   , PMagickWand
-  , MagickRealType
   , ImageWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
