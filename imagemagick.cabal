@@ -143,8 +143,11 @@ executable            clipmask
   Buildable:          False
 
 executable            paint-trans
+  If flag(buildExamples)
+    Buildable:        True 
+  Else
+    Buildable:        False
   Main-is:            examples/trans_paint.hs
-  Buildable:          False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*

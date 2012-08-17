@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 --  http://members.shaw.ca/el.supremo/MagickWand/trans_paint.htm
 --  Last updated 2008/11/25 08:48
--- 
+--
 --  Use MagickTransparentPaintImage to change *all* white pixels
 -- to transparent in the logo: image
 
-import Graphics.ImageMagick.MagickWand --magick wand bindings
+import           Graphics.ImageMagick.MagickWand
 
 main = do
     -- start image magick block
@@ -25,6 +25,6 @@ main = do
         writeImages w "logo_white.png" True
     where
         -- A larger fuzz value allows more colours "near" white to be
-        -- modified. A fuzz of zero only allows an exact match with the 
+        -- modified. A fuzz of zero only allows an exact match with the
         -- given colour
         fuzz = 0
