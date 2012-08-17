@@ -7,8 +7,8 @@ module Graphics.ImageMagick.MagickWand.PixelIterator
   , pixelIterateList
   , pixelGetMagickColor     -- TODO move to another file
   , pixelSetMagickColor     -- TODO move to another file
-  , clonePixelIterator 
-  , isPixelIterator 
+--  , clonePixelIterator 
+--  , isPixelIterator 
 --  , pixelGetCurrentIteratorRow 
 --  , pixelGetIteratorRow 
 --  , pixelGetNextIteratorRow 
