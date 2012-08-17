@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 -- | Example taken from: http://members.shaw.ca/el.supremo/MagickWand/resize.htm
 --
 -- convert logo: -filter lanczos -resize 50% -quality 95 logo_resize.jpg
@@ -5,17 +6,15 @@
 -- a high quality JPG
 -- Note that ImageMagick's default quality is 75.
 
-import Graphics.ImageMagick.MagickWand
-import System.Environment (getArgs)
-import Filesystem.Path.CurrentOS (decodeString)
+import           Graphics.ImageMagick.MagickWand
 
+main :: IO ()
 main = do
-  [img,img'] <- getArgs
   withMagickWandGenesis $ do
     (_,w) <- magickWand
-    
+
     -- Read the image
-    readImage w (decodeString img)
+    readImage w "logo:"
 
     -- Cut them in half but make sure they don't underflow
     width  <- fmap safeHalf (getImageWidth w)
@@ -30,9 +29,9 @@ main = do
     -- Set the compression quality to 95 (high quality = low compression)
     setImageCompressionQuality w 95
 
-    -- Write the new image 
-    writeImages w (decodeString img') True
+    -- Write the new image
+    writeImages w "logo_resize.jpg" True
 
-  where 
+  where
     safeHalf = max 1 . (`div`2)
-    
+

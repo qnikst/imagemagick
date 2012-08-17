@@ -8,13 +8,11 @@ Maintainer:          alexander.vershilov@gmail.com
 -- Copyright:           
 Category:            Graphics
 Build-type:          Simple
-
--- Extra files to be distributed with the package, such as examples or
--- a README.
--- Extra-source-files:  
-
--- Constraint on the version of Cabal needed to build this package.
 Cabal-version:       >=1.8
+
+Flag buildExamples
+  description:       Build examples
+  default:           False
 
 
 Library
@@ -58,6 +56,23 @@ Library
   pkgconfig-depends:  ImageMagick, MagickWand
   Build-tools:        hsc2hs
   
+executable            resize
+  If flag(buildExamples)
+    Buildable:        True 
+  Else 
+    Buildable:        False
+  Main-is:            examples/resize.hs
+  Build-depends:       base
+                      , resourcet == 0.3.*
+                      , transformers == 0.3.*
+                      , vector == 0.9.*
+                      , bytestring == 0.9.*
+                      , text == 0.11.*
+                      , system-filepath == 0.4.*
+                      , imagemagick
+  extensions:         EmptyDataDecls
+  Ghc-options:        -Wall
+  pkgconfig-depends:  ImageMagick, MagickWand
 
 executable            cyclops
   Main-is:            examples/cyclops.hs
@@ -323,3 +338,4 @@ executable            pixel-mod
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+  Buildable:          False
