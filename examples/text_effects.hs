@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
 -- | Example taken from: http://members.shaw.ca/el.supremo/MagickWand/text_effects.htm
 {- There's no equivalent convert command for this. It is a demo of MagickWand.
@@ -7,13 +8,20 @@ and Anthony's Text Effects page at:
 http://www.imagemagick.org/Usage/fonts/
 -}
 
+import           Control.Monad                         (when)
+import           Control.Monad.IO.Class                (MonadIO)
 import           Control.Monad.Trans.Resource
+import           Data.ByteString                       (ByteString)
 import           Data.Text                             (Text)
 import qualified Data.Text                             as T
 import           Filesystem.Path.CurrentOS
 import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand
 import           Prelude                               hiding (FilePath)
+
+-- see http://www.imagemagick.org/Usage/#font about using fonts with IM
+font :: ByteString
+font = "VerdanaBI"
 
 -- Text effect 1 - shadow effect using MagickShadowImage
 -- This is derived from Anthony's Soft Shadow effect
@@ -32,7 +40,7 @@ textEffect1 w dw pw = do
   -- Set up a 72 point white font
   pw `setColor` "white"
   dw `setFillColor` pw
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Add a black outline to the text
   pw `setColor` "black"
@@ -71,7 +79,7 @@ textEffect1 w dw pw = do
   -- Now composite the shadowed text over the plain background
   compositeImage w' w overCompositeOp 0 0
   --  and write the result
-  writeImage cloneW (Just "text_shadow.png")
+  writeImage w' (Just "text_shadow.png")
 
 
 -- Given a pattern name (which MUST have a leading #) and a pattern file,
@@ -98,14 +106,14 @@ setTilePattern dw patternName patternFile = do
 --           font_tile.jpg
 textEffect2 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
 textEffect2 w dw pw = do
-  setTilePattern dw "#check" "pattern:checkboard"
+  setTilePattern dw "#check" "pattern:checkerboard"
 
   pw `setColor` "lightblue"
   -- Create a new transparent image
   newImage w 320 100 pw
 
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Now draw the text
   drawAnnotation dw 28 68 "Magick"
@@ -130,7 +138,7 @@ textEffect3 w dw pw = do
   newImage w 320 100  pw
 
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Now draw the text
   drawAnnotation dw 25 65 "Magick"
@@ -155,11 +163,12 @@ textEffect3 w dw pw = do
 --              -shade 140x60  font_beveled.jpg
 textEffect4 :: (MonadResource m) => PMagickWand -> PDrawingWand -> PPixelWand -> m ()
 textEffect4 w dw pw = do
+  let colorize = False
   -- Create a 320x100 canvas
   pw `setColor` "gray"
   newImage w 320 100 pw
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Set up a 72 point white font
   pw `setColor` "white"
@@ -171,11 +180,12 @@ textEffect4 w dw pw = do
   -- the "gray" parameter must be true to get the effect shown on Anthony's page
   shadeImage w True 140 60
 
-  pw `setColor` "yellow"
-  dw `setFillColor` pw
-  pw' <- pixelWand
-  pw' `setColor` "gold"
-  colorizeImage w pw pw'
+  when colorize $ do
+    pw `setColor` "yellow"
+    dw `setFillColor` pw
+    pw' <- pixelWand
+    pw' `setColor` "gold"
+    colorizeImage w pw pw'
 
   -- and write it
   writeImage w (Just "text_bevel.png")
@@ -189,7 +199,7 @@ textEffects5_6 w dw pw = do
   newImage w 320 100 pw
 
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Now draw the text
   drawAnnotation dw 25 65 "Magick"
@@ -244,14 +254,13 @@ textEffect7 w dw pw = do
   newImage w 320 200 pw
 
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Now draw the text
   drawAnnotation dw 25 65 "Magick"
   -- Draw the image on to the magick_wand
   drawImage w dw
 
-  -- DON'T FORGET to set the correct number of arguments here
   distortImage w polarDistortion [0] True
   -- MagickResetImagePage(magick_wand,"");
   -- Trim the image again
@@ -270,7 +279,7 @@ textEffect8 w dw pw = do
   newImage w 640 480 pw
 
   -- Set up a 72 point font
-  dw `setFont` "Verdana-Bold-Italic"
+  dw `setFont` font
   dw `setFontSize` 72
   -- Now draw the text
   drawAnnotation dw 50 240 "Magick Rocks"
@@ -287,6 +296,8 @@ textEffect8 w dw pw = do
   -- and write it
   writeImage w (Just "text_shepards.png")
 
+runEffect :: (MonadIO m, MonadUnsafeIO m, MonadThrow m, MonadBaseControl IO m) =>
+             (PMagickWand -> PDrawingWand -> PPixelWand -> ResourceT m ()) -> m ()
 runEffect e = localGenesis $ do
   (_,w) <- magickWand
   (_,dw) <- drawingWand
