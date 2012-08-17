@@ -5,15 +5,12 @@
 -- that for this the channel must be "rgba" and the output image must be PNG
 -- or other format which supports transparency
 
-import           Filesystem.Path.CurrentOS       (decodeString)
 import           Graphics.ImageMagick.MagickWand
-import           System.Environment              (getArgs)
 
 main = do
-  [img,img'] <- getArgs
   withMagickWandGenesis $ do
     (_,w) <- magickWand
-    readImage w (decodeString img)
+    readImage w "logo:"
 
     fc <- pixelWand
     bc <- pixelWand
@@ -25,4 +22,4 @@ main = do
 
     floodfillPaintImage w channel fc 20 bc 0 0 False
 
-    writeImages w (decodeString img') True
+    w `writeImage` (Just "logo_floodfill.png") 
