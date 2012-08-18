@@ -56,37 +56,29 @@ main = withMagickWandGenesis $ do
   resetIterator magick_wand
   background <- pixelWand
   background `setColor` "#000000"
-  rotateImage magick_wand background 90.0
+--  rotateImage magick_wand background 90.0
   border <- pixelWand
   background `setColor` "green"
   border `setColor` "black"
   floodfillPaintImage magick_wand compositeChannels background
     (0.01*quantumRange) border 0 0 False
 
-{-
-  drawing_wand=NewDrawingWand();
-  (void) PushDrawingWand(drawing_wand);
-  (void) DrawRotate(drawing_wand,45);
-  (void) DrawSetFontSize(drawing_wand,18);
-  fill=NewPixelWand();
-  (void) PixelSetColor(fill,"green");
-  (void) DrawSetFillColor(drawing_wand,fill);
-  fill=DestroyPixelWand(fill);
-  (void) DrawAnnotation(drawing_wand,15,5,(const unsigned char *) "Magick");
-  (void) PopDrawingWand(drawing_wand);
-  (void) MagickSetIteratorIndex(magick_wand,1);
-  status=MagickDrawImage(magick_wand,drawing_wand);
-  if (status == MagickFalse)
-    throwAPIException magick_wand);
-  status=MagickAnnotateImage(magick_wand,drawing_wand,70,5,90,"Image");
-  if (status == MagickFalse)
-    throwAPIException magick_wand);
-  drawing_wand=DestroyDrawingWand(drawing_wand);
-  {
-    unsigned char
-      pixels[27],
-      primary_colors[27] =
-      {
+  (drawing_key,drawing_wand) <- drawingWand
+  pushDrawingWand drawing_wand
+--  drawRotate drawing_wand 45
+  drawing_wand `setFontSize` 18
+  fill <- pixelWand
+  fill `setColor` "green"
+  drawing_wand `setFillColor` fill
+  -- ? fill=DestroyPixelWand(fill);
+  drawAnnotation drawing_wand 15 5 "Magick"
+  popDrawingWand drawing_wand
+  setIteratorIndex magick_wand 1
+  drawImage magick_wand drawing_wand
+  annotateImage magick_wand drawing_wand 70 5 90 "Image"
+  release drawing_key
+
+  let primary_colors = CharPixels [
           0,   0,   0,
           0,   0, 255,
           0, 255,   0,
@@ -95,9 +87,18 @@ main = withMagickWandGenesis $ do
         255,   0,   0,
         255,   0, 255,
         255, 255,   0,
-        128, 128, 128,
-      };
+        128, 128, 128
+        ]
 
+  setIteratorIndex magick_wand 2
+  importImagePixels magick_wand 10 10 3 3 "RGB" primary_colors
+  pixels <- exportImagePixels magick_wand 10 10 3 3 "RGB" charPixel
+
+  when (pixels /= primary_colors) $ exitWithMessage "Get pixels does not match set pixels"
+{-
+  {
+    unsigned char
+      pixels[27],
     (void) MagickSetIteratorIndex(magick_wand,2);
     status=MagickImportImagePixels(magick_wand,10,10,3,3,"RGB",CharPixel,
       primary_colors);
@@ -105,6 +106,7 @@ main = withMagickWandGenesis $ do
       throwAPIException magick_wand);
     status=MagickExportImagePixels(magick_wand,10,10,3,3,"RGB",CharPixel,
       pixels);
+
     if (status == MagickFalse)
       throwAPIException magick_wand);
     for (i=0; i < 9; i++)
@@ -115,6 +117,9 @@ main = withMagickWandGenesis $ do
           exit(1);
         }
   }
+
+
+
   (void) MagickSetIteratorIndex(magick_wand,3);
   status=MagickResizeImage(magick_wand,50,50,UndefinedFilter,1.0);
   if (status == MagickFalse)

@@ -504,3 +504,51 @@ foreign import ccall "MagickRemoveImage" magickRemoveImage
 -- wand.
 foreign import ccall "MagickSetImage" magickSetImage
   :: Ptr MagickWand -> Ptr MagickWand -> IO MagickBooleanType
+
+-- | MagickImportImagePixels() accepts pixel data and stores it in the image at
+-- the location you specify. The method returns MagickFalse on success otherwise
+-- MagickTrue if an error is encountered. The pixel data can be either char,
+-- short int, int, ssize_t, float, or double in the order specified by map.
+--
+-- Suppose your want to upload the first scanline of a 640x480 image from
+-- character data in red-green-blue order:
+--   magickImportImagePixels wand 0 0 640 1 "RGB" charPixel pixels
+foreign import ccall "MagickImportImagePixels" magickImportImagePixels
+  :: Ptr MagickWand
+  -> CSize          -- ^ x
+  -> CSize          -- ^ y
+  -> CSize          -- ^ width
+  -> CSize          -- ^ height
+  -> CString        -- ^ this string reflects the expected ordering of the pixel array.
+                    -- It can be any combination or order of R = red, G = green, B = blue, A = alpha
+                    -- (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                    -- K = black, I = intensity (for grayscale), P = pad.
+  -> StorageType    -- define the data type of the pixels. Float and double types are expected
+                    -- to be normalized [0..1] otherwise [0..QuantumRange]. Choose from these
+                    -- types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or DoublePixel.
+  -> Ptr ()         -- ^ This array of values contain the pixel components as defined by map and type.
+                    -- You must preallocate this array where the expected length varies depending on
+                    -- the values of width, height, map, and type
+  -> IO MagickBooleanType
+
+-- | MagickExportImagePixels() extracts pixel data from an image and returns it
+-- to you. The method returns MagickTrue on success otherwise MagickFalse if an
+-- error is encountered. The data is returned as char, short int, int, ssize_t,
+-- float, or double in the order specified by map.
+foreign import ccall "MagickExportImagePixels" magickExportImagePixels
+  :: Ptr MagickWand
+  -> CSize          -- ^ x
+  -> CSize          -- ^ y
+  -> CSize          -- ^ width
+  -> CSize          -- ^ height
+  -> CString        -- ^ this string reflects the expected ordering of the pixel array.
+                    -- It can be any combination or order of R = red, G = green, B = blue, A = alpha
+                    -- (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                    -- K = black, I = intensity (for grayscale), P = pad.
+  -> StorageType    -- define the data type of the pixels. Float and double types are expected
+                    -- to be normalized [0..1] otherwise [0..QuantumRange]. Choose from these
+                    -- types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or DoublePixel.
+  -> Ptr ()         -- ^ This array of values contain the pixel components as defined by map and type.
+                    -- You must preallocate this array where the expected length varies depending on
+                    -- the values of width, height, map, and type
+  -> IO MagickBooleanType

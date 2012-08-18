@@ -1,5 +1,7 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE FlexibleInstances  #-}
+{-# LANGUAGE DeriveDataTypeable  #-}
+{-# LANGUAGE FlexibleInstances   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TypeFamilies        #-}
 module Graphics.ImageMagick.MagickWand.Types
   ( PPixelIterator
   , PPixelWand
@@ -11,6 +13,8 @@ module Graphics.ImageMagick.MagickWand.Types
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
   , module Graphics.ImageMagick.MagickCore.Types
+  , Pixel(..)
+  , Pixels(..)
   ) where
 
 import           Control.Exception.Base
@@ -68,3 +72,42 @@ instance ExceptionCarrier (Ptr DrawingWand) where
       s <- peekCString =<< F.drawGetException w x
       x' <- peek x
       return $ ImageWandException x' s
+
+class (Storable a) => Pixel a where
+  data Pixels a :: *
+  pixels :: Pixels a -> [a]
+  pixelStorageType :: (Pixels a) -> StorageType
+  allocaPixels :: Int -> (Ptr a -> IO b) -> IO b
+  allocaPixels n f = allocaArray n (\(p :: Ptr a) -> f p)
+  withTypedPixels :: Pixels a -> (StorageType -> Ptr a -> IO b) -> IO b
+  withTypedPixels p f = withArray (pixels p) (f (pixelStorageType p))
+
+instance Pixel Int8 where
+  data Pixels Int8 = CharPixels [Int8]
+  pixelStorageType = const charPixel
+
+instance Pixel Int16 where
+  data Pixels Int16 = ShortPixels [Int16]
+  pixelStorageType = const shortPixel
+
+instance Pixel Int32 where
+  data Pixels Int32 = IntegerPixels [Int32]
+  pixelStorageType = const longPixel
+
+instance Pixel Int64 where
+  data Pixels Int64 = LongPixels [Int64]
+  pixelStorageType = const longPixel
+
+instance Pixel Float where
+  data Pixels Float = FloatPixels [Float]
+  pixelStorageType = const floatPixel
+
+instance Pixel Double where
+  data Pixels Double = DoublePixels [Double]
+  pixelStorageType = const doublePixel
+  {-
+
+data Pixels =   | ShortPixels [Int16] | IntegerPixels [Int32] |
+              LongPixels [Int64] | FloatPixels [Float] | DoublePixels [Double]
+            deriving (Eq, Show)
+-}
