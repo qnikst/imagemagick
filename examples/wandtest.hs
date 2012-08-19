@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+import           Data.Int
 import           Control.Monad                   (when)
 import           Control.Monad.IO.Class          (liftIO)
 import           Control.Monad.Trans.Resource    (release)
@@ -78,7 +79,7 @@ main = withMagickWandGenesis $ do
   annotateImage magick_wand drawing_wand 70 5 90 "Image"
   release drawing_key
 
-  let primary_colors = CharPixels [
+  let primary_colors = [
           0,   0,   0,
           0,   0, 255,
           0, 255,   0,
@@ -88,11 +89,11 @@ main = withMagickWandGenesis $ do
         255,   0, 255,
         255, 255,   0,
         128, 128, 128
-        ]
+        ] :: [Int8]
 
   setIteratorIndex magick_wand 2
   importImagePixels magick_wand 10 10 3 3 "RGB" primary_colors
-  pixels <- exportImagePixels magick_wand 10 10 3 3 "RGB" charPixel
+  pixels <- exportImagePixels magick_wand 10 10 3 3 "RGB"
 
   when (pixels /= primary_colors) $ exitWithMessage "Get pixels does not match set pixels"
 {-

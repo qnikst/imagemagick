@@ -527,27 +527,17 @@ importImagePixels :: (MonadResource m, Pixel a) => PMagickWand
                      -> Int      -- ^ rows
                      -- TODO migrate to typesafe parameter
                      -> Text     -- ^ map
-                     -> Pixels a -- ^ imported pixels
+                     -> [a]      -- ^ imported pixels
                      -> m ()
 importImagePixels w x y width height cmap pixels =
-  withException_ w $ useAsCString (encodeUtf8 cmap) $
-  \cstr -> withTypedPixels pixels $ \stype ppixels -> F.magickImportImagePixels w x' y' width' height' cstr stype (castPtr ppixels)
+  withException_ w $ useAsCString (encodeUtf8 cmap) $ \cstr -> 
+    withPixels pixels $ (F.magickImportImagePixels w x' y' width' height' cstr stype) . castPtr 
     where
       x' = fromIntegral x
       y' = fromIntegral y
       width' = fromIntegral width
       height' = fromIntegral height
---      withPixels :: (Pixel a) =>
---      withPixels = withTypedPixels pixels
-      {-
-      withPixels f = case pixels of
-        CharPixels d -> withArray d (\p -> f charPixel (castPtr p))
-        ShortPixels d -> withArray d (\p -> f shortPixel (castPtr p))
-        IntegerPixels d -> withArray d (\p -> f integerPixel (castPtr p))
-        LongPixels d -> withArray d (\p -> f longPixel (castPtr p))
-        FloatPixels d -> withArray d (\p -> f floatPixel (castPtr p))
-        DoublePixels d -> withArray d (\p -> f doublePixel (castPtr p))
--}
+      stype   = pixelStorageType pixels
 
 -- | Extracts pixel data from an image and returns it to you. The data is
 -- returned as `Pixels` in the order specified by cmap.
@@ -558,39 +548,12 @@ exportImagePixels :: (MonadResource m, Pixel a) => PMagickWand
                      -> Int     -- ^ rows
                      -- TODO migrate to typesafe parameter
                      -> Text    -- ^ map
-                     -> StorageType
-                     -> m (Pixels a)
-exportImagePixels w x y width height cmap stype =
-  liftIO $ withPixels -- exportPixels
-    where
-      x' = fromIntegral x
-      y' = fromIntegral y
-      width' = fromIntegral width
-      height' = fromIntegral height
-      arrLength = width * height * (T.length cmap)
-      withPixels :: IO (Pixels a)
-      withPixels = case stype of
-        st | st == charPixel -> (allocaPixels arrLength $ \p -> do
-          (d :: [Int8]) <- peekArray arrLength p
-          return $ CharPixels d) :: IO (Pixels Int8)
-        st | st == shortPixel -> (allocaPixels arrLength $ \p -> do
-          (d :: [Int16]) <- peekArray arrLength p
-          return $ ShortPixels d) :: IO (Pixels Int16)
---      charp :: (Ptr Int8) -> IO (Pixels Int8)
---      charp p = do
---        d <- peekArray arrLength p
---        return $ CharPixels d
-{-
-                                allocaArray arrLength $ \(p :: Ptr Int8) -> do
-           d <- f p
-           return $ CharPixels d
-        st | st == shortPixel -> allocaArray arrLength $ \(p :: Ptr Int16) -> do
-           d <- f p
-           return $ ShortPixels d
-      exportPixels :: (Storable a) => (Ptr a) -> IO [a]
-      exportPixels ppixels = withExceptionIO w $ do
-        r <- useAsCString (encodeUtf8 cmap) $
-          \cstr -> F.magickExportImagePixels w x' y' width' height' cstr stype (castPtr ppixels)
-        arr <- peekArray arrLength ppixels
-        return (r, arr)
--}
+                     -> m [a]
+exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr -> 
+  exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) (undefined)
+  where
+    x' = fromIntegral x
+    y' = fromIntegral y
+    width' = fromIntegral width
+    height' = fromIntegral height
+    arrLength = width * height * (T.length cmap)
