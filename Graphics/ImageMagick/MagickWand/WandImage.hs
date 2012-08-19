@@ -552,6 +552,9 @@ exportImagePixels :: (MonadResource m, Pixel a) => PMagickWand
 exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr -> 
   exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) (undefined)
   where
+    exportArray :: (Pixel a) => Int -> (StorageType -> Ptr () -> IO b) -> [a] -> IO [a]
+    exportArray s f hack = allocaArray s (\q -> f storage (castPtr q) >> peekArray s q)
+      where storage = pixelStorageType hack
     x' = fromIntegral x
     y' = fromIntegral y
     width' = fromIntegral width

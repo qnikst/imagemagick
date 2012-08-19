@@ -79,9 +79,6 @@ class (Storable a) => Pixel a where
   pixelStorageType :: [a] -> StorageType
   withPixels :: [a] -> (Ptr a -> IO b) -> IO b
   withPixels xs f = V.unsafeWith (V.fromList xs) f
-  exportArray :: Int -> (StorageType -> Ptr () -> IO b) -> [a] -> IO [a]
-  exportArray s f hack = allocaArray s (\q -> f storage (castPtr q) >> peekArray s q)
-      where storage = pixelStorageType hack
 
 instance Pixel Int8 where
   data Pixels Int8 = CharPixels [Int8]
