@@ -16,8 +16,6 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , setIteratorIndex
   , resetIterator
   , setOption
-  -- TODO: move somewhere
-  , lanczosFilter
   ) where
 
 import           Control.Applicative                                ((<$>))
