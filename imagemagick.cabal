@@ -36,6 +36,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType
                       , Graphics.ImageMagick.MagickCore.Types.FFI.MagickFunction
                       , Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType
                       , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
@@ -227,7 +228,6 @@ executable            text-effects
 
 executable            gel
   Main-is:            examples/gel.hs
-  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -235,11 +235,11 @@ executable            gel
                       , bytestring == 0.9.*
                       , text == 0.11.*
                       , system-filepath == 0.4.*
+                      , lifted-base == 0.1.*
                       , imagemagick
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
 
 executable            reflect
   Main-is:            examples/reflect.hs
