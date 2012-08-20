@@ -30,24 +30,6 @@ instance Storable PointInfo where
               `ap` (#{peek PointInfo, x} p)
               `ap` (#{peek PointInfo, y} p)
 
-newtype AlphaChannelType = AlphaChannelType { unAlphaChannelType :: CInt }
-  deriving (Eq, Show)
-
-#{enum AlphaChannelType, AlphaChannelType
-  , undefinedAlphaChannel = UndefinedAlphaChannel
-  , activateAlphaChannel = ActivateAlphaChannel
-  , backgroundAlphaChannel = BackgroundAlphaChannel
-  , copyAlphaChannel = CopyAlphaChannel
-  , deactivateAlphaChannel = DeactivateAlphaChannel
-  , extractAlphaChannel = ExtractAlphaChannel
-  , opaqueAlphaChannel = OpaqueAlphaChannel
-  , resetAlphaChannel = ResetAlphaChannel  /* deprecated */
-  , setAlphaChannel = SetAlphaChannel
-  , shapeAlphaChannel = ShapeAlphaChannel
-  , transparentAlphaChannel = TransparentAlphaChannel
-  , lattenAlphaChannel = FlattenAlphaChannel
-  , removeAlphaChannel = RemoveAlphaChannel
-}
 
 newtype MagickBooleanType = MagickBooleanType { unMagickBooleanType :: CInt}
   deriving (Eq, Show)

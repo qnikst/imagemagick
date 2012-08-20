@@ -10,9 +10,15 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , cloneMagickWand
 --  , clearMagickWand 
   -- * Iratation 
-  , readImage
-  , setSize
+  , magickIterate
+  , magickIterateReverse
 --  , getIteratorIndex 
+  , readImage
+  , getSize
+  , setSize
+  , setImageArtifact
+  , deleteImageArtifact
+  , getIteratorIndex
   , setIteratorIndex
 --  , setFirstIterator 
 --  , setLastIterator 
@@ -96,6 +102,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , setType
   ) where
 
+import           Control.Applicative                                ((<$>))
 import           Control.Exception
 import           Control.Monad
 import           Control.Monad.IO.Class
@@ -125,47 +132,54 @@ withMagickWandGenesis f = bracket start finish (\_ -> runResourceT f)
 localGenesis f = runResourceT f
 
 magickWand :: (MonadResource m) => m (ReleaseKey, Ptr MagickWand)
-magickWand = allocate F.newMagickWand destroy
-  where destroy = void . F.destroyMagickWand
+magickWand = wandResource F.newMagickWand
 
-magickIterate :: (MonadResource m) => Ptr MagickWand -> (Ptr MagickWand -> m ()) -> m ()
-magickIterate w f = liftIO (F.magickResetIterator w) >> go -- TODO: use fix
+magickIterateF :: (MonadResource m) =>
+                 (PMagickWand -> IO MagickBooleanType) -> PMagickWand -> (PMagickWand -> m ()) -> m ()
+magickIterateF nf w f = liftIO (F.magickResetIterator w) >> go -- TODO: use fix
   where
     go = do
-      i <- liftIO $ F.magickNextImage w
+      i <- liftIO $ nf w
       unless (i==mTrue) $ f w >> go
 
+magickIterate :: (MonadResource m) => Ptr MagickWand -> (Ptr MagickWand -> m ()) -> m ()
+magickIterate = magickIterateF F.magickNextImage
+
+magickIterateReverse :: (MonadResource m) => Ptr MagickWand -> (Ptr MagickWand -> m ()) -> m ()
+magickIterateReverse = magickIterateF F.magickPreviousImage
 
 wandResource :: (MonadResource m) => (IO (Ptr MagickWand)) -> m (ReleaseKey, Ptr MagickWand)
 wandResource f = allocate f destroy
   where destroy = void . F.destroyMagickWand
 
-
 cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr MagickWand)
-cloneMagickWand w = wandResource (F.cloneMagickWand w)
-
+cloneMagickWand = wandResource . F.cloneMagickWand
 
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
 readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
 
-
 setSize :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> m ()
 setSize w cols rows = withException_ w $ F.magickSetSize w (fromIntegral cols) (fromIntegral rows)
+
+-- | Returns the size associated with the magick wand.
+getSize :: (MonadResource m) => Ptr MagickWand -> m (Int, Int)
+getSize w = liftIO $ alloca $ \pw -> do
+  height <- alloca $ \ph -> F.magickGetSize w pw ph >> peek ph >>= return
+  width <- peek pw
+  return (fromIntegral width, fromIntegral height)
 
 
 -- | MagickSetImageArtifact() associates a artifact with an image.
 -- The format of the MagickSetImageArtifact method is:
 setImageArtifact :: (MonadResource m) => PMagickWand -> ByteString -> ByteString -> m () -- TODO use normal types
-setImageArtifact w a v = withException_ w $ useAsCString a 
-                                          $ \a' -> useAsCString v 
+setImageArtifact w a v = withException_ w $ useAsCString a
+                                          $ \a' -> useAsCString v
                                           $ F.magickSetImageArtifact w a'
-
 
 -- | MagickDeleteImageArtifact() deletes a wand artifact.
 deleteImageArtifact :: (MonadResource m) => PMagickWand -> ByteString -> m ()
 deleteImageArtifact w a = withException_ w $ useAsCString a
                                            $ F.magickDeleteImageArtifact w
-
 
 -- | Sets the iterator to the given position in the image list specified
 -- with the index parameter. A zero index will set the first image as
@@ -175,10 +189,12 @@ deleteImageArtifact w a = withException_ w $ useAsCString a
 setIteratorIndex :: (MonadResource m) => Ptr MagickWand -> Int -> m ()
 setIteratorIndex w i = withException_ w $ F.magickSetIteratorIndex w (fromIntegral i)
 
+-- | Returns the position of the iterator in the image list.
+getIteratorIndex :: (MonadResource m) => Ptr MagickWand -> m Int
+getIteratorIndex w = liftIO $ fromIntegral <$> F.magickGetIteratorIndex w
 
 resetIterator :: (MonadResource m) => Ptr MagickWand -> m ()
 resetIterator = liftIO . F.magickResetIterator
-
 
 -- | Associates one or options with the wand (e.g. setOption wand "jpeg:perserve" "yes").
 setOption :: (MonadResource m) => Ptr MagickWand -> Text -> Text -> m ()

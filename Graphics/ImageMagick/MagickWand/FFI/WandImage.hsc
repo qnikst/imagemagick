@@ -419,23 +419,23 @@ foreign import ccall "MagickScaleImage" magickScaleImage
   -> CSize       -- ^ the number of rows in the scaled image
   -> IO MagickBooleanType
 
--- | MagickSparseColorImage(), given a set of coordinates, interpolates the 
+-- | MagickSparseColorImage(), given a set of coordinates, interpolates the
 -- colors found at those coordinates, across the whole image, using various methods.
--- 
+--
 -- The format of the MagickSparseColorImage method is:
---   ArcSparseColorion will always ignore source image offset, and always 'bestfit' 
+--   ArcSparseColorion will always ignore source image offset, and always 'bestfit'
 -- the destination image with the top left corner offset relative to the polar mapping center.
 --
 -- Bilinear has no simple inverse mapping so will not allow 'bestfit' style of image sparseion.
 --
--- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more 
+-- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more
 -- than the minimum number of control point pairs are provided.
 --
--- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control 
--- point pairs are provided. While Affine sparseions will let you use any number of control 
--- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a 
--- translation and two pairs of control points will do a scale-rotate-translate, without any 
--- shearing. 
+-- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control
+-- point pairs are provided. While Affine sparseions will let you use any number of control
+-- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a
+-- translation and two pairs of control points will do a scale-rotate-translate, without any
+-- shearing.
 foreign import ccall "MagickSparseColorImage" magickSparseColorImage
   :: Ptr MagickWand
   -> ChannelType
@@ -445,7 +445,7 @@ foreign import ccall "MagickSparseColorImage" magickSparseColorImage
   -> IO MagickBooleanType
 
 -- | MagickFunctionImage() applys an arithmetic, relational, or logical expression to an image.
--- Use these operators to lighten or darken an image, to increase or decrease contrast in an 
+-- Use these operators to lighten or darken an image, to increase or decrease contrast in an
 -- image, or to produce the "negative" of an image.
 foreign import ccall "MagickFunctionImage" magickFunctionImage
   :: Ptr MagickWand
@@ -490,3 +490,65 @@ foreign import ccall "MagickCompareImageLayers" magickCompareImageLayers
   :: Ptr MagickWand
   -> ImageLayerMethod
   -> IO (Ptr MagickWand)
+
+-- | MagickGetImageScene() gets the image scene
+foreign import ccall "MagickGetImageScene" magickGetImageScene
+  :: Ptr MagickWand -> IO CSize
+
+-- | MagickRemoveImage() removes an image from the image list.
+foreign import ccall "MagickRemoveImage" magickRemoveImage
+  :: Ptr MagickWand -> IO MagickBooleanType
+
+-- | MagickSetImage() replaces the last image returned by MagickSetImageIndex(),
+-- MagickNextImage(), MagickPreviousImage() with the images from the specified
+-- wand.
+foreign import ccall "MagickSetImage" magickSetImage
+  :: Ptr MagickWand -> Ptr MagickWand -> IO MagickBooleanType
+
+-- | MagickImportImagePixels() accepts pixel data and stores it in the image at
+-- the location you specify. The method returns MagickFalse on success otherwise
+-- MagickTrue if an error is encountered. The pixel data can be either char,
+-- short int, int, ssize_t, float, or double in the order specified by map.
+--
+-- Suppose your want to upload the first scanline of a 640x480 image from
+-- character data in red-green-blue order:
+--   magickImportImagePixels wand 0 0 640 1 "RGB" charPixel pixels
+foreign import ccall "MagickImportImagePixels" magickImportImagePixels
+  :: Ptr MagickWand
+  -> CSize          -- ^ x
+  -> CSize          -- ^ y
+  -> CSize          -- ^ width
+  -> CSize          -- ^ height
+  -> CString        -- ^ this string reflects the expected ordering of the pixel array.
+                    -- It can be any combination or order of R = red, G = green, B = blue, A = alpha
+                    -- (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                    -- K = black, I = intensity (for grayscale), P = pad.
+  -> StorageType    -- define the data type of the pixels. Float and double types are expected
+                    -- to be normalized [0..1] otherwise [0..QuantumRange]. Choose from these
+                    -- types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or DoublePixel.
+  -> Ptr ()         -- ^ This array of values contain the pixel components as defined by map and type.
+                    -- You must preallocate this array where the expected length varies depending on
+                    -- the values of width, height, map, and type
+  -> IO MagickBooleanType
+
+-- | MagickExportImagePixels() extracts pixel data from an image and returns it
+-- to you. The method returns MagickTrue on success otherwise MagickFalse if an
+-- error is encountered. The data is returned as char, short int, int, ssize_t,
+-- float, or double in the order specified by map.
+foreign import ccall "MagickExportImagePixels" magickExportImagePixels
+  :: Ptr MagickWand
+  -> CSize          -- ^ x
+  -> CSize          -- ^ y
+  -> CSize          -- ^ width
+  -> CSize          -- ^ height
+  -> CString        -- ^ this string reflects the expected ordering of the pixel array.
+                    -- It can be any combination or order of R = red, G = green, B = blue, A = alpha
+                    -- (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow, M = magenta,
+                    -- K = black, I = intensity (for grayscale), P = pad.
+  -> StorageType    -- define the data type of the pixels. Float and double types are expected
+                    -- to be normalized [0..1] otherwise [0..QuantumRange]. Choose from these
+                    -- types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or DoublePixel.
+  -> Ptr ()         -- ^ This array of values contain the pixel components as defined by map and type.
+                    -- You must preallocate this array where the expected length varies depending on
+                    -- the values of width, height, map, and type
+  -> IO MagickBooleanType

@@ -1,3 +1,4 @@
+{-# LANGUAGE ScopedTypeVariables #-}
 module Graphics.ImageMagick.MagickWand.WandImage
   ( getImageHeight
   , getImageWidth
@@ -178,7 +179,6 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageRegion 
 -- , getImageRenderingIntent 
 -- , getImageResolution 
--- , getImageScene 
 -- , getImageSignature 
 -- , getImageTicksPerSecond 
 -- , getImageType 
@@ -232,7 +232,6 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , readImageBlob 
 -- , readImageFile 
 -- , remapImage 
--- , removeImage 
 -- , resampleImage 
 -- , resetImagePage 
 -- , resizeImage 
@@ -324,6 +323,11 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , writeImageFile 
 -- , writeImages 
 -- , writeImagesFile
+  , getImageScene
+  , setImage
+  , removeImage
+  , importImagePixels
+  , exportImagePixels
   ) where
 
 import           Control.Applicative                            ((<$>))
@@ -331,6 +335,7 @@ import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                                (ByteString, useAsCString)
 import           Data.Text                                      (Text)
+import qualified Data.Text                                      as T
 import           Data.Text.Encoding                             (encodeUtf8)
 import           Data.Vector.Storable                           (Vector)
 import qualified Data.Vector.Storable                           as V
@@ -704,23 +709,23 @@ scaleImage w columns rows =
   withException_ w $ F.magickScaleImage w (fromIntegral columns) (fromIntegral rows)
 
 
--- | MagickSparseColorImage(), given a set of coordinates, interpolates the 
+-- | MagickSparseColorImage(), given a set of coordinates, interpolates the
 -- colors found at those coordinates, across the whole image, using various methods.
--- 
+--
 -- The format of the MagickSparseColorImage method is:
---   ArcSparseColorion will always ignore source image offset, and always 'bestfit' 
+--   ArcSparseColorion will always ignore source image offset, and always 'bestfit'
 -- the destination image with the top left corner offset relative to the polar mapping center.
 --
 -- Bilinear has no simple inverse mapping so will not allow 'bestfit' style of image sparseion.
 --
--- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more 
+-- Affine, Perspective, and Bilinear, will do least squares fitting of the distrotion when more
 -- than the minimum number of control point pairs are provided.
 --
--- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control 
--- point pairs are provided. While Affine sparseions will let you use any number of control 
--- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a 
--- translation and two pairs of control points will do a scale-rotate-translate, without any 
--- shearing. 
+-- Perspective, and Bilinear, will fall back to a Affine sparseion when less than 4 control
+-- point pairs are provided. While Affine sparseions will let you use any number of control
+-- point pairs, that is Zero pairs is a No-Op (viewport only) distrotion, one pair is a
+-- translation and two pairs of control points will do a scale-rotate-translate, without any
+-- shearing.
 sparseColorImage :: (MonadResource m) => PMagickWand
                  -> ChannelType
                  -> SparseColorMethod
@@ -730,14 +735,14 @@ sparseColorImage w c m v =
   withException_ w $ V.unsafeWith v $ \v' -> F.magickSparseColorImage w c m (fromIntegral $ V.length v) v'
 
 -- | MagickFunctionImage() applys an arithmetic, relational, or logical expression to an image.
--- Use these operators to lighten or darken an image, to increase or decrease contrast in an 
+-- Use these operators to lighten or darken an image, to increase or decrease contrast in an
 -- image, or to produce the "negative" of an image.
 functionImage :: (MonadResource m) => PMagickWand -> MagickFunction -> Vector Double -> m ()
-functionImage w f v = 
+functionImage w f v =
   withException_ w $ V.unsafeWith v $ \v' -> F.magickFunctionImage w f (fromIntegral $ V.length v) v'
 
 functionImageChannel :: (MonadResource m) => PMagickWand -> ChannelType -> MagickFunction -> Vector Double -> m ()
-functionImageChannel w c f v = 
+functionImageChannel w c f v =
   withException_ w $ V.unsafeWith v $ \v' -> F.magickFunctionImageChannel w c f (fromIntegral $ V.length v) v'
 
 
@@ -758,3 +763,59 @@ getImage = wandResource . F.magickGetImage
 -- the maximum bounding region of any pixel differences it discovers.
 compareImageLayers :: (MonadResource m) => PMagickWand -> ImageLayerMethod -> m (ReleaseKey, PMagickWand)
 compareImageLayers = (wandResource .). F.magickCompareImageLayers
+
+-- | Gets the image scene
+getImageScene :: (MonadResource m) => PMagickWand -> m Int
+getImageScene w = liftIO $ fromIntegral <$> F.magickGetImageScene w
+
+-- | MagickRemoveImage() removes an image from the image list.
+removeImage :: (MonadResource m) => PMagickWand -> m ()
+removeImage w = withException_ w $ F.magickRemoveImage w
+
+-- | Replaces the last image returned by `setImageIndex` and
+-- iteration methods with the images from the specified wand.
+setImage :: (MonadResource m) => PMagickWand -> PMagickWand -> m ()
+setImage w sw = withException_ w $ F.magickSetImage w sw
+
+-- | Accepts pixel data. The pixel data can be in any `Pixels` format
+-- in the order specified by map.
+importImagePixels :: (MonadResource m, Pixel a) => PMagickWand
+                     -> Int      -- ^ x
+                     -> Int      -- ^ y
+                     -> Int      -- ^ columns
+                     -> Int      -- ^ rows
+                     -- TODO migrate to typesafe parameter
+                     -> Text     -- ^ map
+                     -> [a]      -- ^ imported pixels
+                     -> m ()
+importImagePixels w x y width height cmap pixels =
+  withException_ w $ useAsCString (encodeUtf8 cmap) $ \cstr -> 
+    withPixels pixels $ (F.magickImportImagePixels w x' y' width' height' cstr stype) . castPtr 
+    where
+      x' = fromIntegral x
+      y' = fromIntegral y
+      width' = fromIntegral width
+      height' = fromIntegral height
+      stype   = pixelStorageType pixels
+
+-- | Extracts pixel data from an image and returns it to you. The data is
+-- returned as `Pixels` in the order specified by cmap.
+exportImagePixels :: (MonadResource m, Pixel a) => PMagickWand
+                     -> Int     -- ^ x
+                     -> Int     -- ^ y
+                     -> Int     -- ^ columns
+                     -> Int     -- ^ rows
+                     -- TODO migrate to typesafe parameter
+                     -> Text    -- ^ map
+                     -> m [a]
+exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr -> 
+  exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) (undefined)
+  where
+    exportArray :: (Pixel a) => Int -> (StorageType -> Ptr () -> IO b) -> [a] -> IO [a]
+    exportArray s f hack = allocaArray s (\q -> f storage (castPtr q) >> peekArray s q)
+      where storage = pixelStorageType hack
+    x' = fromIntegral x
+    y' = fromIntegral y
+    width' = fromIntegral width
+    height' = fromIntegral height
+    arrLength = width * height * (T.length cmap)
