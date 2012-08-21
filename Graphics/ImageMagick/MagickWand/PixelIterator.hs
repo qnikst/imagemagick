@@ -66,11 +66,10 @@ pixelSetMagickColor w c = liftIO $ withForeignPtr c (F.pixelSetMagickColor w)
 pixelSyncIterator :: (MonadResource m) => PPixelIterator -> m ()
 pixelSyncIterator p =  withException_ p $ F.pixelSyncIterator p
 
-
 pixelResetIterator :: (MonadResource m) => PPixelIterator -> m ()
 pixelResetIterator = liftIO . F.pixelResetIterator
 
-
+-- | creates lazy list of pixel vectors
 pixelIterateList :: (MonadResource m) => PPixelIterator -> m [Vector PPixelWand]
 pixelIterateList it = pixelResetIterator it >> liftIO go
   where

@@ -5,6 +5,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , getImagePixelColor
   , resizeImage
   , getImageCompressionQuality
+  , setImageCompression
   , setImageCompressionQuality
   , getImageBackgroundColor
   , setImageBackgroundColor
@@ -328,6 +329,10 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , removeImage
   , importImagePixels
   , exportImagePixels
+  , rotateImage
+  , setImageDepth
+  , getImageDelay
+  , setImageDelay
   ) where
 
 import           Control.Applicative                            ((<$>))
@@ -789,8 +794,8 @@ importImagePixels :: (MonadResource m, Pixel a) => PMagickWand
                      -> [a]      -- ^ imported pixels
                      -> m ()
 importImagePixels w x y width height cmap pixels =
-  withException_ w $ useAsCString (encodeUtf8 cmap) $ \cstr -> 
-    withPixels pixels $ (F.magickImportImagePixels w x' y' width' height' cstr stype) . castPtr 
+  withException_ w $ useAsCString (encodeUtf8 cmap) $ \cstr ->
+    withPixels pixels $ (F.magickImportImagePixels w x' y' width' height' cstr stype) . castPtr
     where
       x' = fromIntegral x
       y' = fromIntegral y
@@ -808,7 +813,7 @@ exportImagePixels :: (MonadResource m, Pixel a) => PMagickWand
                      -- TODO migrate to typesafe parameter
                      -> Text    -- ^ map
                      -> m [a]
-exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr -> 
+exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr ->
   exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) (undefined)
   where
     exportArray :: (Pixel a) => Int -> (StorageType -> Ptr () -> IO b) -> [a] -> IO [a]
@@ -819,3 +824,24 @@ exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cm
     width' = fromIntegral width
     height' = fromIntegral height
     arrLength = width * height * (T.length cmap)
+
+-- | Rotates an image the specified number of degrees. Empty triangles left over
+-- from rotating the image are filled with the background color.
+rotateImage :: (MonadResource m) => PMagickWand -> PPixelWand -> Double -> m ()
+rotateImage w background degrees = withException_ w $ F.magickRotateImage w background (realToFrac degrees)
+
+-- | Sets the image depth.
+setImageDepth :: (MonadResource m) => PMagickWand -> Int -> m ()
+setImageDepth w depth = withException_ w $ F.magickSetImageDepth w (fromIntegral depth)
+
+-- | Sets the image compression.
+setImageCompression:: (MonadResource m) => PMagickWand -> CompressionType -> m ()
+setImageCompression w compressionType = withException_ w $ F.magickSetImageCompression w compressionType
+
+-- | Gets the image delay.
+getImageDelay :: (MonadResource m) => PMagickWand -> m Int
+getImageDelay w = liftIO $ fromIntegral <$> F.magickGetImageDelay w
+
+-- | Sets the image delay.
+setImageDelay :: (MonadResource m) => PMagickWand -> Int -> m ()
+setImageDelay w delay = withException_ w $ F.magickSetImageDelay w (fromIntegral delay)
