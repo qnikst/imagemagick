@@ -23,6 +23,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Compress
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Constitute
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Exception

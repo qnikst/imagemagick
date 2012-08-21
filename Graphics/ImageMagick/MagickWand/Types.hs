@@ -14,7 +14,6 @@ module Graphics.ImageMagick.MagickWand.Types
   , ExceptionCarrier(..)
   , module Graphics.ImageMagick.MagickCore.Types
   , Pixel(..)
-  , Pixels(..)
   ) where
 
 import           Control.Exception.Base
@@ -75,37 +74,24 @@ instance ExceptionCarrier (Ptr DrawingWand) where
       return $ ImageWandException x' s
 
 class (Storable a) => Pixel a where
-  data Pixels a 
   pixelStorageType :: [a] -> StorageType
   withPixels :: [a] -> (Ptr a -> IO b) -> IO b
   withPixels xs f = V.unsafeWith (V.fromList xs) f
 
-instance Pixel Int8 where
-  data Pixels Int8 = CharPixels [Int8]
+instance Pixel Word8 where
   pixelStorageType = const charPixel
 
-instance Pixel Int16 where
-  data Pixels Int16 = ShortPixels [Int16]
+instance Pixel Word16 where
   pixelStorageType = const shortPixel
 
-instance Pixel Int32 where
-  data Pixels Int32 = IntegerPixels [Int32]
+instance Pixel Word32 where
   pixelStorageType = const longPixel
 
-instance Pixel Int64 where
-  data Pixels Int64 = LongPixels [Int64]
+instance Pixel Word64 where
   pixelStorageType = const longPixel
 
 instance Pixel Float where
-  data Pixels Float = FloatPixels [Float]
   pixelStorageType = const floatPixel
 
 instance Pixel Double where
-  data Pixels Double = DoublePixels [Double]
   pixelStorageType = const doublePixel
-  {-
-
-data Pixels =   | ShortPixels [Int16] | IntegerPixels [Int32] |
-              LongPixels [Int64] | FloatPixels [Float] | DoublePixels [Double]
-            deriving (Eq, Show)
--}

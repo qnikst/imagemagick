@@ -209,18 +209,6 @@ This integer returns the number of image formats in the list.
 
 
 
-MagickRelinquishMemory() relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc.
-
-The format of the MagickRelinquishMemory method is:
-
-  void *MagickRelinquishMemory(void *resource)
-
-A description of each parameter follows:
-resource
-
-Relinquish the memory associated with this resource.
-
-
 
 
 
@@ -441,3 +429,34 @@ foreign import ccall "MagickSetIteratorIndex" magickSetIteratorIndex
 foreign import ccall "MagickResetIterator" magickResetIterator
   :: Ptr MagickWand
   -> IO ()
+
+-- | MagickSetLastIterator() sets the wand iterator to the last image.
+-- The last image is actually the current image, and the next use of
+-- MagickPreviousImage() will not change this allowing this function
+-- to be used to iterate over the images in the reverse direction.
+-- In this sense it is more like MagickResetIterator() than
+-- MagickSetFirstIterator().
+-- Typically this function is used before MagickAddImage(),
+-- MagickReadImage() functions to ensure new images are appended to
+-- the very end of wand's image list.
+foreign import ccall "MagickSetFirstIterator" magickSetFirstIterator
+  :: Ptr MagickWand
+  -> IO ()
+
+-- | MagickSetFirstIterator() sets the wand iterator to the first image.
+-- After using any images added to the wand using MagickAddImage() or
+-- MagickReadImage() will be prepended before any image in the wand.
+-- Also the current image has been set to the first image (if any) in
+-- the Magick Wand. Using MagickNextImage() will then set teh current
+-- image to the second image in the list (if present).
+-- This operation is similar to MagickResetIterator() but differs in
+-- how MagickAddImage(), MagickReadImage(), and MagickNextImage()
+-- behaves afterward.
+foreign import ccall "MagickSetLastIterator" magickSetLastIterator
+  :: Ptr MagickWand
+  -> IO ()
+
+-- | MagickRelinquishMemory() relinquishes memory resources returned
+-- by such methods as MagickIdentifyImage(), MagickGetException(), etc.
+foreign import ccall "MagickRelinquishMemory" magickRelinquishMemory
+  :: Ptr () -> IO ()

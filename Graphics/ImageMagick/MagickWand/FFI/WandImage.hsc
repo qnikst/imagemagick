@@ -29,9 +29,12 @@ foreign import ccall "MagickGetImagePixelColor" magickGetImagePixelColor
   -> IO MagickBooleanType
 
 -- |  MagickGetImageCompressionQuality() gets the image compression quality.
-
 foreign import ccall "MagickGetImageCompressionQuality" magickGetImageCompressionQuality
   :: Ptr MagickWand -> IO CSize
+
+-- | MagickSetImageCompression() sets the image compression.
+foreign import ccall "MagickSetImageCompression" magickSetImageCompression
+  :: Ptr MagickWand -> CompressionType -> IO MagickBooleanType
 
 -- | MagickSetImageCompressionQuality() sets the image compression quality.
 foreign import ccall "MagickSetImageCompressionQuality" magickSetImageCompressionQuality
@@ -552,3 +555,21 @@ foreign import ccall "MagickExportImagePixels" magickExportImagePixels
                     -- You must preallocate this array where the expected length varies depending on
                     -- the values of width, height, map, and type
   -> IO MagickBooleanType
+
+-- | MagickRotateImage() rotates an image the specified number of degrees.
+-- Empty triangles left over from rotating the image are filled with the
+-- background color.
+foreign import ccall "MagickRotateImage" magickRotateImage
+  :: Ptr MagickWand -> Ptr PixelWand -> CDouble -> IO MagickBooleanType
+
+-- | MagickSetImageDepth() sets the image depth.
+foreign import ccall "MagickSetImageDepth" magickSetImageDepth
+  :: Ptr MagickWand -> CSize -> IO MagickBooleanType
+
+-- | MagickSetImageDelay() sets the image delay.
+foreign import ccall "MagickSetImageDelay" magickSetImageDelay
+  :: Ptr MagickWand -> CSize -> IO MagickBooleanType
+
+-- | MagickGetImageDelay() gets the image delay.
+foreign import ccall "MagickGetImageDelay" magickGetImageDelay
+  :: Ptr MagickWand -> IO CSize
