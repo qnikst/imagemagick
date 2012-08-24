@@ -2,13 +2,13 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies        #-}
+{-# LANGUAGE RankNTypes          #-}
 module Graphics.ImageMagick.MagickWand.Types
   ( PPixelIterator
   , PPixelWand
   , PPixelPacket
   , PDrawingWand
   , PMagickWand
-  , MagickRealType
   , ImageWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
@@ -23,6 +23,7 @@ import qualified Data.Vector.Storable                              as V
 import           Foreign
 import           Foreign.C.String
 import           Graphics.ImageMagick.MagickCore.Types
+import           Graphics.ImageMagick.MagickCore.Exception
 import           Graphics.ImageMagick.MagickWand.FFI.DrawingWand   as F
 import           Graphics.ImageMagick.MagickWand.FFI.MagickWand    as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelIterator as F
@@ -35,43 +36,26 @@ type PMagickWand    = Ptr MagickWand
 type PDrawingWand   = Ptr DrawingWand
 type PPixelPacket   = ForeignPtr MagickPixelPacket
 
-data ImageWandException = ImageWandException ExceptionType String
-  deriving (Typeable)
-
-instance Show (ImageWandException) where
-  show (ImageWandException _ s) = s
-
-instance Exception ImageWandException
-
--- * Exception Carrier can be different objects
--- that are used in functions
-
-class ExceptionCarrier a where
-  getException :: a -> IO ImageWandException
+constructException :: forall t.
+  (t -> Ptr ExceptionType -> IO CString)
+  -> t -> IO ImageWandException
+constructException f w = alloca $ \x -> do
+    s  <- peekCString =<< f w x
+    x' <- peek x
+    return $ ImageWandException (toSeverity x') x' s
+{-# INLINE constructException #-}
 
 instance ExceptionCarrier (Ptr MagickWand) where
-  getException w = alloca $ \x -> do
-        s <- peekCString =<< F.magickGetException w x
-        x' <- peek x
-        return $ ImageWandException x' s
+  getException = constructException F.magickGetException
 
 instance ExceptionCarrier (Ptr PixelIterator) where
-  getException w = alloca $ \x -> do
-       s <- peekCString =<< F.pixelGetIteratorException w x
-       x' <- peek x
-       return $ ImageWandException x' s
+  getException = constructException F.pixelGetIteratorException
 
 instance ExceptionCarrier (Ptr PixelWand) where
-  getException w = alloca $ \x -> do
-      s <- peekCString =<< F.pixelGetException w x
-      x' <- peek x
-      return $ ImageWandException x' s
+  getException = constructException F.pixelGetException
 
 instance ExceptionCarrier (Ptr DrawingWand) where
-  getException w = alloca $ \x -> do
-      s <- peekCString =<< F.drawGetException w x
-      x' <- peek x
-      return $ ImageWandException x' s
+  getException = constructException F.drawGetException
 
 class (Storable a) => Pixel a where
   pixelStorageType :: [a] -> StorageType

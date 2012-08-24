@@ -83,5 +83,15 @@ newtype ExceptionType = ExceptionType { unExceptionType :: CInt }
   ,  registryFatalError  =   RegistryFatalError 
   ,  configureFatalError  =   ConfigureFatalError 
   ,  policyFatalError  =   PolicyFatalError 
-
 }
+
+data ExceptionSeverity  = Undefined | Warning | Error | FatalError
+                        deriving (Eq, Show)
+
+toSeverity :: ExceptionType -> ExceptionSeverity
+toSeverity x = go ((unExceptionType x) `div` 100) 
+  where 
+    go 3 = Warning
+    go 4 = Error
+    go 7 = FatalError
+    go _ = Undefined

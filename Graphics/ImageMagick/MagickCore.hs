@@ -1,6 +1,7 @@
 module Graphics.ImageMagick.MagickCore
-       ( module G ) where
+       ( module X ) where
 
-import           Graphics.ImageMagick.MagickCore.Option as G
-import           Graphics.ImageMagick.MagickCore.Types  as G
-import           Graphics.ImageMagick.MagickCore.Gem    as G
+import           Graphics.ImageMagick.MagickCore.Option    as X
+import           Graphics.ImageMagick.MagickCore.Types     as X
+import           Graphics.ImageMagick.MagickCore.Gem       as X
+import           Graphics.ImageMagick.MagickCore.Exception as X
