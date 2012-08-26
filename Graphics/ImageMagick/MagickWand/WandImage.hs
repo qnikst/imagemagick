@@ -137,8 +137,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageAlphaChannel 
 -- , getImageClipMask 
 -- , getImageBackgroundColor 
--- , getImageBlob 
--- , getImageBlob 
+ , getImageBlob 
 -- , getImageBluePrimary 
 -- , getImageBorderColor 
 -- , getImageChannelDepth 
@@ -338,7 +337,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 import           Control.Applicative                            ((<$>))
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
-import           Data.ByteString                                (ByteString, useAsCString)
+import           Data.ByteString                                (ByteString, useAsCString, packCStringLen)
 import           Data.Text                                      (Text)
 import qualified Data.Text                                      as T
 import           Data.Text.Encoding                             (encodeUtf8)
@@ -845,3 +844,21 @@ getImageDelay w = liftIO $ fromIntegral <$> F.magickGetImageDelay w
 -- | Sets the image delay.
 setImageDelay :: (MonadResource m) => PMagickWand -> Int -> m ()
 setImageDelay w delay = withException_ w $ F.magickSetImageDelay w (fromIntegral delay)
+
+
+-- | MagickGetImageBlob() implements direct to memory image formats. 
+-- It returns the image as a blob (a formatted "file" in memory) and 
+-- its length, starting from the current position in the image sequence.
+-- Use 'setImageFormat' to set the format to write to the blob (GIF, JPEG, PNG, etc.).
+-- ImageMagick blob is automatically freed in this function, returned bytestring
+-- is on haskell heap.
+getImageBlob :: (MonadResource m) => PMagickWand -> m ByteString
+getImageBlob w = liftIO $ do
+  F.magickResetIterator w
+  cl <- alloca $ \x -> do
+          c <- F.magickGetImageBlob w x
+          x' <- fmap fromIntegral (peek x)
+          return (c,x')
+  out <- packCStringLen cl
+  F.magickRelinquishMemory $ castPtr $ fst cl
+  return out

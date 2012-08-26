@@ -26,6 +26,3 @@ instance Exception ImageWandException
 class ExceptionCarrier a where
   getException :: a -> IO ImageWandException
 
-ignore :: ExceptionSeverity -> m a -> m a
-ignore s f = 
-

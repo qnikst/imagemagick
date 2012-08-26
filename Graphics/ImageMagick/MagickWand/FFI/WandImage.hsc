@@ -573,3 +573,14 @@ foreign import ccall "MagickSetImageDelay" magickSetImageDelay
 -- | MagickGetImageDelay() gets the image delay.
 foreign import ccall "MagickGetImageDelay" magickGetImageDelay
   :: Ptr MagickWand -> IO CSize
+
+-- | MagickGetImageBlob() implements direct to memory image formats. 
+-- It returns the image as a blob (a formatted "file" in memory) and 
+-- its length, starting from the current position in the image sequence.
+-- Use MagickSetImageFormat() to set the format to write to the blob (GIF, JPEG, PNG, etc.).
+-- Utilize MagickResetIterator() to ensure the write is from the beginning of the image sequence.
+-- Use MagickRelinquishMemory() to free the blob when you are done with it.
+-- The format of the MagickGetImageBlob method is:
+foreign import ccall "MagickGetImageBlob" magickGetImageBlob
+  :: Ptr MagickWand -> Ptr CSize -> IO (Ptr CChar)
+
