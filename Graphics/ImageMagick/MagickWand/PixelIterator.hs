@@ -54,13 +54,13 @@ pixelGetNextIteratorRow p = do
       (_, Just v) -> return (Just v)
       (_, Nothing) -> return Nothing
 
-pixelGetMagickColor :: (MonadIO m) => PPixelWand -> m PPixelPacket
+pixelGetMagickColor :: (MonadIO m) => PPixelWand -> m PMagickPixelPacket
 pixelGetMagickColor w = liftIO $ do
           c <- mallocForeignPtr
           withForeignPtr c (F.pixelGetMagickColor w)
           return c
 
-pixelSetMagickColor :: (MonadResource m) => PPixelWand -> PPixelPacket -> m ()
+pixelSetMagickColor :: (MonadResource m) => PPixelWand -> PMagickPixelPacket -> m ()
 pixelSetMagickColor w c = liftIO $ withForeignPtr c (F.pixelSetMagickColor w)
 
 pixelSyncIterator :: (MonadResource m) => PPixelIterator -> m ()

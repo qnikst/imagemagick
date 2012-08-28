@@ -17,6 +17,7 @@ type MagickSizeType   = #type MagickSizeType
 type SignedQuantum    = #type SignedQuantum
 type QuantumAny       = #type QuantumAny
 type Quantum          = #type Quantum
+type IndexPacket      = #type IndexPacket
 
 magickEpsilon :: forall a. Fractional a => a
 magickEpsilon   = 1e-10 -- #const MagickEpsilon

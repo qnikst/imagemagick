@@ -32,6 +32,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Layer
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Log
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.PixelPacket
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Types
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType

@@ -87,17 +87,3 @@ setPixelGreen = #poke MagickPixelPacket, green
 setPixelBlue  = #poke MagickPixelPacket, blue
 setPixelIndex = #poke MagickPixelPacket, index
 
-{-
-data MagicPixelPacket = MagickPixelPacket 
-  { storageClass :: ClassType
-  , colorspace   :: ColorspaceType
-  , matte        :: MagickBooleanType
-  , fuzz         :: Double
-  , depth        :: CSize
-  , red          :: MagickRealType
-  , green        :: MagickRealType
-  , blue         :: MagickRealType
-  , opacity      :: MagickRealType
-  , index        :: MagickRealType
-  }
-  -}

@@ -7,6 +7,7 @@ module Graphics.ImageMagick.MagickWand.Types
   ( PPixelIterator
   , PPixelWand
   , PPixelPacket
+  , PMagickPixelPacket
   , PDrawingWand
   , PMagickWand
   , ImageWandException(..)
@@ -16,9 +17,9 @@ module Graphics.ImageMagick.MagickWand.Types
   , Pixel(..)
   ) where
 
-import           Control.Exception.Base
+import           Control.Exception.Base                            ()
 import           Control.Monad.Trans.Resource                      ()
-import           Data.Typeable
+import           Data.Typeable                                     ()
 import qualified Data.Vector.Storable                              as V
 import           Foreign
 import           Foreign.C.String
@@ -34,7 +35,8 @@ type PPixelIterator = Ptr PixelIterator
 type PPixelWand     = Ptr PixelWand
 type PMagickWand    = Ptr MagickWand
 type PDrawingWand   = Ptr DrawingWand
-type PPixelPacket   = ForeignPtr MagickPixelPacket
+type PMagickPixelPacket   = ForeignPtr MagickPixelPacket
+type PPixelPacket   = ForeignPtr PixelPacket
 
 constructException :: forall t.
   (t -> Ptr ExceptionType -> IO CString)
