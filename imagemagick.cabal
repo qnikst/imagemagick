@@ -1,7 +1,7 @@
 Name:                imagemagick
-Version:             0.1
+Version:             0.0.1
 Synopsis:            bindins to imagemagick library
-License:             GPL-3 
+License:             ImageMagick
 License-file:        LICENSE
 Author:              Alexander Vershilov, Kirill Zaborsky
 Maintainer:          alexander.vershilov@gmail.com
@@ -230,6 +230,7 @@ executable            text-effects
 
 executable            gel
   Main-is:            examples/gel.hs
+  Buildable:          False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
