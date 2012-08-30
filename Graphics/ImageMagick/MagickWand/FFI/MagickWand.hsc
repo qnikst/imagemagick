@@ -460,3 +460,21 @@ foreign import ccall "MagickSetLastIterator" magickSetLastIterator
 -- by such methods as MagickIdentifyImage(), MagickGetException(), etc.
 foreign import ccall "MagickRelinquishMemory" magickRelinquishMemory
   :: Ptr () -> IO ()
+
+foreign import ccall "MagickGetColorspace" magickGetColorspace
+  :: Ptr MagickWand -> IO ColorspaceType
+
+foreign import ccall "MagickGetColorspace" magickSetColorspace
+  :: Ptr MagickWand -> ColorspaceType -> IO MagickBooleanType
+
+foreign import ccall "MagickGetCompressionQuality" magickGetCompressionQuality
+  :: Ptr MagickWand -> IO CSize
+
+foreign import ccall "MagickSetCompressionQuality" magickSetCompressionQuality
+  :: Ptr MagickWand -> CSize -> IO MagickBooleanType
+
+foreign import ccall "MagickGetCompression" magickGetCompression
+  :: Ptr MagickWand -> IO CompressionType
+
+foreign import ccall "MagickSetCompression" magickSetCompression
+  :: Ptr MagickWand -> CompressionType -> IO MagickBooleanType

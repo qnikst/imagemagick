@@ -1,7 +1,7 @@
 Name:                imagemagick
 Version:             0.0.1
 Synopsis:            bindins to imagemagick library
-License:             ImageMagick
+License:             OtherLicense
 License-file:        LICENSE
 Author:              Alexander Vershilov, Kirill Zaborsky
 Maintainer:          alexander.vershilov@gmail.com
@@ -23,7 +23,6 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
-                      , Graphics.ImageMagick.MagickCore.Types.FFI.Compress
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Constitute
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Exception
@@ -39,6 +38,8 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.MagickFunction
                       , Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes
                       , Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType 
                       , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  

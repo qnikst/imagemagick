@@ -1,14 +1,14 @@
 {-# LANGUAGE CPP                      #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
-
-module Graphics.ImageMagick.MagickCore.Types.FFI.Compress
+module Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType
     where
 
 import           Foreign.C.Types
 #include <magick/MagickCore.h>
 
 newtype CompressionType = CompressionType { unCompressionType :: CInt }
-          deriving (Eq, Show)
+    deriving (Eq, Show)
+
 
 #{enum CompressionType, CompressionType
   , undefinedCompression = UndefinedCompression

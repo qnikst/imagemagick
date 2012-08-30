@@ -47,9 +47,9 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , deleteImageProperty 
 --    , getAntialias 
 --    , getBackgroundColor 
---    , getColorspace 
---    , getCompression 
---    , getCompressionQuality 
+   , getColorspace 
+   , getCompression 
+   , getCompressionQuality 
 --    , getCopyright 
 --    , getFilename 
 --    , getFont 
@@ -71,7 +71,6 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , getResource 
 --    , getResourceLimit 
 --    , getSamplingFactors 
---    , getSize 
 --    , getSizeOffset 
 --    , getType 
 --    , getVersion 
@@ -79,9 +78,9 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , removeImageProfile 
 --    , setAntialias 
 --    , setBackgroundColor 
---    , setColorspace 
---    , setCompression 
---    , setCompressionQuality 
+  , setColorspace 
+  , setCompression 
+  , setCompressionQuality 
 --    , setDepth 
 --    , setExtract 
 --    , setFilename 
@@ -314,3 +313,24 @@ getImageProfiles w pattern = liftIO $ alloca $ \pn -> do
     return profile
   F.magickRelinquishMemory (castPtr pprofileps)
   return profiles
+
+-- | MagickGetColorspace() gets the wand colorspace type.
+getColorspace :: (MonadResource m) => PMagickWand -> m ColorspaceType
+getColorspace = liftIO . F.magickGetColorspace
+
+-- | MagickSetColorspace() sets the wand colorspace type.
+setColorspace :: (MonadResource m) => PMagickWand -> ColorspaceType -> m ()
+setColorspace w c = withException_ w $ F.magickSetColorspace w c
+
+getCompression :: (MonadResource m) => PMagickWand -> m CompressionType
+getCompression = liftIO . F.magickGetCompression
+
+setCompression :: (MonadResource m) => PMagickWand -> CompressionType -> m ()
+setCompression w c = withException_ w $ F.magickSetCompression w c
+
+getCompressionQuality :: (MonadResource m) => PMagickWand -> m Int
+getCompressionQuality w = liftIO $ F.magickGetCompressionQuality w >>= return . fromIntegral
+
+setCompressionQuality :: (MonadResource m) => PMagickWand -> Int -> m ()
+setCompressionQuality w c  = withException_ w $ F.magickSetCompressionQuality w (fromIntegral c)
+

@@ -6,7 +6,8 @@ import           Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.CacheView        as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType      as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Composite        as X
-import           Graphics.ImageMagick.MagickCore.Types.FFI.Compress         as X
+import           Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType   as X
+import           Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType  as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Constitute       as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Distort          as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Exception        as X
