@@ -1,8 +1,9 @@
+{-# OPTIONS -fno-warn-orphans #-}
 {-# LANGUAGE DeriveDataTypeable  #-}
 {-# LANGUAGE FlexibleInstances   #-}
+{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies        #-}
-{-# LANGUAGE RankNTypes          #-}
 module Graphics.ImageMagick.MagickWand.Types
   ( PPixelIterator
   , PPixelWand
@@ -10,41 +11,38 @@ module Graphics.ImageMagick.MagickWand.Types
   , PMagickPixelPacket
   , PDrawingWand
   , PMagickWand
-  , ImageWandException(..)
+  , MagickWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
   , module Graphics.ImageMagick.MagickCore.Types
   , Pixel(..)
   ) where
 
-import           Control.Exception.Base                            ()
-import           Control.Monad.Trans.Resource                      ()
-import           Data.Typeable                                     ()
 import qualified Data.Vector.Storable                              as V
 import           Foreign
 import           Foreign.C.String
-import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickCore.Exception
+import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand.FFI.DrawingWand   as F
 import           Graphics.ImageMagick.MagickWand.FFI.MagickWand    as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelIterator as F
 import           Graphics.ImageMagick.MagickWand.FFI.PixelWand     as F
 import           Graphics.ImageMagick.MagickWand.FFI.Types
 
-type PPixelIterator = Ptr PixelIterator
-type PPixelWand     = Ptr PixelWand
-type PMagickWand    = Ptr MagickWand
-type PDrawingWand   = Ptr DrawingWand
-type PMagickPixelPacket   = ForeignPtr MagickPixelPacket
-type PPixelPacket   = ForeignPtr PixelPacket
+type PPixelIterator     = Ptr PixelIterator
+type PPixelWand         = Ptr PixelWand
+type PMagickWand        = Ptr MagickWand
+type PDrawingWand       = Ptr DrawingWand
+type PMagickPixelPacket = ForeignPtr MagickPixelPacket
+type PPixelPacket       = ForeignPtr PixelPacket
 
 constructException :: forall t.
   (t -> Ptr ExceptionType -> IO CString)
-  -> t -> IO ImageWandException
+  -> t -> IO MagickWandException
 constructException f w = alloca $ \x -> do
     s  <- peekCString =<< f w x
     x' <- peek x
-    return $ ImageWandException (toSeverity x') x' s
+    return $ MagickWandException (toSeverity x') x' s
 {-# INLINE constructException #-}
 
 instance ExceptionCarrier (Ptr MagickWand) where

@@ -274,14 +274,6 @@ the magick wand.
 
 -- * Image functions
 
--- | MagickReadImage() reads an image or image sequence. The images are inserted at
--- the current image pointer position. Use MagickSetFirstIterator(), MagickSetLastIterator,
--- or MagickSetImageIndex() to specify the current image pointer position at the beginning
--- of the image list, the end, or anywhere in-between respectively.
-
-foreign import ccall "MagickReadImage" magickReadImage
-  :: Ptr MagickWand -> CString -> IO MagickBooleanType
-
 -- | MagickNextImage() sets the next image in the wand as the current image.
 -- It is typically used after MagickResetIterator(), after which its first use will
 -- set the first image as the current image (unless the wand is empty).

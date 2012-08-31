@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 module Graphics.ImageMagick.MagickCore.Exception
-  ( ImageWandException(..)
+  ( MagickWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
   ) where
@@ -11,18 +11,18 @@ import           Foreign
 import           Foreign.C.String
 import           Graphics.ImageMagick.MagickCore.Types
 
-data ImageWandException = ImageWandException ExceptionSeverity ExceptionType String
+data MagickWandException = MagickWandException ExceptionSeverity ExceptionType String
   deriving (Typeable)
 
 
-instance Show (ImageWandException) where
-  show (ImageWandException _ x s) = concat [show x, ": ", s]
+instance Show (MagickWandException) where
+  show (MagickWandException _ x s) = concat [show x, ": ", s]
 
-instance Exception ImageWandException
+instance Exception MagickWandException
 
 -- * Exception Carrier can be different objects
 -- that are used in functions
 
 class ExceptionCarrier a where
-  getException :: a -> IO ImageWandException
+  getException :: a -> IO MagickWandException
 

@@ -209,6 +209,17 @@ foreign import ccall "MagickSetImageVirtualPixelMethod" magickSetVirtualPixelMet
 foreign import ccall "MagickAppendImages" magickAppendImages
   :: Ptr MagickWand -> MagickBooleanType -> IO (Ptr MagickWand)
 
+-- | MagickReadImage() reads an image or image sequence. The images are inserted at
+-- the current image pointer position. Use MagickSetFirstIterator(), MagickSetLastIterator,
+-- or MagickSetImageIndex() to specify the current image pointer position at the beginning
+-- of the image list, the end, or anywhere in-between respectively.
+foreign import ccall "MagickReadImage" magickReadImage
+  :: Ptr MagickWand -> CString -> IO MagickBooleanType
+
+-- | MagickReadImageBlob() reads an image or image sequence from a blob.
+foreign import ccall "MagickReadImageBlob" magickReadImageBlob
+  :: Ptr MagickWand -> Ptr () -> CSize -> IO MagickBooleanType
+
 -- | MagickWriteImage() writes an image to the specified filename. If the filename
 -- parameter is NULL, the image is written to the filename set by MagickReadImage()
 -- or MagickSetImageFilename().
@@ -574,8 +585,8 @@ foreign import ccall "MagickSetImageDelay" magickSetImageDelay
 foreign import ccall "MagickGetImageDelay" magickGetImageDelay
   :: Ptr MagickWand -> IO CSize
 
--- | MagickGetImageBlob() implements direct to memory image formats. 
--- It returns the image as a blob (a formatted "file" in memory) and 
+-- | MagickGetImageBlob() implements direct to memory image formats.
+-- It returns the image as a blob (a formatted "file" in memory) and
 -- its length, starting from the current position in the image sequence.
 -- Use MagickSetImageFormat() to set the format to write to the blob (GIF, JPEG, PNG, etc.).
 -- Utilize MagickResetIterator() to ensure the write is from the beginning of the image sequence.
@@ -584,3 +595,32 @@ foreign import ccall "MagickGetImageDelay" magickGetImageDelay
 foreign import ccall "MagickGetImageBlob" magickGetImageBlob
   :: Ptr MagickWand -> Ptr CSize -> IO (Ptr CChar)
 
+-- | MagickGetImageDepth() gets the image depth.
+foreign import ccall "MagickGetImageDepth" magickGetImageDepth
+  :: Ptr MagickWand -> IO CSize
+
+-- | MagickGetImageFormat() returns the format of a particular image in a sequence.
+foreign import ccall "MagickGetImageFormat" magickGetImageFormat
+  :: Ptr MagickWand -> IO CString
+
+-- | MagickSetImageFormat() sets the format of a particular image in a sequence.
+foreign import ccall "MagickSetImageFormat" magickSetImageFormat
+  :: Ptr MagickWand -> CString -> IO MagickBooleanType
+
+-- | MagickStripImage() strips an image of all profiles and comments.
+foreign import ccall "MagickStripImage" magickStripImage
+  :: Ptr MagickWand -> IO MagickBooleanType
+
+-- | MagickGetImageSignature() generates an SHA-256 message digest for the image pixel stream.
+foreign import ccall "MagickGetImageSignature" magickGetImageSignature
+  :: Ptr MagickWand -> IO CString
+
+-- | MagickGetImageAlphaChannel() returns MagickFalse if the image alpha
+-- channel is not activated. That is, the image is RGB rather than RGBA
+-- or CMYK rather than CMYKA.
+foreign import ccall "MagickGetImageAlphaChannel" magickGetImageAlphaChannel
+  :: Ptr MagickWand -> IO MagickBooleanType
+
+-- | MagickSetImageType() sets the image type.
+foreign import ccall "MagickSetImageType" magickSetImageType
+  :: Ptr MagickWand -> ImageType -> IO MagickBooleanType

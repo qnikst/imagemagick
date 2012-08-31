@@ -1,11 +1,11 @@
 Name:                imagemagick
 Version:             0.0.1
-Synopsis:            bindins to imagemagick library
+Synopsis:            bindings to imagemagick library
 License:             OtherLicense
 License-file:        LICENSE
 Author:              Alexander Vershilov, Kirill Zaborsky
 Maintainer:          alexander.vershilov@gmail.com
--- Copyright:           
+-- Copyright:
 Category:            Graphics
 Build-type:          Simple
 Cabal-version:       >=1.8
@@ -17,17 +17,20 @@ Flag buildExamples
 
 Library
   Exposed-modules:      Graphics.ImageMagick.MagickCore
+                      , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.FFI.Log
                       , Graphics.ImageMagick.MagickCore.FFI.MagickCore
+                      , Graphics.ImageMagick.MagickCore.FFI.Mime
                       , Graphics.ImageMagick.MagickCore.FFI.Option
-                      , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Compress
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Constitute
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Exception
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Fx
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Geometry
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Image
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Layer
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Log
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
@@ -42,7 +45,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType 
                       , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
-                      , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing  
+                      , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
                       , Graphics.ImageMagick.MagickWand.FFI.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.PixelIterator
@@ -61,11 +64,12 @@ Library
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
   Build-tools:        hsc2hs
-  
+
+
 executable            resize
   If flag(buildExamples)
-    Buildable:        True 
-  Else 
+    Buildable:        True
+  Else
     Buildable:        False
   Main-is:            examples/resize.hs
   Build-depends:       base
@@ -80,10 +84,11 @@ executable            resize
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
 
+
 executable            extent
   If flag(buildExamples)
-    Buildable:        True 
-  Else 
+    Buildable:        True
+  Else
     Buildable:        False
   Main-is:            examples/extent.hs
   Build-depends:       base
@@ -98,10 +103,11 @@ executable            extent
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
 
+
 executable            floodfill
   If flag(buildExamples)
-    Buildable:        True 
-  Else 
+    Buildable:        True
+  Else
     Buildable:        False
   Main-is:            examples/floodfill.hs
   Build-depends:       base
@@ -116,9 +122,13 @@ executable            floodfill
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
 
+
 executable            cyclops
   Main-is:            examples/cyclops.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -130,11 +140,14 @@ executable            cyclops
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            clipmask
   Main-is:            examples/clipmask.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -146,11 +159,11 @@ executable            clipmask
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            paint-trans
   If flag(buildExamples)
-    Buildable:        True 
+    Buildable:        True
   Else
     Buildable:        False
   Main-is:            examples/trans_paint.hs
@@ -166,9 +179,13 @@ executable            paint-trans
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
 
+
 executable            round-mask
   Main-is:            examples/round_mask.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -180,11 +197,14 @@ executable            round-mask
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            make-tile
   Main-is:            examples/make_tile.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -199,7 +219,10 @@ executable            make-tile
 
 executable            draw-shapes
   Main-is:            examples/draw_shapes.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -211,11 +234,14 @@ executable            draw-shapes
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            text-effects
   Main-is:            examples/text_effects.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:       base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -227,11 +253,14 @@ executable            text-effects
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            gel
   Main-is:            examples/gel.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -247,7 +276,10 @@ executable            gel
 
 executable            reflect
   Main-is:            examples/reflect.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -259,11 +291,14 @@ executable            reflect
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            3dlogo
   Main-is:            examples/3dlogo.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -275,11 +310,14 @@ executable            3dlogo
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            affine
   Main-is:            examples/affine.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -291,11 +329,15 @@ executable            affine
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            grayscale
   Main-is:            examples/grayscale.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
+
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -307,11 +349,14 @@ executable            grayscale
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            modulate
   Main-is:            examples/modulate.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -324,10 +369,14 @@ executable            modulate
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
   Buildable:          False
+
 
 executable            landscape3d
   Main-is:            examples/landscape_3d.hs
-  Buildable:          False
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -339,9 +388,14 @@ executable            landscape3d
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
+
 
 executable            tilt-shift
   Main-is:            examples/tilt_shift.hs
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -353,10 +407,14 @@ executable            tilt-shift
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            bunny
   Main-is:            examples/bunny.hs
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -368,10 +426,14 @@ executable            bunny
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            pixel-mod
   Main-is:            examples/pixel_mod.hs
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -383,10 +445,14 @@ executable            pixel-mod
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          False
+
 
 executable            wandtest
   Main-is:            examples/wandtest.hs
+  If flag(buildExamples)
+    Buildable:        True
+  Else
+    Buildable:        False
   Build-depends:        base
                       , resourcet == 0.3.*
                       , transformers == 0.3.*
@@ -398,4 +464,31 @@ executable            wandtest
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
-  Buildable:          True
+
+
+test-suite           image-tests
+  type:              exitcode-stdio-1.0
+  main-is:           test/ImageTest.hs
+  Build-Depends:     base
+                     , lifted-base == 0.1.*
+                     , directory
+                     , resourcet == 0.3.*
+                     , transformers == 0.3.*
+                     , vector == 0.9.*
+                     , bytestring == 0.9.*
+                     , text == 0.11.*
+                     , system-filepath == 0.4.*
+                     , imagemagick
+                     , QuickCheck >= 2
+                     , HUnit
+                     , test-framework
+                     , test-framework-hunit
+                     , test-framework-quickcheck2
+  Ghc-options:       -Wall
+  extensions:        EmptyDataDecls
+  pkgconfig-depends: ImageMagick, MagickWand
+
+
+source-repository head
+  type:     git
+  location: git://github.com/qnikst/imagemagick.git

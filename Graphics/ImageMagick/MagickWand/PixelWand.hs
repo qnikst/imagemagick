@@ -1,44 +1,48 @@
 {-# LANGUAGE CPP #-}
 module Graphics.ImageMagick.MagickWand.PixelWand
   ( pixelWand
--- , clearPixelWand 
---   , cloneWand 
---   , cloneWands 
---   , isWandSimilar 
---   , isWand 
-   , setColorCount, getColorCount 
+-- , clearPixelWand
+--   , cloneWand
+--   , cloneWands
+   , isPixelWandSimilar
+--   , isPixelWand
+   , setColorCount, getColorCount
   -- ** Literal names
    , setColor
-   , getColorAsString, getColorAsNormalizedString 
+   , getColorAsString, getColorAsNormalizedString
    -- HSL
-   , getHSL, setHSL 
-   , getMagickColor, setMagickColor 
-   , setColorFromWand 
-   , getQuantumColor, setQuantumColor 
+   , getHSL, setHSL
+   , getMagickColor, setMagickColor
+   , setColorFromWand
+   , getQuantumColor, setQuantumColor
    -- ** Color parts
    -- Index
-   , getIndex, setIndex 
+   , getIndex, setIndex
    -- Fuzz
-   , getFuzz, setFuzz 
+   , getFuzz, setFuzz
    -- Alpha
-   , getOpacity, getOpacityQuantum, setOpacity, setOpacityQuantum 
-   , getAlpha, getAlphaQuantum, setAlpha, setAlphaQuantum 
+   , getOpacity, getOpacityQuantum, setOpacity, setOpacityQuantum
+   , getAlpha, getAlphaQuantum, setAlpha, setAlphaQuantum
    -- RGB
-   , getRed, setRed, getRedQuantum, setRedQuantum, setBlueQuantum, getBlue, setBlue, getBlueQuantum
-   , setGreenQuantum, getGreen, getGreenQuantum, setGreen, setGreenQuantum 
+   , getRed, getRedQuantum, setRed, setRedQuantum
+   , getBlue, getBlueQuantum, setBlue, setBlueQuantum
+   , getGreen, getGreenQuantum, setGreen, setGreenQuantum
    -- CMYK
-   , getCyan, getCyanQuantum, setCyan, setCyanQuantum, getMagenta, getMagentaQuantum, setMagenta
-   , setMagentaQuantum, getYellow, getYellowQuantum, setYellow, setYellowQuantum, getBlack, getBlackQuantum 
-   , setBlack, setBlackQuantum 
+   , getCyan, getCyanQuantum, setCyan, setCyanQuantum
+   , getMagenta, getMagentaQuantum, setMagenta, setMagentaQuantum
+   , getYellow, getYellowQuantum, setYellow, setYellowQuantum
+   , getBlack, getBlackQuantum, setBlack, setBlackQuantum
   ) where
 
 import           Control.Monad                                 (void)
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
-import           Data.ByteString                               (ByteString, useAsCString, packCString)
+import           Data.ByteString                               (ByteString,
+                                                                packCString,
+                                                                useAsCString)
 import           Foreign                                       hiding (void)
 
-import           Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
+import qualified Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
 
@@ -66,10 +70,10 @@ getColorCount :: (MonadResource m) => PPixelWand -> m Int
 getColorCount w = liftIO (F.pixelGetColorCount w) >>= return . fromIntegral
 
 getColorAsString :: (MonadResource m) => PPixelWand -> m ByteString
-getColorAsString w = liftIO $ F.pixelGetColorAsString w >>= packCString 
+getColorAsString w = liftIO $ F.pixelGetColorAsString w >>= packCString
 
 getColorAsNormalizedString :: (MonadResource m) => PPixelWand -> m ByteString
-getColorAsNormalizedString w = liftIO $ F.pixelGetColorAsNormalizedString w >>= packCString 
+getColorAsNormalizedString w = liftIO $ F.pixelGetColorAsNormalizedString w >>= packCString
 
 getHSL :: (MonadResource m) => PPixelWand -> m (Double, Double, Double)
 getHSL w = liftIO $ fmap (map3 realToFrac) (with3 (F.pixelGetHSL w))
@@ -86,7 +90,7 @@ getIndex = liftIO . ((fmap fromIntegral) . F.pixelGetIndex)
 setIndex :: (MonadResource m) => PPixelWand -> IndexPacket -> m ()
 setIndex w i = liftIO $ F.pixelSetIndex w (fromIntegral i)
 
-getQuantumColor :: (MonadResource m) => PPixelWand -> m PPixelPacket 
+getQuantumColor :: (MonadResource m) => PPixelWand -> m PPixelPacket
 getQuantumColor w = liftIO $ do
   p <- mallocForeignPtr
   withForeignPtr p (F.pixelGetQuantumColor w)
@@ -95,12 +99,14 @@ getQuantumColor w = liftIO $ do
 setQuantumColor :: (MonadResource m) => PPixelWand -> PPixelPacket -> m ()
 setQuantumColor w p = liftIO $ withForeignPtr p (F.pixelSetQuantumColor w)
 
-getFuzz :: (MonadResource m) => PPixelWand -> m Double 
+getFuzz :: (MonadResource m) => PPixelWand -> m Double
 getFuzz = liftIO . ((fmap realToFrac) . F.pixelGetFuzz)
 
 setFuzz :: (MonadResource m) => PPixelWand -> Double -> m ()
 setFuzz w i = liftIO $ F.pixelSetFuzz w (realToFrac i)
 
+isPixelWandSimilar :: (MonadResource m) => PPixelWand -> PPixelWand -> Double -> m Bool
+isPixelWandSimilar pw1 pw2 fuzz =  fromMBool $ F.isPixelWandSimilar pw1 pw2 (realToFrac fuzz)
 
 setRedQuantum :: (MonadResource m) => PPixelWand -> Quantum -> m ()
 setRedQuantum = (liftIO .) . F.pixelSetRedQuantum
@@ -193,7 +199,7 @@ getMagentaQuantum :: (MonadResource m) => PPixelWand -> m Quantum
 getMagentaQuantum =  liftIO . F.pixelGetMagentaQuantum
 
 setMagenta :: (MonadResource m) => PPixelWand -> Double -> m ()
-setMagenta = (liftIO .) . (. realToFrac) . F.pixelSetMagenta 
+setMagenta = (liftIO .) . (. realToFrac) . F.pixelSetMagenta
 
 getMagenta :: (MonadResource m) => PPixelWand -> m Double
 getMagenta = (fmap realToFrac) . liftIO . F.pixelGetMagenta
@@ -211,8 +217,8 @@ getYellow :: (MonadResource m) => PPixelWand -> m Double
 getYellow = (fmap realToFrac) . liftIO . F.pixelGetYellow
 
 ---
-with3 f = alloca (\x -> alloca (\y -> alloca (\z -> do 
-              f x y z 
+with3 f = alloca (\x -> alloca (\y -> alloca (\z -> do
+              f x y z
               x' <- peek x
               y' <- peek y
               z' <- peek z

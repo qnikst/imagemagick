@@ -6,24 +6,20 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , magickWand
   , wandResource
 --  , magickWandFromImage
---  , isMagickWand 
+--  , isMagickWand
   , cloneMagickWand
---  , clearMagickWand 
-  -- * Iratation 
-  , magickIterate
-  , magickIterateReverse
---  , getIteratorIndex 
-  , readImage
+--  , clearMagickWand
   , getSize
   , setSize
   , setImageArtifact
   , deleteImageArtifact
   , getIteratorIndex
   , setIteratorIndex
---  , setFirstIterator 
---  , setLastIterator 
+--  , setFirstIterator
+--  , setLastIterator
   , resetIterator
   , magickIterate
+  , magickIterateReverse
   , deleteOption
   , getOption
   , setOption
@@ -32,74 +28,74 @@ module Graphics.ImageMagick.MagickWand.MagickWand
   , getImageProperty
   , setImageProperty
   , getImageProperties
-  , setImageFormat
   , getImageProfile
   , removeImageProfile
   , setImageProfile
   , getImageProfiles
---  , queryConfigureOption 
---  , queryConfigureOptions 
---  , queryFontMetrics 
---  , queryMultilineFontMetrics 
---  , queryFonts 
---  , relinquishMemory 
+--  , queryConfigureOption
+--  , queryConfigureOptions
+--  , queryFontMetrics
+--  , queryMultilineFontMetrics
+--  , queryFonts
+--  , relinquishMemory
 --  , deleteImageArtifact
---    , deleteImageProperty 
---    , getAntialias 
---    , getBackgroundColor 
-   , getColorspace 
-   , getCompression 
-   , getCompressionQuality 
---    , getCopyright 
---    , getFilename 
---    , getFont 
---    , getFormat 
---    , getGravity 
---    , getHomeURL 
---    , getImageArtifact 
---    , getImageArtifacts 
---    , getInterlaceScheme 
---    , getInterpolateMethod 
---    , getOrientation 
---    , getPackageName 
---    , getPage 
---    , getPointsize 
---    , getQuantumDepth 
---    , getQuantumRange 
---    , getReleaseDate 
---    , getResolution 
---    , getResource 
---    , getResourceLimit 
---    , getSamplingFactors 
---    , getSizeOffset 
---    , getType 
---    , getVersion 
---    , profileImage 
---    , removeImageProfile 
---    , setAntialias 
---    , setBackgroundColor 
-  , setColorspace 
-  , setCompression 
-  , setCompressionQuality 
---    , setDepth 
---    , setExtract 
---    , setFilename 
---    , setFont 
---    , setFormat 
---    , setGravity 
---    , setImageArtifact 
---    , setImageProfile 
---    , setInterlaceScheme 
---    , setInterpolateMethod 
---    , setOrientation 
---    , setPage 
---    , setPassphrase 
---    , setPointsize 
---    , setProgressMonitor 
---    , setResourceLimit 
---    , setResolution 
---    , setSamplingFactors 
---    , setSizeOffset 
+--    , deleteImageProperty
+--    , getAntialias
+--    , getBackgroundColor
+   , getColorspace
+   , getCompression
+   , getCompressionQuality
+--    , getCopyright
+--    , getFilename
+--    , getFont
+--    , getFormat
+--    , getGravity
+--    , getHomeURL
+--    , getImageArtifact
+--    , getImageArtifacts
+--    , getInterlaceScheme
+--    , getInterpolateMethod
+--    , getOrientation
+--    , getPackageName
+--    , getPage
+--    , getPointsize
+--    , getQuantumDepth
+--    , getQuantumRange
+--    , getReleaseDate
+--    , getResolution
+--    , getResource
+--    , getResourceLimit
+--    , getSamplingFactors
+--    , getSize
+--    , getSizeOffset
+--    , getType
+--    , getVersion
+--    , profileImage
+--    , removeImageProfile
+--    , setAntialias
+--    , setBackgroundColor
+  , setColorspace
+  , setCompression
+  , setCompressionQuality
+--    , setDepth
+--    , setExtract
+--    , setFilename
+--    , setFont
+--    , setFormat
+--    , setGravity
+--    , setImageArtifact
+--    , setImageProfile
+--    , setInterlaceScheme
+--    , setInterpolateMethod
+--    , setOrientation
+--    , setPage
+--    , setPassphrase
+--    , setPointsize
+--    , setProgressMonitor
+--    , setResourceLimit
+--    , setResolution
+--    , setSamplingFactors
+--    , setSizeOffset
 --    , setType
   ) where
 
@@ -110,11 +106,12 @@ import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString
 import           Data.Text                                          (Text)
-import           Data.Text.Encoding                                 (decodeUtf8, encodeUtf8)
+import           Data.Text.Encoding                                 (decodeUtf8,
+                                                                     encodeUtf8)
 import           Data.Vector.Storable                               (Vector)
 import qualified Data.Vector.Storable                               as V
-import           Filesystem.Path.CurrentOS
-import           Foreign                                            hiding (void)
+import           Foreign                                            hiding
+                                                                     (void)
 import           Foreign.C.String
 import           Foreign.C.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand     as F
@@ -122,7 +119,6 @@ import           Graphics.ImageMagick.MagickWand.FFI.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.WandProperties as F
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
-import           Prelude                                            hiding (FilePath)
 
 -- | Create magic wand environment and closes it at the
 -- end of the work, should wrap all MagickWand functions
@@ -161,9 +157,6 @@ wandResource f = allocate f destroy
 
 cloneMagickWand :: (MonadResource m) => Ptr MagickWand -> m (ReleaseKey, Ptr MagickWand)
 cloneMagickWand = wandResource . F.cloneMagickWand
-
-readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
-readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
 
 setSize :: (MonadResource m) => Ptr MagickWand -> Int -> Int -> m ()
 setSize w cols rows = withException_ w $ F.magickSetSize w (fromIntegral cols) (fromIntegral rows)
@@ -220,10 +213,6 @@ setOption :: (MonadResource m) => Ptr MagickWand -> Text -> Text -> m ()
 setOption w key value =
   withException_ w $ useAsCString (encodeUtf8 key) $
   \cstr -> useAsCString (encodeUtf8 value) (F.magickSetOption w cstr)
-
-setImageFormat :: (MonadResource m) => Ptr MagickWand -> Text -> m ()
-setImageFormat w format =
-  withException_ w $ useAsCString (encodeUtf8 format) (F.magickSetImageFormat w)
 
 getOptions :: (MonadResource m) => Ptr MagickWand -> Text -> m [Text]
 getOptions w pattern = liftIO $ alloca $ \pn -> do

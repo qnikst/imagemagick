@@ -21,11 +21,7 @@ foreign import ccall "DestroyPixelWand" destroyPixelWand
 foreign import ccall "DestroyPixelWands" destroyPixelWands
   :: Ptr PixelWand -> CSize -> IO ()
 
--- IsPixelWandSimilar() returns MagickTrue if the distance between two colors is less than the specified distance.
-foreign import ccall "IsPixelWandSimilar" isPixelWandSimilar
-  :: Ptr PixelWand -> Ptr PixelWand -> CDouble -> IO MagickBooleanType
-  
-foreign import ccall "IsPixelWand" isPixelWand 
+foreign import ccall "IsPixelWand" isPixelWand
   :: Ptr PixelWand -> IO MagickBooleanType
 
 -- | PixelGetMagickColor() gets the magick color of the pixel wand.
@@ -68,7 +64,6 @@ foreign import ccall "PixelGetException" pixelGetException
 foreign import ccall "PixelGetExceptionType" pixelGetExceptionType
   :: Ptr PixelWand -> IO ExceptionType
 
-
 -- | PixelGetColorAsString() returnsd the color of the pixel wand as a string.
 foreign import ccall "PixelGetColorAsString" pixelGetColorAsString
   :: Ptr PixelWand -> IO CString
@@ -77,7 +72,9 @@ foreign import ccall "PixelGetColorAsString" pixelGetColorAsString
 foreign import ccall "PixelGetColorAsNormalizedString" pixelGetColorAsNormalizedString
   :: Ptr PixelWand -> IO CString
 
-
+-- | PixelGetRed) returns the normalized red color of the pixel wand.
+foreign import ccall "PixelSetRed" pixelSetRed
+  :: Ptr PixelWand -> CDouble -> IO ()
 
 -- | PixelSetRedQuantum() sets the red color of the pixel wand.
 foreign import ccall "PixelSetRedQuantum" pixelSetRedQuantum
@@ -87,10 +84,6 @@ foreign import ccall "PixelSetRedQuantum" pixelSetRedQuantum
 foreign import ccall "PixelGetRed" pixelGetRed
   :: Ptr PixelWand -> IO CDouble
 
--- | PixelGetRed) returns the normalized red color of the pixel wand.
-foreign import ccall "PixelSetRed" pixelSetRed
-  :: Ptr PixelWand -> CDouble -> IO ()
-
 -- | PixelGetRedQuantum() returns the red color of the pixel wand.
 foreign import ccall "PixelGetRedQuantum" pixelGetRedQuantum
   :: Ptr PixelWand -> IO Quantum
@@ -99,19 +92,19 @@ foreign import ccall "PixelGetRedQuantum" pixelGetRedQuantum
 foreign import ccall "PixelGetGreen" pixelGetGreen
   :: Ptr PixelWand -> IO CDouble
 
--- | PixelGetGreen) returns the normalized red color of the pixel wand.
-foreign import ccall "PixelSetGreen" pixelSetGreen
-  :: Ptr PixelWand -> CDouble -> IO ()
-
 -- | PixelGetGreenQuantum() returns the green color of the pixel wand.
 foreign import ccall "PixelGetGreenQuantum" pixelGetGreenQuantum
   :: Ptr PixelWand -> IO Quantum
+
+-- | PixelSetGreen() sets the green color of the pixel wand.
+foreign import ccall "PixelSetGreen" pixelSetGreen
+  :: Ptr PixelWand -> CDouble -> IO ()
 
 -- | PixelSetGreenQuantum() sets the green color of the pixel wand.
 foreign import ccall "PixelSetGreenQuantum" pixelSetGreenQuantum
   :: Ptr PixelWand -> Quantum -> IO ()
 
--- | PixelGetBlue) returns the normalized blue color of the pixel wand.
+-- | PixelGetBlue() returns the normalized blue color of the pixel wand.
 foreign import ccall "PixelGetBlue" pixelGetBlue
   :: Ptr PixelWand -> IO CDouble
 
@@ -125,6 +118,13 @@ foreign import ccall "PixelGetBlueQuantum" pixelGetBlueQuantum
 -- | PixelSetBlueQuantum() sets the blue color of the pixel wand.
 foreign import ccall "PixelSetBlueQuantum" pixelSetBlueQuantum
   :: Ptr PixelWand -> Quantum -> IO ()
+
+-- | IsPixelWandSimilar() returns MagickTrue if the distance between
+-- two colors is less than the specified distance.
+foreign import ccall "IsPixelWandSimilar" isPixelWandSimilar
+  :: Ptr PixelWand -> Ptr PixelWand
+     -> CDouble -- ^ any two colors that are less than or equal to this distance squared are consider similar
+     -> IO MagickBooleanType
 
 -- | PixelGetCyan) returns the normalized blue color of the pixel wand.
 foreign import ccall "PixelGetCyan" pixelGetCyan

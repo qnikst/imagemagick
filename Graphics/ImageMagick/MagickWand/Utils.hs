@@ -17,8 +17,6 @@ import           Graphics.ImageMagick.MagickWand.Types
 fromMBool :: (MonadResource m) => IO MagickBooleanType -> m Bool
 fromMBool = liftM (==mTrue) . liftIO
 {-# INLINE fromMBool #-}
-{-# DEPRECATED fromMBool "use with exception instead" #-}
-
 
 withException :: (MonadResource m, ExceptionCarrier a) => a -> IO (MagickBooleanType, b) -> m b
 withException a f = liftIO $ do

@@ -1,12 +1,13 @@
-{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 -- | Example taken from: http://members.shaw.ca/el.supremo/MagickWand/gel.htm
 -- "Gel" Effects example
 -- http://www.imagemagick.org/Usage/advanced/#gel_effects
 
-import           Prelude hiding (catch)
-import           Graphics.ImageMagick.MagickWand
 import           Control.Exception.Lifted
-import           Control.Monad (void)
+import           Control.Monad                   (void)
+import           Graphics.ImageMagick.MagickWand
+import           Prelude                         hiding (catch)
 
 
 main :: IO ()
@@ -55,7 +56,7 @@ convert gel_shape.png \
     (_,mwc) <- cloneMagickWand mw
     (_,mwf) <- fxImage mwc "A"
     -- TODO: fails, should we ignore it?
-    ignoreExceptions (mw `setImageAlphaChannel` deactivateAlphaChannel) 
+    ignoreExceptions (mw `setImageAlphaChannel` deactivateAlphaChannel)
 
     blurImage mwf 0 12
     shadeImage mwf True 110 0
@@ -141,4 +142,4 @@ convert gel_highlight.png \
     (_,mw') <- mergeImageLayers mwf flattenLayer
     writeImage mw' (Just "gel_button.png")
 
-ignoreExceptions f = catch (void f) (\(_::ImageWandException) -> return ())
+ignoreExceptions f = catch (void f) (\(_::MagickWandException) -> return ())

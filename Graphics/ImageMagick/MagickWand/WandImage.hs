@@ -65,263 +65,263 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , getNumberImages
   , getImage
   , compareImageLayers
--- , getImageFromMagickWand 
--- , adaptiveBlurImage 
--- , adaptiveResizeImage 
--- , adaptiveSharpenImage 
--- , adaptiveThresholdImage 
--- , addImage 
--- , addNoiseImage 
--- , affineTransformImage 
--- , annotateImage 
--- , animateImages 
--- , appendImages 
--- , autoGammaImage 
--- , autoLevelImage 
--- , blackThresholdImage 
--- , blueShiftImage 
--- , blurImage 
--- , borderImage 
--- , brightnessContrastImage 
--- , charcoalImage 
--- , chopImage 
--- , clampImage 
--- , clipImage 
--- , clipImagePath 
--- , clutImage 
--- , coalesceImages 
--- , colorDecisionListImage 
--- , colorizeImage 
--- , colorMatrixImage 
--- , combineImages 
--- , commentImage 
--- , compareImageChannels 
--- , compareImageLayers 
--- , compareImages 
--- , compositeImage 
--- , compositeLayers 
--- , contrastImage 
--- , contrastStretchImage 
--- , convolveImage 
--- , cropImage 
--- , cycleColormapImage 
--- , constituteImage 
--- , decipherImage 
--- , deconstructImages 
--- , deskewImage 
--- , despeckleImage 
--- , destroyImage 
--- , displayImage 
--- , displayImages 
--- , distortImage 
--- , drawImage 
--- , edgeImage 
--- , embossImage 
--- , encipherImage 
--- , enhanceImage 
--- , equalizeImage 
--- , evaluateImage 
--- , exportImagePixels 
--- , extentImage 
--- , filterImage 
--- , flipImage 
--- , floodfillPaintImage 
--- , flopImage 
--- , forwardFourierTransformImage 
--- , frameImage 
--- , functionImage 
--- , fxImage 
--- , gammaImage 
--- , gaussianBlurImage 
--- , getImage 
--- , getImageAlphaChannel 
--- , getImageClipMask 
--- , getImageBackgroundColor 
- , getImageBlob 
--- , getImageBluePrimary 
--- , getImageBorderColor 
--- , getImageChannelDepth 
--- , getImageChannelDistortion 
--- , getImageChannelDistortions 
--- , getImageChannelFeatures 
--- , getImageChannelKurtosis 
--- , getImageChannelMean 
--- , getImageChannelRange 
--- , getImageChannelStatistics 
--- , getImageColormapColor 
--- , getImageColors 
--- , getImageColorspace 
--- , getImageCompose 
--- , getImageCompression 
--- , getImageCompressionQuality 
--- , getImageDelay 
--- , getImageDepth 
--- , getImageDistortion 
--- , getImageDispose 
--- , getImageEndian 
--- , getImageFilename 
--- , getImageFormat 
--- , getImageFuzz 
--- , getImageGamma 
--- , getImageGravity 
--- , getImageGreenPrimary 
--- , getImageHeight 
--- , getImageHistogram 
--- , getImageInterlaceScheme 
--- , getImageInterpolateMethod 
--- , getImageIterations 
--- , getImageLength 
--- , getImageMatteColor 
--- , getImageOrientation 
--- , getImagePage 
--- , getImagePixelColor 
--- , getImageRedPrimary 
--- , getImageRegion 
--- , getImageRenderingIntent 
--- , getImageResolution 
--- , getImageSignature 
--- , getImageTicksPerSecond 
--- , getImageType 
--- , getImageUnits 
--- , getImageVirtualPixelMethod 
--- , getImageWhitePoint 
--- , getImageWidth 
--- , getNumberImages 
--- , getImageTotalInkDensity 
--- , haldClutImage 
--- , hasNextImage 
--- , hasPreviousImage 
--- , identifyImage 
--- , implodeImage 
--- , importImagePixels 
--- , inverseFourierTransformImage 
--- , labelImage 
--- , levelImage 
--- , linearStretchImage 
--- , liquidRescaleImage 
--- , magnifyImage 
--- , mergeImageLayers 
--- , minifyImage 
--- , modulateImage 
--- , montageImage 
--- , morphImages 
--- , morphologyImage 
--- , motionBlurImage 
--- , negateImage 
--- , newImage 
--- , nextImage 
--- , normalizeImage 
--- , oilPaintImage 
--- , opaquePaintImage 
--- , optimizeImageLayers 
--- , optimizeImageTransparency 
--- , orderedPosterizeImage 
--- , pingImage 
--- , pingImageBlob 
--- , pingImageFile 
--- , polaroidImage 
--- , posterizeImage 
--- , previewImages 
--- , previousImage 
--- , quantizeImage 
--- , quantizeImages 
--- , radialBlurImage 
--- , raiseImage 
--- , randomThresholdImage 
--- , readImage 
--- , readImageBlob 
--- , readImageFile 
--- , remapImage 
--- , resampleImage 
--- , resetImagePage 
--- , resizeImage 
--- , rollImage 
--- , rotateImage 
--- , sampleImage 
--- , scaleImage 
--- , segmentImage 
--- , selectiveBlurImage 
--- , separateImageChannel 
--- , sepiaToneImage 
--- , setImage 
--- , setImageAlphaChannel 
--- , setImageBackgroundColor 
--- , setImageBias 
--- , setImageBluePrimary 
--- , setImageBorderColor 
--- , setImageChannelDepth 
--- , setImageClipMask 
--- , setImageColor 
--- , setImageColormapColor 
--- , setImageColorspace 
--- , setImageCompose 
--- , setImageCompression 
--- , setImageCompressionQuality 
--- , setImageDelay 
--- , setImageDepth 
--- , setImageDispose 
--- , setImageEndian 
--- , setImageExtent 
--- , setImageFilename 
--- , setImageFormat 
--- , setImageFuzz 
--- , setImageGamma 
--- , setImageGravity 
--- , setImageGreenPrimary 
--- , setImageInterlaceScheme 
--- , setImageInterpolateMethod 
--- , setImageIterations 
--- , setImageMatte 
--- , setImageMatteColor 
--- , setImageOpacity 
--- , setImageOrientation 
--- , setImagePage 
--- , setImageProgressMonitor 
--- , setImageRedPrimary 
--- , setImageRenderingIntent 
--- , setImageResolution 
--- , setImageScene 
--- , setImageTicksPerSecond 
--- , setImageType 
--- , setImageUnits 
--- , setImageVirtualPixelMethod 
--- , setImageWhitePoint 
--- , shadeImage 
--- , shadowImage 
--- , sharpenImage 
--- , shaveImage 
--- , shearImage 
--- , sigmoidalContrastImage 
--- , similarityImage 
--- , sketchImage 
--- , smushImages 
--- , solarizeImage 
--- , sparseColorImage 
--- , spliceImage 
--- , spreadImage 
--- , statisticImage 
--- , steganoImage 
--- , stereoImage 
--- , stripImage 
--- , swirlImage 
--- , textureImage 
--- , thresholdImage 
--- , thumbnailImage 
--- , tintImage 
--- , transformImage 
--- , transformImageColorspace 
--- , transparentPaintImage 
--- , transposeImage 
--- , transverseImage 
--- , trimImage 
--- , uniqueImageColors 
--- , unsharpMaskImage 
--- , vignetteImage 
--- , waveImage 
--- , whiteThresholdImage 
--- , writeImage 
--- , writeImageFile 
--- , writeImages 
+-- , getImageFromMagickWand
+-- , adaptiveBlurImage
+-- , adaptiveResizeImage
+-- , adaptiveSharpenImage
+-- , adaptiveThresholdImage
+-- , addImage
+-- , addNoiseImage
+-- , affineTransformImage
+-- , annotateImage
+-- , animateImages
+-- , appendImages
+-- , autoGammaImage
+-- , autoLevelImage
+-- , blackThresholdImage
+-- , blueShiftImage
+-- , blurImage
+-- , borderImage
+-- , brightnessContrastImage
+-- , charcoalImage
+-- , chopImage
+-- , clampImage
+-- , clipImage
+-- , clipImagePath
+-- , clutImage
+-- , coalesceImages
+-- , colorDecisionListImage
+-- , colorizeImage
+-- , colorMatrixImage
+-- , combineImages
+-- , commentImage
+-- , compareImageChannels
+-- , compareImageLayers
+-- , compareImages
+-- , compositeImage
+-- , compositeLayers
+-- , contrastImage
+-- , contrastStretchImage
+-- , convolveImage
+-- , cropImage
+-- , cycleColormapImage
+-- , constituteImage
+-- , decipherImage
+-- , deconstructImages
+-- , deskewImage
+-- , despeckleImage
+-- , destroyImage
+-- , displayImage
+-- , displayImages
+-- , distortImage
+-- , drawImage
+-- , edgeImage
+-- , embossImage
+-- , encipherImage
+-- , enhanceImage
+-- , equalizeImage
+-- , evaluateImage
+-- , exportImagePixels
+-- , extentImage
+-- , filterImage
+-- , flipImage
+-- , floodfillPaintImage
+-- , flopImage
+-- , forwardFourierTransformImage
+-- , frameImage
+-- , functionImage
+-- , fxImage
+-- , gammaImage
+-- , gaussianBlurImage
+-- , getImage
+  , getImageAlphaChannel
+-- , getImageClipMask
+-- , getImageBackgroundColor
+  , getImageBlob
+-- , getImageBluePrimary
+-- , getImageBorderColor
+-- , getImageChannelDepth
+-- , getImageChannelDistortion
+-- , getImageChannelDistortions
+-- , getImageChannelFeatures
+-- , getImageChannelKurtosis
+-- , getImageChannelMean
+-- , getImageChannelRange
+-- , getImageChannelStatistics
+-- , getImageColormapColor
+-- , getImageColors
+-- , getImageColorspace
+-- , getImageCompose
+-- , getImageCompression
+-- , getImageCompressionQuality
+  , getImageDelay
+  , getImageDepth
+-- , getImageDistortion
+-- , getImageDispose
+-- , getImageEndian
+-- , getImageFilename
+  , getImageFormat
+-- , getImageFuzz
+-- , getImageGamma
+-- , getImageGravity
+-- , getImageGreenPrimary
+-- , getImageHeight
+-- , getImageHistogram
+-- , getImageInterlaceScheme
+-- , getImageInterpolateMethod
+-- , getImageIterations
+-- , getImageLength
+-- , getImageMatteColor
+-- , getImageOrientation
+-- , getImagePage
+-- , getImagePixelColor
+-- , getImageRedPrimary
+-- , getImageRegion
+-- , getImageRenderingIntent
+-- , getImageResolution
+  , getImageSignature
+-- , getImageTicksPerSecond
+-- , getImageType
+-- , getImageUnits
+-- , getImageVirtualPixelMethod
+-- , getImageWhitePoint
+-- , getImageWidth
+-- , getNumberImages
+-- , getImageTotalInkDensity
+-- , haldClutImage
+-- , hasNextImage
+-- , hasPreviousImage
+-- , identifyImage
+-- , implodeImage
+-- , importImagePixels
+-- , inverseFourierTransformImage
+-- , labelImage
+-- , levelImage
+-- , linearStretchImage
+-- , liquidRescaleImage
+-- , magnifyImage
+-- , mergeImageLayers
+-- , minifyImage
+-- , modulateImage
+-- , montageImage
+-- , morphImages
+-- , morphologyImage
+-- , motionBlurImage
+-- , negateImage
+-- , newImage
+-- , nextImage
+-- , normalizeImage
+-- , oilPaintImage
+-- , opaquePaintImage
+-- , optimizeImageLayers
+-- , optimizeImageTransparency
+-- , orderedPosterizeImage
+-- , pingImage
+-- , pingImageBlob
+-- , pingImageFile
+-- , polaroidImage
+-- , posterizeImage
+-- , previewImages
+-- , previousImage
+-- , quantizeImage
+-- , quantizeImages
+-- , radialBlurImage
+-- , raiseImage
+-- , randomThresholdImage
+  , readImage
+  , readImageBlob
+-- , readImageFile
+-- , remapImage
+-- , resampleImage
+-- , resetImagePage
+-- , resizeImage
+-- , rollImage
+-- , rotateImage
+-- , sampleImage
+-- , scaleImage
+-- , segmentImage
+-- , selectiveBlurImage
+-- , separateImageChannel
+-- , sepiaToneImage
+-- , setImage
+-- , setImageAlphaChannel
+-- , setImageBackgroundColor
+-- , setImageBias
+-- , setImageBluePrimary
+-- , setImageBorderColor
+-- , setImageChannelDepth
+-- , setImageClipMask
+-- , setImageColor
+-- , setImageColormapColor
+-- , setImageColorspace
+-- , setImageCompose
+-- , setImageCompression
+-- , setImageCompressionQuality
+  , setImageDelay
+  , setImageDepth
+-- , setImageDispose
+-- , setImageEndian
+-- , setImageExtent
+-- , setImageFilename
+  , setImageFormat
+-- , setImageFuzz
+-- , setImageGamma
+-- , setImageGravity
+-- , setImageGreenPrimary
+-- , setImageInterlaceScheme
+-- , setImageInterpolateMethod
+-- , setImageIterations
+-- , setImageMatte
+-- , setImageMatteColor
+-- , setImageOpacity
+-- , setImageOrientation
+-- , setImagePage
+-- , setImageProgressMonitor
+-- , setImageRedPrimary
+-- , setImageRenderingIntent
+-- , setImageResolution
+-- , setImageScene
+-- , setImageTicksPerSecond
+  , setImageType
+-- , setImageUnits
+-- , setImageVirtualPixelMethod
+-- , setImageWhitePoint
+-- , shadeImage
+-- , shadowImage
+-- , sharpenImage
+-- , shaveImage
+-- , shearImage
+-- , sigmoidalContrastImage
+-- , similarityImage
+-- , sketchImage
+-- , smushImages
+-- , solarizeImage
+-- , sparseColorImage
+-- , spliceImage
+-- , spreadImage
+-- , statisticImage
+-- , steganoImage
+-- , stereoImage
+  , stripImage
+-- , swirlImage
+-- , textureImage
+-- , thresholdImage
+-- , thumbnailImage
+-- , tintImage
+-- , transformImage
+-- , transformImageColorspace
+-- , transparentPaintImage
+-- , transposeImage
+-- , transverseImage
+-- , trimImage
+-- , uniqueImageColors
+-- , unsharpMaskImage
+-- , vignetteImage
+-- , waveImage
+-- , whiteThresholdImage
+-- , writeImage
+-- , writeImageFile
+-- , writeImages
 -- , writeImagesFile
   , getImageScene
   , setImage
@@ -329,18 +329,20 @@ module Graphics.ImageMagick.MagickWand.WandImage
   , importImagePixels
   , exportImagePixels
   , rotateImage
-  , setImageDepth
-  , getImageDelay
-  , setImageDelay
   ) where
 
 import           Control.Applicative                            ((<$>))
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
-import           Data.ByteString                                (ByteString, useAsCString, packCStringLen)
+import           Data.ByteString                                (ByteString,
+                                                                 packCString,
+                                                                 packCStringLen,
+                                                                 useAsCString,
+                                                                 useAsCStringLen)
 import           Data.Text                                      (Text)
 import qualified Data.Text                                      as T
-import           Data.Text.Encoding                             (encodeUtf8)
+import           Data.Text.Encoding                             (decodeUtf8,
+                                                                 encodeUtf8)
 import           Data.Vector.Storable                           (Vector)
 import qualified Data.Vector.Storable                           as V
 import           Filesystem.Path.CurrentOS
@@ -354,7 +356,8 @@ import           Graphics.ImageMagick.MagickWand.MagickWand
 import           Graphics.ImageMagick.MagickWand.PixelWand
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
-import           Prelude                                        hiding (FilePath)
+import           Prelude                                        hiding
+                                                                 (FilePath)
 
 getImageHeight :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
@@ -539,8 +542,9 @@ trimImage :: (MonadResource m) => PMagickWand -> Double -> m ()
 trimImage w fuzz = withException_ w $ F.magickTrimImage w (realToFrac fuzz)
 
 -- | Resets the Wand page canvas and position.
-resetImagePage :: (MonadResource m) => PMagickWand -> ByteString -> m ()
-resetImagePage w page = withException_ w $ useAsCString page (F.magickResetImagePage w)
+resetImagePage :: (MonadResource m) => PMagickWand -> Maybe Text -> m ()
+resetImagePage w Nothing = withException_ w $ F.magickResetImagePage w nullPtr
+resetImagePage w (Just page) = withException_ w $ useAsCString (encodeUtf8 page) (F.magickResetImagePage w)
 
 -- | Resets the Wand page canvas and position.
 distortImage :: (MonadResource m)
@@ -829,6 +833,10 @@ exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cm
 rotateImage :: (MonadResource m) => PMagickWand -> PPixelWand -> Double -> m ()
 rotateImage w background degrees = withException_ w $ F.magickRotateImage w background (realToFrac degrees)
 
+-- | Gets the image depth.
+getImageDepth :: (MonadResource m) => PMagickWand -> m Int
+getImageDepth w = liftIO $ fromIntegral <$> F.magickGetImageDepth w
+
 -- | Sets the image depth.
 setImageDepth :: (MonadResource m) => PMagickWand -> Int -> m ()
 setImageDepth w depth = withException_ w $ F.magickSetImageDepth w (fromIntegral depth)
@@ -845,9 +853,8 @@ getImageDelay w = liftIO $ fromIntegral <$> F.magickGetImageDelay w
 setImageDelay :: (MonadResource m) => PMagickWand -> Int -> m ()
 setImageDelay w delay = withException_ w $ F.magickSetImageDelay w (fromIntegral delay)
 
-
--- | MagickGetImageBlob() implements direct to memory image formats. 
--- It returns the image as a blob (a formatted "file" in memory) and 
+-- | MagickGetImageBlob() implements direct to memory image formats.
+-- It returns the image as a blob (a formatted "file" in memory) and
 -- its length, starting from the current position in the image sequence.
 -- Use 'setImageFormat' to set the format to write to the blob (GIF, JPEG, PNG, etc.).
 -- ImageMagick blob is automatically freed in this function, returned bytestring
@@ -862,3 +869,40 @@ getImageBlob w = liftIO $ do
   out <- packCStringLen cl
   F.magickRelinquishMemory $ castPtr $ fst cl
   return out
+
+-- | Reads an image or image sequence. The images are inserted at
+-- the current image pointer position
+readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
+readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
+
+-- | Reads an image or image sequence from a blob
+readImageBlob :: (MonadResource m) => PMagickWand -> ByteString -> m ()
+readImageBlob w bs = withException_ w $ useAsCStringLen bs $
+                     \(cstr, len) -> F.magickReadImageBlob w (castPtr cstr) (fromIntegral len)
+
+-- | Returns the format of a particular image in a sequence.
+getImageFormat :: (MonadResource m) => PMagickWand -> m Text
+getImageFormat w = liftIO $ do
+                   cstr <- F.magickGetImageFormat w
+                   -- TODO: check if we need to release string memory
+                   decodeUtf8 <$> packCString cstr
+
+setImageFormat :: (MonadResource m) => PMagickWand -> Text -> m ()
+setImageFormat w format = withException_ w $ useAsCString (encodeUtf8 format) (F.magickSetImageFormat w)
+
+-- | Strips an image of all profiles and comments.
+stripImage :: (MonadResource m) => PMagickWand -> m ()
+stripImage w = withException_ w $ (F.magickStripImage w)
+
+-- | Generates an SHA-256 message digest for the image pixel stream
+getImageSignature :: (MonadResource m) => PMagickWand -> m ByteString
+getImageSignature w = liftIO $ F.magickGetImageSignature w >>= packCString
+
+-- | Returns `False` if the image alpha channel is not activated.
+-- That is, the image is RGB rather than RGBA or CMYK rather than CMYKA.
+getImageAlphaChannel :: (MonadResource m) => PMagickWand -> m Bool
+getImageAlphaChannel = fromMBool . F.magickGetImageAlphaChannel
+
+-- | Sets image Type
+setImageType :: (MonadResource m) => PMagickWand -> ImageType -> m ()
+setImageType w imageType = withException_ w $ F.magickSetImageType w imageType

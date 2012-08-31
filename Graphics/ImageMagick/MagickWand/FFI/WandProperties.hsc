@@ -31,12 +31,6 @@ foreign import ccall "MagickSetOption" magickSetOption
   -> CString        -- ^ the value
   -> IO MagickBooleanType
 
--- | MagickSetFormat() sets the format of the magick wand.
-foreign import ccall "MagickSetImageFormat" magickSetImageFormat
-  :: Ptr MagickWand
-  -> CString        -- ^ the image format
-  -> IO MagickBooleanType
-
 -- | MagickGetOptions() returns all the option names that match the
 -- specified pattern associated with a wand. Use MagickGetOption()
 -- to return the value of a particular option. Use MagickRelinquishMemory()
