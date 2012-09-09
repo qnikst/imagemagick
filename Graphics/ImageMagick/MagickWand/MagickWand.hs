@@ -52,7 +52,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , getGravity
 --    , getHomeURL
 --    , getImageArtifact
---    , getImageArtifacts
+  , getImageArtifacts
 --    , getInterlaceScheme
 --    , getInterpolateMethod
 --    , getOrientation
@@ -62,7 +62,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , getQuantumDepth
 --    , getQuantumRange
 --    , getReleaseDate
---    , getResolution
+    , getImageResolution
 --    , getResource
 --    , getResourceLimit
 --    , getSamplingFactors
@@ -93,7 +93,7 @@ module Graphics.ImageMagick.MagickWand.MagickWand
 --    , setPointsize
 --    , setProgressMonitor
 --    , setResourceLimit
---    , setResolution
+    , setImageResolution
 --    , setSamplingFactors
 --    , setSizeOffset
 --    , setType
@@ -323,3 +323,26 @@ getCompressionQuality w = liftIO $ F.magickGetCompressionQuality w >>= return . 
 setCompressionQuality :: (MonadResource m) => PMagickWand -> Int -> m ()
 setCompressionQuality w c  = withException_ w $ F.magickSetCompressionQuality w (fromIntegral c)
 
+getImageResolution :: (MonadResource m) => PMagickWand -> m (Double,Double)
+getImageResolution w = liftIO $ alloca $ \py -> do
+  x <- alloca $ \px -> withExceptionIO w $ do
+    result <- F.magickGetImageResolution w px py
+    value <- peek px
+    return (result, value)
+  y <- peek py
+  return (realToFrac x, realToFrac y)
+
+setImageResolution :: (MonadResource m) => PMagickWand -> Double -> Double -> m ()
+setImageResolution w x y  = withException_ w $ F.magickSetImageResolution w (realToFrac x) (realToFrac y)
+
+getImageArtifacts :: (MonadResource m) => Ptr MagickWand -> Text -> m [Text]
+getImageArtifacts w pattern = liftIO $ alloca $ \pn -> do
+  partifactps <- useAsCString (encodeUtf8 pattern) (\cstr -> F.magickGetImageArtifacts w cstr pn)
+  n <- fromIntegral <$> peek pn
+  artifactps <- peekArray n partifactps
+  artifacts <- forM artifactps $ \artifactp -> do
+    artifact <- decodeUtf8 <$> packCString artifactp
+    F.magickRelinquishMemory (castPtr artifactp)
+    return artifact
+  F.magickRelinquishMemory (castPtr partifactps)
+  return artifacts

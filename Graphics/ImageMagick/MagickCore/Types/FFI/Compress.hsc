@@ -1,6 +1,6 @@
 {-# LANGUAGE CPP                      #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
-module Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType
+module Graphics.ImageMagick.MagickCore.Types.FFI.Compress
     where
 
 import           Foreign.C.Types

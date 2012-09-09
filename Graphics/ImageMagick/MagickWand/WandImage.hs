@@ -178,7 +178,6 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageRedPrimary
 -- , getImageRegion
 -- , getImageRenderingIntent
--- , getImageResolution
   , getImageSignature
 -- , getImageTicksPerSecond
 -- , getImageType
@@ -279,7 +278,6 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , setImageProgressMonitor
 -- , setImageRedPrimary
 -- , setImageRenderingIntent
--- , setImageResolution
 -- , setImageScene
 -- , setImageTicksPerSecond
   , setImageType

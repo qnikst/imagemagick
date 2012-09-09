@@ -22,7 +22,7 @@ main = withMagickWandGenesis $ do
   localGenesis $ do
     (_,aw) <- magickWand
     readImage aw "bunny_anim.gif"
-    resetImagePage aw "0x0+5+15!"
+    resetImagePage aw (Just "0x0+5+15!")
 
     -- Now we have to add the images in the aw wand on to the end
     -- of the mw wand.

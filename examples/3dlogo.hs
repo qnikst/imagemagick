@@ -4,11 +4,10 @@
 -- Better 3-D Logo Generation example
 -- http://www.imagemagick.org/Usage/advanced/#3d-logos-2
 
-import Graphics.ImageMagick.MagickWand
-import           Graphics.ImageMagick.MagickWand.FFI.Types    -- remove
+import           Graphics.ImageMagick.MagickWand
 
 
-
+main :: IO ()
 main = do
     withMagickWandGenesis $ do
       localGenesis $ do
@@ -41,14 +40,14 @@ main = do
         drawRectangle dw 50 13 120 87
 
         pw `setColor` "black"
-        
+
         dw `setFillColor` pw
         drawCircle dw 50 50 25 50
         drawCircle dw 50 50 25 50
         drawCircle dw 120 50 145 50
         drawRectangle dw 50 25 120 75
 
-        pw `setColor` "white" 
+        pw `setColor` "white"
         dw `setFillColor` pw
         drawCircle dw 60 50 40 50
         drawCircle dw 110 50 130 50
@@ -57,14 +56,14 @@ main = do
         -- Now we draw the Drawing wand on to the Magick Wand
         mw `drawImage` dw
 
-        gaussianBlurImage mw 1 1 
+        gaussianBlurImage mw 1 1
         -- Turn the matte of == +matte
         mw `setImageMatte` False
 
         mw `writeImage` (Just "logo_mask.png")
 
     localGenesis $ do
-    
+
         (_,mw)  <- magickWand
         (_,mwc) <- magickWand
         pw  <- pixelWand
@@ -98,7 +97,7 @@ main = do
         dw `setFontSize` 36
         pw `setColor` "white"
         dw `setFillColor` pw
-    
+
         pw `setColor` "black"
         dw `setStrokeColor` pw
         dw `setGravity` centerGravity
@@ -122,14 +121,14 @@ convert ant.png  -fx A  +matte -blur 0x6  -shade 110x30  -normalize \
         blurImage mwf 0 6
         shadeImage mwf True 110 30
         normalizeImage mwf
-        -- ant.png  -compose Overlay -composite 
-        (destroyMwc, mwc) <- magickWand
+        -- ant.png  -compose Overlay -composite
+        (_, mwc) <- magickWand
         mwc `readImage` "logo_ant.png"
         compositeImage mwf mwc overlayCompositeOp 0 0
-        
+
         -- ant.png  -matte  -compose Dst_In  -composite
-        mwc' <- magickWand
-        mwc `readImage` "logo_ant.png"
+        (_,mwc') <- magickWand
+        mwc' `readImage` "logo_ant.png"
         -- -matte is the same as -alpha on
         -- I don't understand why the -matte in the command line
         -- does NOT operate on the image just read in (logo_ant.png in mwc)
@@ -139,7 +138,7 @@ convert ant.png  -fx A  +matte -blur 0x6  -shade 110x30  -normalize \
 
         -- setImageAlphaChannel mwf setAlphaChannel
         -- setImageAlphaChannel mwc setAlphaChannel
-        compositeImage mwf mwc dstInCompositeOp 0 0 
+        compositeImage mwf mwc' dstInCompositeOp 0 0
 
         writeImage mwf (Just "logo_ant_3D.png")
 
@@ -158,8 +157,8 @@ convert ant.png  -fx A  +matte -blur 0x6  -shade 110x30  -normalize \
         pw `setColor` "navy"
         mwc `setImageBackgroundColor` pw
 
-        shadowImage mwc 80 4 6 6 
-        
+        shadowImage mwc 80 4 6 6
+
         -- at this point
         -- mw = ant_3D.png
         -- mwc = +clone -background navy -shadow 80x4+6+6
@@ -191,7 +190,7 @@ convert ant.png  -fx A  +matte -blur 0x6  -shade 110x30  -normalize \
 
         (_,mwc) <- cloneMagickWand mw
         -- +repage
-        resetImagePage mwc "" 
+        resetImagePage mwc Nothing
         -- +matte is the same as -alpha off
         -- setImageAlphaChannel mwc deactivateAlphaChannel
         (_, mwf) <- fxImage mwc "rand()"
@@ -207,11 +206,11 @@ convert ant.png  -fx A  +matte -blur 0x6  -shade 110x30  -normalize \
         pw `setColor` "lavender"
         -- and this is a 100% tint
         pwo `setColor` "rgb(100%,100%,100%)"
-        tintImage mwf pw pwo 
+        tintImage mwf pw pwo
 
         (_, mwc') <- magickWand
         mwc' `addImage` mwf
-        mwc' `addImage` mwc 
+        mwc' `addImage` mwc
 
         (_, mwf') <- mergeImageLayers mwc flattenLayer
         mwf' `writeImage` (Just "logo_bg_3D.jpg")

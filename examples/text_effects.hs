@@ -55,7 +55,7 @@ textEffect1 w dw pw = do
   -- Trim the image down to include only the text
   trimImage w 0
   -- equivalent to the command line +repage
-  resetImagePage w ""
+  resetImagePage w Nothing
 
   -- Make a copy of the text image
   (_,cloneW) <- cloneMagickWand w
