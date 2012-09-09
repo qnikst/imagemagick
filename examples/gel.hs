@@ -129,7 +129,7 @@ convert gel_highlight.png \
     -- and colour information etc.
     annotateImage mw dw 0 0 0 "Gel"
     trimImage mw 0
-    resetImagePage mw "0x0+4+4"
+    resetImagePage mw (Just "0x0+4+4")
     (_,mwc) <- cloneMagickWand mw
     pw `setColor` "navy"
     mwc `setImageBackgroundColor` pw
