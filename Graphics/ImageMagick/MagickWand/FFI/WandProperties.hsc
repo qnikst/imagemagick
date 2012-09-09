@@ -109,3 +109,28 @@ foreign import ccall "MagickGetImageProfiles" magickGetImageProfiles
   -> CString        -- ^ the pattern
   -> Ptr CSize
   -> IO (Ptr CString)
+
+-- | MagickSetResolution() sets the image resolution.
+foreign import ccall "MagickSetImageResolution" magickSetImageResolution
+  :: Ptr MagickWand
+  -> CDouble        -- ^ x resolution
+  -> CDouble        -- ^ y resolution
+  -> IO MagickBooleanType
+
+-- | MagickGetResolution() gets the image resolution.
+foreign import ccall "MagickGetImageResolution" magickGetImageResolution
+  :: Ptr MagickWand
+  -> Ptr CDouble        -- ^ x resolution
+  -> Ptr CDouble        -- ^ y resolution
+  -> IO MagickBooleanType
+
+-- | MagickGetImageArtifacts() returns all the artifact names
+-- that match the specified pattern associated with a wand.
+-- Use MagickGetImageProperty() to return the value of a
+-- particular artifact. Use MagickRelinquishMemory() to free
+-- the value when you are finished with it.
+foreign import ccall "MagickGetImageArtifacts" magickGetImageArtifacts
+  :: Ptr MagickWand
+  -> CString        -- ^ the pattern
+  -> Ptr CSize
+  -> IO (Ptr CString)
