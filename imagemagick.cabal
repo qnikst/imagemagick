@@ -42,7 +42,6 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes
                       , Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType
-                      , Graphics.ImageMagick.MagickCore.Types.FFI.CompressionType 
                       , Graphics.ImageMagick.MagickCore.Types.MBits
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing
