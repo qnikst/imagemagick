@@ -3,6 +3,8 @@ module Graphics.ImageMagick.MagickCore.Exception
   ( MagickWandException(..)
   -- * support for ImageMagick Exceptions
   , ExceptionCarrier(..)
+  , ExceptionSeverity
+  , ExceptionType
   ) where
 
 import           Control.Exception.Base

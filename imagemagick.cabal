@@ -43,6 +43,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType
                       , Graphics.ImageMagick.MagickCore.Types.MBits
+                      , Graphics.ImageMagick.MagickCore.Exception
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
@@ -53,10 +54,10 @@ Library
                       , Graphics.ImageMagick.MagickWand.FFI.WandImage
                       , Graphics.ImageMagick.MagickWand.FFI.WandProperties
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
   extensions:         EmptyDataDecls
@@ -72,10 +73,10 @@ executable            resize
     Buildable:        False
   Main-is:            examples/resize.hs
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -91,10 +92,10 @@ executable            extent
     Buildable:        False
   Main-is:            examples/extent.hs
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -110,10 +111,10 @@ executable            floodfill
     Buildable:        False
   Main-is:            examples/floodfill.hs
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -129,10 +130,10 @@ executable            cyclops
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -148,10 +149,10 @@ executable            clipmask
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -167,10 +168,10 @@ executable            paint-trans
     Buildable:        False
   Main-is:            examples/trans_paint.hs
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -186,10 +187,10 @@ executable            round-mask
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -205,10 +206,10 @@ executable            make-tile
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -223,10 +224,10 @@ executable            draw-shapes
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -242,10 +243,10 @@ executable            text-effects
   Else
     Buildable:        False
   Build-depends:       base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -261,13 +262,13 @@ executable            gel
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
-                      , lifted-base == 0.1.*
+                      , lifted-base >= 0.1 && <0.3
                       , imagemagick
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
@@ -280,10 +281,10 @@ executable            reflect
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -299,10 +300,10 @@ executable            3dlogo
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -318,10 +319,10 @@ executable            affine
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -338,10 +339,10 @@ executable            grayscale
     Buildable:        False
 
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -357,10 +358,10 @@ executable            modulate
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -377,10 +378,10 @@ executable            landscape3d
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -396,10 +397,10 @@ executable            tilt-shift
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -415,10 +416,10 @@ executable            bunny
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -434,10 +435,10 @@ executable            pixel-mod
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -453,10 +454,10 @@ executable            wandtest
   Else
     Buildable:        False
   Build-depends:        base
-                      , resourcet == 0.3.*
+                      , resourcet >= 0.3 && <0.5
                       , transformers == 0.3.*
-                      , vector == 0.9.*
-                      , bytestring == 0.9.*
+                      , vector >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.11
                       , text == 0.11.*
                       , system-filepath == 0.4.*
                       , imagemagick
@@ -469,12 +470,12 @@ test-suite           image-tests
   type:              exitcode-stdio-1.0
   main-is:           test/ImageTest.hs
   Build-Depends:     base
-                     , lifted-base == 0.1.*
+                     , lifted-base >= 0.1 && <0.3
                      , directory
-                     , resourcet == 0.3.*
+                     , resourcet >= 0.3 && <0.5
                      , transformers == 0.3.*
-                     , vector == 0.9.*
-                     , bytestring == 0.9.*
+                     , vector >= 0.9 && <0.11
+                     , bytestring >= 0.9 && <0.11
                      , text == 0.11.*
                      , system-filepath == 0.4.*
                      , imagemagick
