@@ -44,8 +44,20 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.AlphaChannelType
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType
                       , Graphics.ImageMagick.MagickCore.Types.MBits
+                      , Graphics.ImageMagick.MagickCore.Types
+                      , Graphics.ImageMagick.MagickCore.Option
+                      , Graphics.ImageMagick.MagickCore.Mime
                       , Graphics.ImageMagick.MagickCore.Exception
+                      , Graphics.ImageMagick.MagickCore.Gem
                       , Graphics.ImageMagick.MagickWand
+                      , Graphics.ImageMagick.MagickWand.WandImage
+                      , Graphics.ImageMagick.MagickWand.Types
+                      , Graphics.ImageMagick.MagickWand.PixelWand
+                      , Graphics.ImageMagick.MagickWand.PixelPacket
+                      , Graphics.ImageMagick.MagickWand.PixelIterator
+                      , Graphics.ImageMagick.MagickWand.MagickWand
+                      , Graphics.ImageMagick.MagickWand.DrawingWand
+                      , Graphics.ImageMagick.MagickWand.Utils
                       , Graphics.ImageMagick.MagickWand.FFI.ImageDrawing
                       , Graphics.ImageMagick.MagickWand.FFI.DrawingWand
                       , Graphics.ImageMagick.MagickWand.FFI.MagickWand
