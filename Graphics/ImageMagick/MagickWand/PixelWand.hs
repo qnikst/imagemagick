@@ -41,6 +41,7 @@ import           Data.ByteString                               (ByteString,
                                                                 packCString,
                                                                 useAsCString)
 import           Foreign                                       hiding (void)
+import           Foreign.C.Types (CDouble)
 
 import qualified Graphics.ImageMagick.MagickWand.FFI.PixelWand as F
 import           Graphics.ImageMagick.MagickWand.Types
@@ -217,11 +218,16 @@ getYellow :: (MonadResource m) => PPixelWand -> m Double
 getYellow = (fmap realToFrac) . liftIO . F.pixelGetYellow
 
 ---
+with3 ::
+  (Ptr CDouble -> Ptr CDouble -> Ptr CDouble -> IO ())
+  -> IO (CDouble, CDouble, CDouble)
 with3 f = alloca (\x -> alloca (\y -> alloca (\z -> do
-              f x y z
+              _ <- f x y z
               x' <- peek x
               y' <- peek y
               z' <- peek z
               return (x',y',z')
               )))
+
+map3 :: (a -> b) -> (a, a, a) -> (b, b, b)
 map3 f (a,b,c) = (f a, f b, f c)
