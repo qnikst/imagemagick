@@ -330,6 +330,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
   ) where
 
 import           Control.Applicative                            ((<$>))
+import           Control.Monad (void)
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                                (ByteString,
@@ -344,7 +345,7 @@ import           Data.Text.Encoding                             (decodeUtf8,
 import           Data.Vector.Storable                           (Vector)
 import qualified Data.Vector.Storable                           as V
 import           Filesystem.Path.CurrentOS
-import           Foreign
+import           Foreign hiding (void)
 import           Foreign.C.Types
 import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.MagickWand as F

@@ -6,8 +6,6 @@ module Graphics.ImageMagick.MagickCore.Types.FFI.Types
 
 import           Data.Int
 import           Data.Word
-import           Foreign.C.String
-import           Foreign.C.Types
 #include <magick/MagickCore.h>
 
 type MagickRealType   = #type MagickRealType
