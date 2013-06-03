@@ -161,12 +161,13 @@ module Graphics.ImageMagick.MagickWand.DrawingWand
 -- , pushDrawingWand]
   ) where
 
+import           Control.Monad (void)
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.Resource
 import           Data.ByteString                                 (ByteString, useAsCString)
 import           Data.Text                                       (Text)
 import           Data.Text.Encoding                              (encodeUtf8)
-import           Foreign                                         hiding (rotate)
+import           Foreign                                         hiding (rotate, void)
 import           Foreign.C.Types                                 ()
 import           Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickWand.FFI.DrawingWand as F
