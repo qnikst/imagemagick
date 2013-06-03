@@ -9,7 +9,6 @@ import Control.Monad
 
 import Foreign
 import Foreign.C.Types
-import Graphics.ImageMagick.MagickCore.Types.FFI.Types
 
 data PixelIterator
 data MagickWand
@@ -77,11 +76,17 @@ instance Storable MagickPixelPacket where
   sizeOf = const #size MagickPixelPacket
   alignment _ = 1
 
+getPixelRed, getPixelGreen, getPixelBlue, getPixelIndex
+  :: Storable a => Ptr b -> IO a
 
 getPixelRed   = #peek MagickPixelPacket, red
 getPixelGreen = #peek MagickPixelPacket, green
 getPixelBlue  = #peek MagickPixelPacket, blue
 getPixelIndex = #peek MagickPixelPacket, index
+
+setPixelRed, setPixelGreen, setPixelBlue, setPixelIndex
+  :: Storable a => Ptr b -> a -> IO ()
+  
 setPixelRed   = #poke MagickPixelPacket, red
 setPixelGreen = #poke MagickPixelPacket, green
 setPixelBlue  = #poke MagickPixelPacket, blue
