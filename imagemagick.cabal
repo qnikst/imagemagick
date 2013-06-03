@@ -20,7 +20,6 @@ Library
   Exposed-modules:      Graphics.ImageMagick.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.FFI.Log
-                      , Graphics.ImageMagick.MagickCore.FFI.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Mime
                       , Graphics.ImageMagick.MagickCore.FFI.Option
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
