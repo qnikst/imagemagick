@@ -30,6 +30,7 @@ newtype DistortImageMethod = DistortImageMethod { unDistortImageMethod :: CInt }
   , sentinelDistortion = SentinelDistortion
 }
 
+bilinearDistortion :: DistortImageMethod
 bilinearDistortion = bilinearForwardDistortion
 
 newtype SparseColorMethod = SparseColorMethod { unSparseColorMethod :: CInt }

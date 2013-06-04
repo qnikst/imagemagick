@@ -25,4 +25,6 @@ newtype GravityType = GravityType { unGravityType :: CInt }
   , staticGravity = StaticGravity
 }
 
+undefinedGravity :: GravityType
 undefinedGravity = forgetGravity
+

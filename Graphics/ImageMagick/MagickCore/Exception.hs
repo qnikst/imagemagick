@@ -9,8 +9,6 @@ module Graphics.ImageMagick.MagickCore.Exception
 
 import           Control.Exception.Base
 import           Data.Typeable
-import           Foreign
-import           Foreign.C.String
 import           Graphics.ImageMagick.MagickCore.Types
 
 data MagickWandException = MagickWandException ExceptionSeverity ExceptionType String

@@ -124,12 +124,14 @@ import           Graphics.ImageMagick.MagickWand.Utils
 -- end of the work, should wrap all MagickWand functions
 -- withMagickWandGenesis :: IO a -> IO a
 -- withMagickWandGenesis :: (MonadCatchIO m, MonadBaseControl IO m, MonadCatchIO (ResourceT IO)) => (ResourceT m c) -> m c
+withMagickWandGenesis :: ResourceT IO c -> IO c
 withMagickWandGenesis f = bracket start finish (\_ -> runResourceT f)
   where
     start = liftIO F.magickWandGenesis
     finish = liftIO . const F.magickWandTerminus
 
 -- | Open a nested block inside genesis (for tracking nested resources)
+localGenesis :: MonadBaseControl IO m => ResourceT m a -> m a
 localGenesis f = runResourceT f
 
 magickWand :: (MonadResource m) => m (ReleaseKey, Ptr MagickWand)

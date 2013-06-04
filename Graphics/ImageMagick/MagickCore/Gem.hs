@@ -7,7 +7,8 @@ module Graphics.ImageMagick.MagickCore.Gem
   , convertRGBToHWB
   ) where
 
-import Foreign.Storable         (peek)
+import Foreign.Ptr              (Ptr)
+import Foreign.Storable         (Storable, peek)
 import Foreign.Marshal.Alloc    (alloca)
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Resource
@@ -15,6 +16,9 @@ import Graphics.ImageMagick.MagickCore.Types
 import qualified Graphics.ImageMagick.MagickCore.FFI.Gem as F
 
 
+with3 :: (Storable a, Storable b, Storable c) =>
+         (Ptr a -> Ptr b -> Ptr c -> IO ())
+       -> IO (a, b, c)
 with3 f = alloca (\x -> alloca (\y -> alloca (\z -> do 
               f x y z 
               x' <- peek x
@@ -22,6 +26,8 @@ with3 f = alloca (\x -> alloca (\y -> alloca (\z -> do
               z' <- peek z
               return (x',y',z')
               )))
+
+map3 :: (a -> b) -> (a, a, a) -> (b, b, b)
 map3 f (a,b,c) = (f a, f b, f c)
 
 
