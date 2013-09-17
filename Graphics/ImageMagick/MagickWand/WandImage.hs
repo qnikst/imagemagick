@@ -1,4 +1,4 @@
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ScopedTypeVariables, CPP #-}
 module Graphics.ImageMagick.MagickWand.WandImage
   ( getImageHeight
   , getImageWidth
@@ -491,10 +491,10 @@ writeImage :: (MonadResource m)
            -> Maybe (FilePath)
            -> m ()
 writeImage w Nothing   = withException_ w $ F.magickWriteImage w nullPtr
-writeImage w (Just fn) = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImage w f)
+writeImage w (Just fn) = withException_ w $ useAsCString (_toBS $ encode fn) (\f -> F.magickWriteImage w f)
 
 writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
-writeImages w fn b = withException_ w $ useAsCString (encode fn) (\f -> F.magickWriteImages w f (toMBool b))
+writeImages w fn b = withException_ w $ useAsCString (_toBS $ encode fn) (\f -> F.magickWriteImages w f (toMBool b))
 
 -- | MagickBlurImage() blurs an image. We convolve the image with a gaussian
 -- operator of the given radius and standard deviation (sigma). For reasonable
@@ -872,7 +872,7 @@ getImageBlob w = liftIO $ do
 -- | Reads an image or image sequence. The images are inserted at
 -- the current image pointer position
 readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
-readImage w fn = withException_ w $ useAsCString (encode fn) (F.magickReadImage w)
+readImage w fn = withException_ w $ useAsCString (_toBS $ encode fn) (F.magickReadImage w)
 
 -- | Reads an image or image sequence from a blob
 readImageBlob :: (MonadResource m) => PMagickWand -> ByteString -> m ()
@@ -905,3 +905,12 @@ getImageAlphaChannel = fromMBool . F.magickGetImageAlphaChannel
 -- | Sets image Type
 setImageType :: (MonadResource m) => PMagickWand -> ImageType -> m ()
 setImageType w imageType = withException_ w $ F.magickSetImageType w imageType
+
+
+-- | Convert system specific filepath to bytestring
+_toBS = 
+#if defined(CABAL_OS_WINDOWS) || defined(CABAL_OS_DARWIN)
+    encodeUTF8
+#else
+    id
+#endif
