@@ -910,7 +910,7 @@ setImageType w imageType = withException_ w $ F.magickSetImageType w imageType
 -- | Convert system specific filepath to bytestring
 _toBS = 
 #if defined(CABAL_OS_WINDOWS) || defined(CABAL_OS_DARWIN)
-    encodeUTF8
+    encodeUtf8
 #else
     id
 #endif
