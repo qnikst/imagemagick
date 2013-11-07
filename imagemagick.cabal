@@ -81,10 +81,6 @@ Library
         cpp-options:  -DCABAL_OS_WINDOWS
   pkgconfig-depends:  ImageMagick, MagickWand
   Build-tools:        hsc2hs
-  if os(windows)
-      cpp-options: -DCABAL_OS_WINDOWS
-  if os(darwin)
-      cpp-options: -DCABAL_OS_DARWIN
 
 
 
