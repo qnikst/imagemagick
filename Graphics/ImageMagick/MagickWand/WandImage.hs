@@ -138,6 +138,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageClipMask
 -- , getImageBackgroundColor
   , getImageBlob
+  , getImagesBlob
 -- , getImageBluePrimary
 -- , getImageBorderColor
 -- , getImageChannelDepth
@@ -863,6 +864,20 @@ getImageBlob w = liftIO $ do
   F.magickResetIterator w
   cl <- alloca $ \x -> do
           c <- F.magickGetImageBlob w x
+          x' <- fmap fromIntegral (peek x)
+          return (c,x')
+  out <- packCStringLen cl
+  F.magickRelinquishMemory $ castPtr $ fst cl
+  return out
+
+-- | MagickGetImagesBlob() implements direct to memory image formats ideal
+-- for with sequenced images to get a dump of the whole sequence
+-- Returns the image [sequence[ as a blob and the total length
+getImagesBlob :: (MonadResource m) => PMagickWand -> m ByteString
+getImagesBlob w = liftIO $ do
+  F.magickResetIterator w
+  cl <- alloca $ \x -> do
+          c <- F.magickGetImagesBlob w x
           x' <- fmap fromIntegral (peek x)
           return (c,x')
   out <- packCStringLen cl

@@ -595,6 +595,11 @@ foreign import ccall "MagickGetImageDelay" magickGetImageDelay
 foreign import ccall "MagickGetImageBlob" magickGetImageBlob
   :: Ptr MagickWand -> Ptr CSize -> IO (Ptr CChar)
 
+-- | MagickGetImagesBlob() implements direct to memory image formats ideal
+-- for use with sequenced images to get a dump of the whole sequence
+foreign import ccall "MagickGetImagesBlob" magickGetImagesBlob
+  :: Ptr MagickWand -> Ptr CSize -> IO (Ptr CChar)
+
 -- | MagickGetImageDepth() gets the image depth.
 foreign import ccall "MagickGetImageDepth" magickGetImageDepth
   :: Ptr MagickWand -> IO CSize
