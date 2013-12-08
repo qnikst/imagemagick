@@ -414,9 +414,12 @@ test_getImagesBlobForSingle = testGetImagesBlob "mona-lisa.jpg"
 
 testGetImagesBlob :: String -> IO()
 testGetImagesBlob imgName = withImage imgName $ \w -> do
+  numImgs <- getNumberImages w
   size <- getImageSize w
   blob <- getImagesBlob w
   (_,w') <- magickWand
   readImageBlob w' blob
+  numImgs' <- getNumberImages w'
   size' <- getImageSize w'
+  liftIO $ numImgs @?= numImgs'
   liftIO $ size' @?= size
