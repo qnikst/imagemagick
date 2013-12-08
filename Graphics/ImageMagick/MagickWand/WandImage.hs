@@ -870,9 +870,14 @@ getImageBlob w = liftIO $ do
   F.magickRelinquishMemory $ castPtr $ fst cl
   return out
 
--- | MagickGetImagesBlob() implements direct to memory image formats ideal
--- for with sequenced images to get a dump of the whole sequence
--- Returns the image [sequence[ as a blob and the total length
+-- | MagickGetImageBlob() implements direct to memory image formats. It
+-- returns the image sequence as a blob and its length. The format of the image
+-- determines the format of the returned blob (GIF, JPEG, PNG, etc.). To
+-- return a different image format, use MagickSetImageFormat().
+--
+-- Note, some image formats do not permit multiple images to the same image
+-- stream (e.g. JPEG). in this instance, just the first image of the
+-- sequence is returned as a blob.- Returns the image [sequence] as a blob and the total length
 getImagesBlob :: (MonadResource m) => PMagickWand -> m ByteString
 getImagesBlob w = liftIO $ do
   F.magickResetIterator w
