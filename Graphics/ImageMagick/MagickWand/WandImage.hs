@@ -138,6 +138,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageClipMask
 -- , getImageBackgroundColor
   , getImageBlob
+  , getImagesBlob
 -- , getImageBluePrimary
 -- , getImageBorderColor
 -- , getImageChannelDepth
@@ -863,6 +864,25 @@ getImageBlob w = liftIO $ do
   F.magickResetIterator w
   cl <- alloca $ \x -> do
           c <- F.magickGetImageBlob w x
+          x' <- fmap fromIntegral (peek x)
+          return (c,x')
+  out <- packCStringLen cl
+  F.magickRelinquishMemory $ castPtr $ fst cl
+  return out
+
+-- | MagickGetImageBlob() implements direct to memory image formats. It
+-- returns the image sequence as a blob and its length. The format of the image
+-- determines the format of the returned blob (GIF, JPEG, PNG, etc.). To
+-- return a different image format, use MagickSetImageFormat().
+--
+-- Note, some image formats do not permit multiple images to the same image
+-- stream (e.g. JPEG). in this instance, just the first image of the
+-- sequence is returned as a blob.- Returns the image [sequence] as a blob and the total length
+getImagesBlob :: (MonadResource m) => PMagickWand -> m ByteString
+getImagesBlob w = liftIO $ do
+  F.magickResetIterator w
+  cl <- alloca $ \x -> do
+          c <- F.magickGetImagesBlob w x
           x' <- fmap fromIntegral (peek x)
           return (c,x')
   out <- packCStringLen cl
