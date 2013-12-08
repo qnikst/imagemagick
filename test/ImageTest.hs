@@ -65,6 +65,8 @@ tests =
         , testCase "setting background color" test_setImageBackgroundColor
         , testCase "watermark" test_watermark
         , testCase "reset" test_reset
+        , testCase "getting an imageS blob for an animated GIF" test_getImagesBlobForSequence
+        , testCase "getting an imageS blob for a single image" test_getImagesBlobForSingle
       ]
     ]
 
@@ -403,3 +405,18 @@ assertColorAtXY w pw1 (x,y) = do
   pw2 <- pixelWand
   getImagePixelColor w x y pw2
   assertEqualPW pw1 pw2
+
+test_getImagesBlobForSequence :: IO()
+test_getImagesBlobForSequence = testGetImagesBlob "newtons-cradle.gif"
+
+test_getImagesBlobForSingle :: IO()
+test_getImagesBlobForSingle = testGetImagesBlob "mona-lisa.jpg"
+
+testGetImagesBlob :: String -> IO()
+testGetImagesBlob imgName = withImage imgName $ \w -> do
+  size <- getImageSize w
+  blob <- getImagesBlob w
+  (_,w') <- magickWand
+  readImageBlob w' blob
+  size' <- getImageSize w'
+  liftIO $ size' @?= size
