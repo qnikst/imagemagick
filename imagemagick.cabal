@@ -1,5 +1,5 @@
 Name:                imagemagick
-Version:             0.0.3.1
+Version:             0.0.3.3
 Synopsis:            bindings to imagemagick library
 License:             OtherLicense
 License-file:        LICENSE
