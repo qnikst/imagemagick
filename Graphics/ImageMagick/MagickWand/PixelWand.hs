@@ -86,10 +86,10 @@ setColorFromWand :: (MonadResource m) => PPixelWand -> PPixelWand -> m ()
 setColorFromWand = (liftIO .). F.pixelSetColorFromWand
 
 getIndex :: (MonadResource m) => PPixelWand -> m IndexPacket
-getIndex = liftIO . ((fmap fromIntegral) . F.pixelGetIndex)
+getIndex = liftIO . F.pixelGetIndex
 
 setIndex :: (MonadResource m) => PPixelWand -> IndexPacket -> m ()
-setIndex w i = liftIO $ F.pixelSetIndex w (fromIntegral i)
+setIndex w i = liftIO $ F.pixelSetIndex w i
 
 getQuantumColor :: (MonadResource m) => PPixelWand -> m PPixelPacket
 getQuantumColor w = liftIO $ do
