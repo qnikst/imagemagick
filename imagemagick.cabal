@@ -70,7 +70,7 @@ Library
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , MonadCatchIO-transformers == 0.3.*
   extensions:         EmptyDataDecls
@@ -95,7 +95,7 @@ executable            resize
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -114,7 +114,7 @@ executable            extent
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -133,7 +133,7 @@ executable            floodfill
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -152,7 +152,7 @@ executable            cyclops
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -171,7 +171,7 @@ executable            clipmask
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -190,7 +190,7 @@ executable            paint-trans
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -209,7 +209,7 @@ executable            round-mask
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -228,7 +228,7 @@ executable            make-tile
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -246,7 +246,7 @@ executable            draw-shapes
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -265,7 +265,7 @@ executable            text-effects
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -284,7 +284,7 @@ executable            gel
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , lifted-base >= 0.1 && <0.3
                       , imagemagick
@@ -303,7 +303,7 @@ executable            reflect
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -322,7 +322,7 @@ executable            3dlogo
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -341,7 +341,7 @@ executable            affine
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -361,7 +361,7 @@ executable            grayscale
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -380,7 +380,7 @@ executable            modulate
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -400,7 +400,7 @@ executable            landscape3d
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -419,7 +419,7 @@ executable            tilt-shift
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -438,7 +438,7 @@ executable            bunny
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -457,7 +457,7 @@ executable            pixel-mod
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -476,7 +476,7 @@ executable            wandtest
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
-                      , text == 0.11.*
+                      , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
   extensions:         EmptyDataDecls
@@ -494,7 +494,7 @@ test-suite           image-tests
                      , transformers == 0.3.*
                      , vector >= 0.9 && <0.11
                      , bytestring >= 0.9 && <0.11
-                     , text == 0.11.*
+                     , text >= 0.11 && <1.3
                      , system-filepath == 0.4.*
                      , imagemagick
                      , QuickCheck >= 2
