@@ -1,0 +1,4 @@
+0.0.3.4
+-------
+    * Drop support of the imagemagick < 6.8
+
