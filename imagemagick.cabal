@@ -1,5 +1,5 @@
 Name:                imagemagick
-Version:             0.0.3.4
+Version:             0.0.3.5
 Synopsis:            bindings to imagemagick library
 License:             OtherLicense
 License-file:        LICENSE
@@ -66,7 +66,7 @@ Library
                       , Graphics.ImageMagick.MagickWand.FFI.WandImage
                       , Graphics.ImageMagick.MagickWand.FFI.WandProperties
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -82,8 +82,6 @@ Library
   pkgconfig-depends:  ImageMagick, MagickWand >= 6.8
   Build-tools:        hsc2hs
 
-
-
 executable            resize
   If flag(buildExamples)
     Buildable:        True
@@ -91,7 +89,7 @@ executable            resize
     Buildable:        False
   Main-is:            examples/resize.hs
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -110,7 +108,7 @@ executable            extent
     Buildable:        False
   Main-is:            examples/extent.hs
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -129,7 +127,7 @@ executable            floodfill
     Buildable:        False
   Main-is:            examples/floodfill.hs
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -148,7 +146,7 @@ executable            cyclops
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -167,7 +165,7 @@ executable            clipmask
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -186,7 +184,7 @@ executable            paint-trans
     Buildable:        False
   Main-is:            examples/trans_paint.hs
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -205,7 +203,7 @@ executable            round-mask
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -224,7 +222,7 @@ executable            make-tile
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -242,7 +240,7 @@ executable            draw-shapes
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -261,7 +259,7 @@ executable            text-effects
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -280,7 +278,7 @@ executable            gel
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -299,7 +297,7 @@ executable            reflect
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -318,7 +316,7 @@ executable            3dlogo
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -337,7 +335,7 @@ executable            affine
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -357,7 +355,7 @@ executable            grayscale
     Buildable:        False
 
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -376,7 +374,7 @@ executable            modulate
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -396,7 +394,7 @@ executable            landscape3d
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -415,7 +413,7 @@ executable            tilt-shift
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -434,7 +432,7 @@ executable            bunny
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -453,7 +451,7 @@ executable            pixel-mod
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -472,7 +470,7 @@ executable            wandtest
   Else
     Buildable:        False
   build-depends:       base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <0.5
+                      , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
                       , bytestring >= 0.9 && <0.11
@@ -490,7 +488,7 @@ test-suite           image-tests
   build-depends:       base >= 4.0 && <5.0
                      , lifted-base >= 0.1 && <0.3
                      , directory
-                     , resourcet >= 0.3 && <0.5
+                     , resourcet >= 0.3 && <1.2
                      , transformers == 0.3.*
                      , vector >= 0.9 && <0.11
                      , bytestring >= 0.9 && <0.11
