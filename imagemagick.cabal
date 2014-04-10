@@ -85,10 +85,7 @@ Library
 executable            resize
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  Main-is:            examples/resize.hs
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -96,6 +93,9 @@ executable            resize
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
+  Main-is:            examples/resize.hs
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -104,10 +104,7 @@ executable            resize
 executable            extent
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  Main-is:            examples/extent.hs
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -115,6 +112,9 @@ executable            extent
                       , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
+  Main-is:            examples/extent.hs
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -123,10 +123,7 @@ executable            extent
 executable            floodfill
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  Main-is:            examples/floodfill.hs
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -134,6 +131,9 @@ executable            floodfill
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
+  Main-is:            examples/floodfill.hs
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -143,9 +143,7 @@ executable            cyclops
   Main-is:            examples/cyclops.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -153,6 +151,8 @@ executable            cyclops
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -162,9 +162,7 @@ executable            clipmask
   Main-is:            examples/clipmask.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -172,6 +170,8 @@ executable            clipmask
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -180,10 +180,7 @@ executable            clipmask
 executable            paint-trans
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  Main-is:            examples/trans_paint.hs
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -191,6 +188,9 @@ executable            paint-trans
                       , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
+  Main-is:            examples/trans_paint.hs
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -200,9 +200,7 @@ executable            round-mask
   Main-is:            examples/round_mask.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -210,6 +208,8 @@ executable            round-mask
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -219,9 +219,7 @@ executable            make-tile
   Main-is:            examples/make_tile.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -229,6 +227,8 @@ executable            make-tile
                       , text >= 0.11 && < 1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -237,9 +237,7 @@ executable            draw-shapes
   Main-is:            examples/draw_shapes.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -247,6 +245,8 @@ executable            draw-shapes
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -256,9 +256,7 @@ executable            text-effects
   Main-is:            examples/text_effects.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -266,6 +264,8 @@ executable            text-effects
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -275,9 +275,7 @@ executable            gel
   Main-is:            examples/gel.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -286,6 +284,8 @@ executable            gel
                       , system-filepath == 0.4.*
                       , lifted-base >= 0.1 && <0.3
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -294,9 +294,7 @@ executable            reflect
   Main-is:            examples/reflect.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -304,6 +302,8 @@ executable            reflect
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -313,9 +313,7 @@ executable            3dlogo
   Main-is:            examples/3dlogo.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -323,6 +321,8 @@ executable            3dlogo
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -332,9 +332,7 @@ executable            affine
   Main-is:            examples/affine.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -342,6 +340,8 @@ executable            affine
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -351,10 +351,7 @@ executable            grayscale
   Main-is:            examples/grayscale.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -362,6 +359,8 @@ executable            grayscale
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -371,9 +370,7 @@ executable            modulate
   Main-is:            examples/modulate.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -381,6 +378,8 @@ executable            modulate
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -391,9 +390,7 @@ executable            landscape3d
   Main-is:            examples/landscape_3d.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -401,6 +398,8 @@ executable            landscape3d
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -410,9 +409,7 @@ executable            tilt-shift
   Main-is:            examples/tilt_shift.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -420,6 +417,8 @@ executable            tilt-shift
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -429,9 +428,7 @@ executable            bunny
   Main-is:            examples/bunny.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -439,6 +436,8 @@ executable            bunny
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -448,9 +447,7 @@ executable            pixel-mod
   Main-is:            examples/pixel_mod.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -458,6 +455,8 @@ executable            pixel-mod
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
@@ -467,9 +466,7 @@ executable            wandtest
   Main-is:            examples/wandtest.hs
   If flag(buildExamples)
     Buildable:        True
-  Else
-    Buildable:        False
-  build-depends:       base >= 4.0 && <5.0
+    build-depends:      base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
                       , transformers == 0.3.*
                       , vector >= 0.9 && <0.11
@@ -477,6 +474,8 @@ executable            wandtest
                       , text >= 0.11 && <1.3
                       , system-filepath == 0.4.*
                       , imagemagick
+  Else
+    Buildable:        False
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   pkgconfig-depends:  ImageMagick, MagickWand
