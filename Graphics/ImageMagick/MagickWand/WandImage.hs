@@ -214,7 +214,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , oilPaintImage
 -- , opaquePaintImage
 , optimizeImageLayers
--- , optimizeImageTransparency
+, optimizeImageTransparency
 -- , orderedPosterizeImage
 -- , pingImage
 -- , pingImageBlob
@@ -656,6 +656,18 @@ mergeImageLayers w method = wandResource (F.magickMergeImageLayers w method)
 optimizeImageLayers :: (MonadResource m) => PMagickWand
   -> m (ReleaseKey, PMagickWand)
 optimizeImageLayers = wandResource . F.magickOptimizeImageLayers
+
+-- | OptimizeImageTransparency() takes a frame optimized GIF animation, and
+-- | compares the overlayed pixels against the disposal image resulting from all
+-- | the previous frames in the animation. Any pixel that does not change the
+-- | disposal image (and thus does not effect the outcome of an overlay) is made
+-- | transparent.
+-- |
+-- | WARNING: This modifies the current images directly, rather than generate
+-- | a new image sequence.
+optimizeImageTransparency :: (MonadResource m) => PMagickWand
+  -> m ()
+optimizeImageTransparency w = withException_ w $! F.magickOptimizeImageTransparency w
 
 -- | Applies a color vector to each pixel in the image. The length of the
 -- vector is 0 for black and white and at its maximum for the midtones.
