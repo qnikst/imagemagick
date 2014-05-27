@@ -10,6 +10,7 @@ import           Graphics.ImageMagick.MagickCore.Types.FFI.Composite        as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Compress         as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Constitute       as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Distort          as X
+import           Graphics.ImageMagick.MagickCore.Types.FFI.DitherMethod     as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Exception        as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.FilterTypes      as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Fx               as X
@@ -23,3 +24,4 @@ import           Graphics.ImageMagick.MagickCore.Types.FFI.PixelPacket      as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Statistic        as X
 import           Graphics.ImageMagick.MagickCore.Types.FFI.Types            as X
 import           Graphics.ImageMagick.MagickCore.Types.MBits                as X
+
