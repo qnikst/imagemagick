@@ -213,7 +213,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , normalizeImage
 -- , oilPaintImage
 -- , opaquePaintImage
--- , optimizeImageLayers
+, optimizeImageLayers
 -- , optimizeImageTransparency
 -- , orderedPosterizeImage
 -- , pingImage
@@ -648,6 +648,14 @@ annotateImage w dw x y angle text =
 -- individual image.
 mergeImageLayers :: (MonadResource m) => PMagickWand -> ImageLayerMethod -> m (ReleaseKey, PMagickWand)
 mergeImageLayers w method = wandResource (F.magickMergeImageLayers w method)
+
+-- | MagickOptimizeImageLayers() compares each image the GIF disposed
+-- forms of the previous image in the sequence. From this it attempts
+-- to select the smallest cropped image to replace each frame, while
+-- preserving the results of the animation.
+optimizeImageLayers :: (MonadResource m) => PMagickWand
+  -> m (ReleaseKey, PMagickWand)
+optimizeImageLayers = wandResource . F.magickOptimizeImageLayers
 
 -- | Applies a color vector to each pixel in the image. The length of the
 -- vector is 0 for black and white and at its maximum for the midtones.

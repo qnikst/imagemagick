@@ -387,6 +387,14 @@ foreign import ccall "MagickMergeImageLayers" magickMergeImageLayers
   -> ImageLayerMethod -- ^ the method of selecting the size of the initial canvas
   -> IO (Ptr MagickWand)
 
+-- | MagickOptimizeImageLayers() compares each image the GIF disposed
+-- forms of the previous image in the sequence. From this it attempts
+-- to select the smallest cropped image to replace each frame, while
+-- preserving the results of the animation.
+foreign import ccall "MagickOptimizeImageLayers" magickOptimizeImageLayers
+  :: Ptr MagickWand
+  -> IO (Ptr MagickWand)
+
 -- | MagickTintImage() applies a color vector to each pixel in the image. The
 -- length of the vector is 0 for black and white and at its maximum for the
 -- midtones. The vector weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
