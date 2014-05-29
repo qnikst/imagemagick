@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP, ForeignFunctionInterface, NoMonomorphismRestriction, RankNTypes #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Graphics.ImageMagick.MagickWand.FFI.Types
   where
@@ -31,7 +32,7 @@ instance Storable PointInfo where
 
 
 newtype MagickBooleanType = MagickBooleanType { unMagickBooleanType :: CInt}
-  deriving (Eq, Show)
+  deriving (Eq, Show, Storable)
 
 #{enum MagickBooleanType, MagickBooleanType 
   , mFalse = MagickFalse

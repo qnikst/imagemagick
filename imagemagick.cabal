@@ -22,11 +22,13 @@ Library
                       , Graphics.ImageMagick.MagickCore.FFI.Log
                       , Graphics.ImageMagick.MagickCore.FFI.Mime
                       , Graphics.ImageMagick.MagickCore.FFI.Option
+                      , Graphics.ImageMagick.MagickCore.FFI.Quantize
                       , Graphics.ImageMagick.MagickCore.Types.FFI.CacheView
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Composite
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Compress
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Constitute
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Distort
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.DitherMethod
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Exception
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Fx
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Geometry
@@ -35,6 +37,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Log
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PaintMethod
                       , Graphics.ImageMagick.MagickCore.Types.FFI.PixelPacket
+                      , Graphics.ImageMagick.MagickCore.Types.FFI.Quantize
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Statistic
                       , Graphics.ImageMagick.MagickCore.Types.FFI.Types
                       , Graphics.ImageMagick.MagickCore.Types.FFI.ChannelType
@@ -48,6 +51,7 @@ Library
                       , Graphics.ImageMagick.MagickCore.Mime
                       , Graphics.ImageMagick.MagickCore.Exception
                       , Graphics.ImageMagick.MagickCore.Gem
+                      , Graphics.ImageMagick.MagickCore.Quantize
                       , Graphics.ImageMagick.MagickWand
                       , Graphics.ImageMagick.MagickWand.WandImage
                       , Graphics.ImageMagick.MagickWand.Types

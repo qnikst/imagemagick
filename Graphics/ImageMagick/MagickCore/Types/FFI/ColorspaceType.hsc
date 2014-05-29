@@ -1,13 +1,15 @@
 {-# LANGUAGE CPP                      #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module Graphics.ImageMagick.MagickCore.Types.FFI.ColorspaceType
     where
 
 import           Foreign.C.Types
+import           Foreign.Storable
 #include <magick/MagickCore.h>
 
 newtype ColorspaceType = ColorspaceType { unColorspaceType :: CInt }
-    deriving (Eq, Show)
+    deriving (Eq, Show, Storable)
 
 
 #{enum ColorspaceType, ColorspaceType,
