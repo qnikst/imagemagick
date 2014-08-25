@@ -76,6 +76,8 @@ data MagickPixelPacket
 instance Storable MagickPixelPacket where
   sizeOf = const #size MagickPixelPacket
   alignment _ = 1
+  peek = error "not yet implemented"
+  poke = error "not yet implemented"
 
 getPixelRed, getPixelGreen, getPixelBlue, getPixelIndex
   :: Storable a => Ptr b -> IO a

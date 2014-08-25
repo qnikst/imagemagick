@@ -8,7 +8,6 @@ import           Graphics.ImageMagick.MagickCore.Types (ColorspaceType, DitherMe
 import           Graphics.ImageMagick.MagickWand.FFI.Types (MagickBooleanType)
 import           Foreign.C.Types (CSize)
 import           Foreign.Storable
-import           Foreign.Ptr
 
 #include <magick/MagickCore.h>
 
@@ -41,5 +40,5 @@ instance Storable QuantizeInfo where
                         , signature      = signature'
                         , ditherMethod   = ditherMethod'
                         }
-
+  poke = error "not yet implemented"
 

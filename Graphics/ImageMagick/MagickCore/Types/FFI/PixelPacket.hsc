@@ -12,6 +12,8 @@ data PixelPacket
 instance Storable PixelPacket where
   sizeOf = const #size PixelPacket
   alignment _ = 1
+  peek = error "not yet implemented"
+  poke = error "not yet implemented"
 
 pixelPacketGetRed, pixelPacketGetGreen, pixelPacketGetBlue
                  , pixelPacketGetOpacity 
