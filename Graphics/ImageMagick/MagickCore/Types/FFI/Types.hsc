@@ -19,8 +19,6 @@ type IndexPacket      = #type IndexPacket
 
 magickEpsilon :: forall a. Fractional a => a
 magickEpsilon   = 1e-10 -- #const MagickEpsilon
-magickHuge :: forall a. Num a => a
-magickHuge      = #const MagickHuge
 maxColormapSize :: forall a. Num a => a
 maxColormapSize = #const MaxColormapSize
 maxMap :: forall a. Num a => a
