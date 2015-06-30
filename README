@@ -11,3 +11,11 @@ Contributors:
   Tim Adams <tim@vfiles.com>
   Chris Moline <blackredtree@gmail.com> 
 
+How To Build
+============
+
+On Ubuntu 14.04
+
+# Install the build-essential package
+# Run travis/install-imagemagick.sh
+# Now you can build the ImageMagick haskell bindings: stack init && stack install

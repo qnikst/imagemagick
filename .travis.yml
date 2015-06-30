@@ -2,10 +2,10 @@ language: haskell
 sudo: required
 dist: trusty
 before_install: 
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libmagickwand-dev libmagickcore-dev imagemagick
   - cabal update
-  - travis/cabal-apt-install --only-dependencies --enable-tests
+  - travis/install-imagemagick.sh
+  - travis/cabal-apt-install --only-dependencies --force-reinstalls
+  - travis/cabal-apt-install test-framework test-framework-hunit test-framework-quickcheck2  --force-reinstalls
 install:
   - cabal configure --enable-tests -fBuildExamples
   - cabal build
