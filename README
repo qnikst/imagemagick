@@ -16,9 +16,6 @@ How To Build
 
 On Ubuntu 14.04
 
-# Download imagemagick sources (eg, http://www.imagemagick.org/download/ImageMagick-6.9.1-6.tar.gz), extract, change into the directory ImageMagick-*
 # Install the build-essential package
-# ./configure
-# make
-# sudo make install
+# Run travis/install-imagemagick.sh
 # Now you can build the ImageMagick haskell bindings: stack init && stack install
