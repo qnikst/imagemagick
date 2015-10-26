@@ -345,7 +345,6 @@ import           Data.Text.Encoding                             (decodeUtf8,
                                                                  encodeUtf8)
 import           Data.Vector.Storable                           (Vector)
 import qualified Data.Vector.Storable                           as V
-import           Filesystem.Path.CurrentOS
 import           Foreign hiding (void)
 import           Foreign.C.Types
 import           Graphics.ImageMagick.MagickCore.Types
@@ -356,8 +355,6 @@ import           Graphics.ImageMagick.MagickWand.MagickWand
 import           Graphics.ImageMagick.MagickWand.PixelWand
 import           Graphics.ImageMagick.MagickWand.Types
 import           Graphics.ImageMagick.MagickWand.Utils
-import           Prelude                                        hiding
-                                                                 (FilePath)
 
 getImageHeight :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
@@ -489,13 +486,13 @@ addNoiseImage w n = withException_ w $ F.magickAddNoiseImage w n
 -- or MagickSetImageFilename().
 writeImage :: (MonadResource m)
            => PMagickWand
-           -> Maybe (FilePath)
+           -> Maybe Text
            -> m ()
 writeImage w Nothing   = withException_ w $ F.magickWriteImage w nullPtr
-writeImage w (Just fn) = withException_ w $ useAsCString (_toBS $ encode fn) (\f -> F.magickWriteImage w f)
+writeImage w (Just fn) = withException_ w $ useAsCString (encodeUtf8 fn) (\f -> F.magickWriteImage w f)
 
-writeImages :: (MonadResource m) => Ptr MagickWand -> FilePath -> Bool -> m ()
-writeImages w fn b = withException_ w $ useAsCString (_toBS $ encode fn) (\f -> F.magickWriteImages w f (toMBool b))
+writeImages :: (MonadResource m) => Ptr MagickWand -> Text -> Bool -> m ()
+writeImages w fn b = withException_ w $ useAsCString (encodeUtf8 fn) (\f -> F.magickWriteImages w f (toMBool b))
 
 -- | MagickBlurImage() blurs an image. We convolve the image with a gaussian
 -- operator of the given radius and standard deviation (sigma). For reasonable
@@ -837,7 +834,7 @@ exportImagePixels :: (MonadResource m, Pixel a) => PMagickWand
                      -> Text    -- ^ map
                      -> m [a]
 exportImagePixels w x y width height cmap = liftIO $ useAsCString (encodeUtf8 cmap) $  \cstr ->
-  exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) (undefined)
+  exportArray arrLength (F.magickExportImagePixels w x' y' width' height' cstr) undefined
   where
     exportArray :: (Pixel a) => Int -> (StorageType -> Ptr () -> IO b) -> [a] -> IO [a]
     exportArray s f hack = allocaArray s (\q -> f storage (castPtr q) >> peekArray s q)
@@ -911,8 +908,8 @@ getImagesBlob w = liftIO $ do
 
 -- | Reads an image or image sequence. The images are inserted at
 -- the current image pointer position
-readImage :: (MonadResource m) => Ptr MagickWand -> FilePath -> m ()
-readImage w fn = withException_ w $ useAsCString (_toBS $ encode fn) (F.magickReadImage w)
+readImage :: (MonadResource m) => Ptr MagickWand -> Text -> m ()
+readImage w fn = withException_ w $ useAsCString (encodeUtf8 fn) (F.magickReadImage w)
 
 -- | Reads an image or image sequence from a blob
 readImageBlob :: (MonadResource m) => PMagickWand -> ByteString -> m ()
