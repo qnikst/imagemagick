@@ -2,8 +2,8 @@ language: haskell
 before_install: 
   - sudo apt-get update -qq
   - sudo apt-get install -qq libmagickwand-dev libmagickcore-dev imagemagick
-  - travis/cabal-apt-install --only-dependencies --force-reinstalls
-  - travis/cabal-apt-install test-framework test-framework-hunit test-framework-quickcheck2  --force-reinstalls
+  - cabal update
+  - travis/cabal-apt-install --only-dependencies --enable-tests
 install:
   - cabal configure --enable-tests -fBuildExamples
   - cabal build
