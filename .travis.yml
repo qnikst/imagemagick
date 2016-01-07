@@ -1,4 +1,6 @@
 language: haskell
+sudo: required
+dist: trusty
 before_install: 
   - sudo apt-get update -qq
   - sudo apt-get install -qq libmagickwand-dev libmagickcore-dev imagemagick
