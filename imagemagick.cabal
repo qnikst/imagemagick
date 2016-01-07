@@ -11,10 +11,14 @@ Build-type:          Simple
 Cabal-version:       >=1.8
 Description:         Basic image magick bindings.
 
+extra-source-files:  data/*.jpg
+                     data/*.png
+                     data/*.gif
+                     data/*.ico
+
 Flag buildExamples
   description:       Build examples
   default:           False
-
 
 Library
   Exposed-modules:      Graphics.ImageMagick.MagickCore
