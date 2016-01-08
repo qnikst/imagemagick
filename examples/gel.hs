@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE FlexibleContexts    #-}
 -- | Example taken from: http://members.shaw.ca/el.supremo/MagickWand/gel.htm
 -- "Gel" Effects example
 -- http://www.imagemagick.org/Usage/advanced/#gel_effects
