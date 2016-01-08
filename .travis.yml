@@ -9,3 +9,5 @@ before_install:
 install:
   - cabal configure --enable-tests -fBuildExamples
   - cabal build
+test:
+  - cabal test --show-details=always

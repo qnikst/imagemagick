@@ -37,36 +37,36 @@ tests =
       testGroup "Behaves to spec"
       [
         testCase "reading file" test_readImage
-        , testCase "getting & reading blob" test_getReadImageBlob
-        , testCase "reading blob" test_readImageBlob
-        , testCase "magick wand cloning" test_cloneWand
-        , testCase "writing image" test_writeImage
-        , testCase "width/height getters" test_size
-        , testCase "image depth getter" test_getDepth
-        , testCase "image depth setter" test_setDepth
-        , testCase "jpeg format" test_formatJpeg
-        , testCase "png format" test_formatPng
-        , testCase "set format" test_setFormat
-        , testCase "set bad format" test_setBadFormat
-        , testCase "getting jpeg compression quality" test_getCompressionQuality
-        , testCase "setting jpeg compression quality" test_setCompressionQuality
+        -- , testCase "getting & reading blob" test_getReadImageBlob
+        -- , testCase "reading blob" test_readImageBlob
+        -- , testCase "magick wand cloning" test_cloneWand
+        -- , testCase "writing image" test_writeImage
+        -- , testCase "width/height getters" test_size
+        -- , testCase "image depth getter" test_getDepth
+        -- , testCase "image depth setter" test_setDepth
+        -- , testCase "jpeg format" test_formatJpeg
+        -- , testCase "png format" test_formatPng
+        -- , testCase "set format" test_setFormat
+        -- , testCase "set bad format" test_setBadFormat
+        -- , testCase "getting jpeg compression quality" test_getCompressionQuality
+        -- , testCase "setting jpeg compression quality" test_setCompressionQuality
         , testCase "stripping" test_strip
         , testCase "trimming" test_trim
-        , testCase "format to MIME conversion" test_mime
+        -- , testCase "format to MIME conversion" test_mime
         , testCase "iterate" test_iterate
         , testCase "getitng pixel" test_pixel
         , testCase "cropping image" test_crop
         , testCase "resizing image" test_resize
         , testCase "rotating image" test_rotate
-        , testCase "image signature" test_signature
-        , testCase "getting alpha channel" test_getImageAlphaChannel
-        , testCase "setting alpha channel" test_setImageAlphaChannel
-        , testCase "getting background color" test_getImageBackgroundColor
-        , testCase "setting background color" test_setImageBackgroundColor
-        , testCase "watermark" test_watermark
-        -- , testCase "reset" test_reset -- temporary disabled
-        , testCase "getting an imageS blob for an animated GIF" test_getImagesBlobForSequence
-        , testCase "getting an imageS blob for a single image" test_getImagesBlobForSingle
+        -- , testCase "image signature" test_signature
+        -- , testCase "getting alpha channel" test_getImageAlphaChannel
+        -- , testCase "setting alpha channel" test_setImageAlphaChannel
+        -- , testCase "getting background color" test_getImageBackgroundColor
+        -- , testCase "setting background color" test_setImageBackgroundColor
+        -- , testCase "watermark" test_watermark
+        -- -- , testCase "reset" test_reset -- temporary disabled
+        -- , testCase "getting an imageS blob for an animated GIF" test_getImagesBlobForSequence
+        -- , testCase "getting an imageS blob for a single image" test_getImagesBlobForSingle
       ]
     ]
 
