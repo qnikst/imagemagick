@@ -1,4 +1,6 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts  #-}
 -- http://members.shaw.ca/el.supremo/MagickWand/make_tile.htm
 -- The program makes two tiles, one using the plasma: pseudo file and one using noise
 -- See: http://www.imagemagick.org/Usage/canvas/#plasma_seeded
@@ -17,7 +19,7 @@
  E.g. if the original image is "/", it creates the flop image "\" and then appends
  them side by side to give "/\". Then it takes this image and flips it which produces
  "\/" and then appends these one on top of the other to produce
- 
+
   /\
   \/
 

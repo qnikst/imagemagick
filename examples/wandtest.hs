@@ -2,17 +2,13 @@
 import           Control.Monad                             (forM_, when)
 import           Control.Monad.IO.Class                    (liftIO)
 import           Control.Monad.Trans.Resource              (release)
-import           Data.Int
 import qualified Data.Text                                 as T
 import           Data.Vector.Storable                      (Vector, (!))
 import qualified Data.Vector.Storable                      as V
 import           Data.Word
 import           Graphics.ImageMagick.MagickWand
-import           Graphics.ImageMagick.MagickWand.FFI.Types
 import           System.Exit
 import           Text.Printf                               (printf)
-
-throwAPIException w = undefined
 
 exitWithMessage msg = liftIO $ do
   putStrLn msg
