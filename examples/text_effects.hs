@@ -14,10 +14,8 @@ import           Control.Monad.Trans.Resource
 import           Data.ByteString                       (ByteString)
 import           Data.Text                             (Text)
 import qualified Data.Text                             as T
-import           Filesystem.Path.CurrentOS
 import           Graphics.ImageMagick.MagickCore.Types
 import           Graphics.ImageMagick.MagickWand
-import           Prelude                               hiding (FilePath)
 
 -- see http://www.imagemagick.org/Usage/#font about using fonts with IM
 font :: ByteString
@@ -88,7 +86,7 @@ textEffect1 w dw pw = do
 setTilePattern :: (MonadResource m) => PDrawingWand -> Text -> FilePath -> m ()
 setTilePattern dw patternName patternFile = do
   (_,w) <- magickWand
-  readImage w patternFile
+  readImage w (T.pack patternFile)
   -- Read the tile's width and height
   width <- getImageWidth w
   height <- getImageHeight w

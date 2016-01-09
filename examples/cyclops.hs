@@ -7,15 +7,13 @@ magick convert cyclops.gif -bordercolor white -border 1x1 -matte \
 		-shave 1x1 cyclops_flood_3.png
 -}
 
-import           Filesystem.Path.CurrentOS                 (decodeString)
 import           Graphics.ImageMagick.MagickWand
-import           Graphics.ImageMagick.MagickWand.FFI.Types
 
 main :: IO ()
 main =
   withMagickWandGenesis $ do
     (_,w) <- magickWand
-    readImage w (decodeString src)
+    readImage w src
 
     fc <- pixelWand
     bc <- pixelWand
@@ -28,7 +26,7 @@ main =
     channel <- parseChannelOption "rgba"
     floodfillPaintImage w channel fc 20 bc 0 0 False
     shaveImage w 1 1
-    writeImages w (decodeString out) True
+    writeImages w out True
 
   where
     src = "cyclops_sm.gif"
