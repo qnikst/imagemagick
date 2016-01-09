@@ -12,10 +12,9 @@ import           Data.ByteString                 (ByteString)
 import qualified Data.ByteString                 as BS
 import           Data.Maybe
 import qualified Data.Vector.Storable            as V
+import qualified Data.Text as T
 import           Data.Word
-import           Filesystem.Path
-import           Filesystem.Path.CurrentOS       (decodeString, encodeString)
-import           Prelude                         hiding (FilePath, catch)
+import           Prelude
 import           System.Directory                (getTemporaryDirectory,
                                                   removeFile)
 import           System.IO                       (hClose, openTempFile)
@@ -62,7 +61,7 @@ test_readImage = withImage "mona-lisa.jpg" $ \w -> do
 
 test_readImageBlob :: IO ()
 test_readImageBlob = withWand $ \w -> do
-  blob <- liftIO $ BS.readFile (encodeString (dataFile "mona-lisa.jpg"))
+  blob <- liftIO $ BS.readFile (dataFile "mona-lisa.jpg")
   readImageBlob w blob
   width <- getImageWidth w
   liftIO $ width @?= 402
@@ -80,9 +79,9 @@ test_writeImage = withImage "mona-lisa.jpg" $ \w -> do
   d <- liftIO $ getTemporaryDirectory
   (tmpName, hTemp) <- liftIO $ openTempFile d ""
   liftIO $ hClose  hTemp
-  writeImage w (Just (decodeString tmpName))
+  writeImage w (Just $ T.pack tmpName)
   (_,w') <- magickWand
-  readImage w' (decodeString tmpName)
+  readImage w' (T.pack tmpName)
   size' <- getImageSize w'
   liftIO $ removeFile tmpName
   liftIO $ size' @?= size
@@ -327,13 +326,13 @@ test_setImageBackgroundColor = withImage "croptest.png" $ \w -> do
 test_watermark :: IO ()
 test_watermark = withImage "beach.jpg" $ \w -> do
   (_,watermark) <- magickWand
-  readImage watermark (dataFile "watermark.png")
+  readImage watermark (T.pack $ dataFile "watermark.png")
   setIteratorIndex watermark 0
   setImageType watermark trueColorMatteType
   evaluateImageChannel watermark opacityChannel subtractEvaluateOperator (0.3 * quantumRange)
   compositeImage w watermark overCompositeOp 0 0
   (_,marked) <- magickWand
-  readImage marked (dataFile "marked.png")
+  readImage marked (T.pack $ dataFile "marked.png")
   sig1 <- getImageSignature marked
   sig2 <- getImageSignature w
   liftIO $ sig2 @?= sig1
@@ -347,7 +346,7 @@ test_reset = withImage "sasha.jpg" $ \w -> do
   resetImagePage w Nothing
   sig1 <- getImageSignature w
   (_,control) <- magickWand
-  readImage control (dataFile "resettest.png")
+  readImage control (T.pack $ dataFile "resettest.png")
   sig2 <- getImageSignature control
   liftIO $ sig1 @?= sig2
 
@@ -357,14 +356,14 @@ fuzz :: Double
 fuzz = 10
 
 dataFile :: String -> FilePath
-dataFile name = decodeString ("data/" ++ name)
+dataFile name = "data/" ++ name
 
 withWand f =  withMagickWandGenesis $ do
   (_,w) <- magickWand
   f w
 
 withImage name f = withWand $ \w -> do
-  readImage w (dataFile name)
+  readImage w (T.pack $ dataFile name)
   f w
 
 getImageSize :: (MonadResource m) => PMagickWand -> m (Int, Int)
