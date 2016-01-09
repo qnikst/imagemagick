@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
 -- http://members.shaw.ca/el.supremo/MagickWand/make_tile.htm
 -- The program makes two tiles, one using the plasma: pseudo file and one using noise

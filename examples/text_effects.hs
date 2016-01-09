@@ -296,7 +296,7 @@ textEffect8 w dw pw = do
   -- and write it
   writeImage w (Just "text_shepards.png")
 
-runEffect :: (MonadIO m, MonadUnsafeIO m, MonadThrow m, MonadBaseControl IO m) =>
+runEffect :: (MonadIO m, MonadThrow m, MonadBaseControl IO m) =>
              (PMagickWand -> PDrawingWand -> PPixelWand -> ResourceT m ()) -> m ()
 runEffect e = localGenesis $ do
   (_,w) <- magickWand
