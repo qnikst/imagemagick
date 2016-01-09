@@ -4,7 +4,7 @@ dist: trusty
 before_install: 
   - cabal update
   - travis/install-imagemagick.sh
-  - travis/cabal-apt-install --only-dependencies --force-reinstalls
+  - travis/cabal-apt-install --only-dependencies --force-reinstalls --enable-tests
   - travis/cabal-apt-install test-framework test-framework-hunit test-framework-quickcheck2  --force-reinstalls
 install:
   - cabal configure --enable-tests -fBuildExamples
