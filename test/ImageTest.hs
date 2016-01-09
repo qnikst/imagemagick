@@ -61,6 +61,7 @@ tests =
         , testCase "image signature" test_signature
         , testCase "getting alpha channel" test_getImageAlphaChannel
         , testCase "setting alpha channel" test_setImageAlphaChannel
+        , testCase "unsetting alpha channel" test_unsetImageAlphaChannel
         , testCase "getting background color" test_getImageBackgroundColor
         , testCase "setting background color" test_setImageBackgroundColor
         , testCase "watermark" test_watermark
@@ -311,10 +312,18 @@ test_getImageAlphaChannel = do
     liftIO $ alphaCh @?= False
 
 test_setImageAlphaChannel :: IO ()
-test_setImageAlphaChannel = withImage "watermark.png" $ \w -> do
+test_setImageAlphaChannel = withImage "mona-lisa.jpg" $ \w -> do
+  alphaCh <- getImageAlphaChannel w
+  liftIO $ alphaCh @?= False
+  setImageAlphaChannel w activateAlphaChannel
+  alphaCh' <- getImageAlphaChannel w
+  liftIO $ alphaCh' @?= True
+
+test_unsetImageAlphaChannel :: IO ()
+test_unsetImageAlphaChannel = withImage "watermark.png" $ \w -> do
   alphaCh <- getImageAlphaChannel w
   liftIO $ alphaCh @?= True
-  setImageAlphaChannel w activateAlphaChannel
+  setImageAlphaChannel w deactivateAlphaChannel
   alphaCh' <- getImageAlphaChannel w
   liftIO $ alphaCh' @?= False
 
