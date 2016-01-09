@@ -21,6 +21,7 @@ Flag buildExamples
   default:           False
 
 Library
+  hs-source-dirs:    src
   Exposed-modules:      Graphics.ImageMagick.MagickCore
                       , Graphics.ImageMagick.MagickCore.FFI.Gem
                       , Graphics.ImageMagick.MagickCore.FFI.Log

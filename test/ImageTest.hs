@@ -37,36 +37,25 @@ tests =
       testGroup "Behaves to spec"
       [
         testCase "reading file" test_readImage
-        -- , testCase "getting & reading blob" test_getReadImageBlob
-        -- , testCase "reading blob" test_readImageBlob
-        -- , testCase "magick wand cloning" test_cloneWand
-        -- , testCase "writing image" test_writeImage
-        -- , testCase "width/height getters" test_size
-        -- , testCase "image depth getter" test_getDepth
-        -- , testCase "image depth setter" test_setDepth
-        -- , testCase "jpeg format" test_formatJpeg
-        -- , testCase "png format" test_formatPng
-        -- , testCase "set format" test_setFormat
-        -- , testCase "set bad format" test_setBadFormat
-        -- , testCase "getting jpeg compression quality" test_getCompressionQuality
-        -- , testCase "setting jpeg compression quality" test_setCompressionQuality
         , testCase "stripping" test_strip
         , testCase "trimming" test_trim
-        -- , testCase "format to MIME conversion" test_mime
+        , testCase "format to MIME conversion" test_mime
         , testCase "iterate" test_iterate
         , testCase "getitng pixel" test_pixel
         , testCase "cropping image" test_crop
         , testCase "resizing image" test_resize
         , testCase "rotating image" test_rotate
-        -- , testCase "image signature" test_signature
-        -- , testCase "getting alpha channel" test_getImageAlphaChannel
-        -- , testCase "setting alpha channel" test_setImageAlphaChannel
-        -- , testCase "getting background color" test_getImageBackgroundColor
-        -- , testCase "setting background color" test_setImageBackgroundColor
-        -- , testCase "watermark" test_watermark
-        -- -- , testCase "reset" test_reset -- temporary disabled
-        -- , testCase "getting an imageS blob for an animated GIF" test_getImagesBlobForSequence
-        -- , testCase "getting an imageS blob for a single image" test_getImagesBlobForSingle
+        , testCase "image signature" test_signature
+        , testCase "getting alpha channel" test_getImageAlphaChannel
+        , testCase "setting alpha channel" test_setImageAlphaChannel
+        , testCase "unsetting alpha channel" test_unsetImageAlphaChannel
+        , testCase "getting background color" test_getImageBackgroundColor
+        , testCase "setting background color" test_setImageBackgroundColor
+        , testCase "watermark" test_watermark
+        -- Creates black background instead of transparent
+        -- , testCase "reset" test_reset
+        , testCase "getting an imageS blob for an animated GIF" test_getImagesBlobForSequence
+        , testCase "getting an imageS blob for a single image" test_getImagesBlobForSingle
       ]
     ]
 
@@ -311,7 +300,16 @@ test_getImageAlphaChannel = do
     liftIO $ alphaCh @?= False
 
 test_setImageAlphaChannel :: IO ()
-test_setImageAlphaChannel = withImage "watermark.png" $ \w -> do
+test_setImageAlphaChannel = withImage "mona-lisa.jpg" $ \w -> do
+  setImageAlphaChannel w deactivateAlphaChannel
+  alphaCh <- getImageAlphaChannel w
+  liftIO $ alphaCh @?= False
+  setImageAlphaChannel w activateAlphaChannel
+  alphaCh' <- getImageAlphaChannel w
+  liftIO $ alphaCh' @?= True
+
+test_unsetImageAlphaChannel :: IO ()
+test_unsetImageAlphaChannel = withImage "watermark.png" $ \w -> do
   alphaCh <- getImageAlphaChannel w
   liftIO $ alphaCh @?= True
   setImageAlphaChannel w deactivateAlphaChannel
@@ -390,7 +388,7 @@ getColorPW color = do
 assertMagickWandException :: (MonadResource m, MonadBaseControl IO m) => m a -> m ()
 assertMagickWandException action =
   catch (action >> (liftIO $ assertFailure "Expected MagickWandException"))
-    (\(_::MagickWandException) -> return ())
+        (\(_::MagickWandException) -> return ())
 
 assertEqualPW :: (MonadResource m) => PPixelWand -> PPixelWand -> m ()
 assertEqualPW pw1 pw2 = do
