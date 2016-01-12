@@ -1,3 +1,9 @@
+0.0.0.4
+-------
+    * Fix setImageAlphaChannel
+    * Drop dependency on system-filepath package, so now it's possible
+      to pass special image addresses like xc://
+
 0.0.3.4
 -------
     * Drop support of the imagemagick < 6.8
