@@ -3,7 +3,8 @@ sudo: required
 dist: trusty
 before_install: 
   - cabal update
-  - travis/install-imagemagick.sh
+  - apt-get update
+  - apt-get install libmagick++-dev
   - travis/cabal-apt-install --only-dependencies --force-reinstalls --enable-tests
   - travis/cabal-apt-install test-framework test-framework-hunit test-framework-quickcheck2  --force-reinstalls
 install:
