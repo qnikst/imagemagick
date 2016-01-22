@@ -1,5 +1,5 @@
 Name:                imagemagick
-Version:             0.0.4
+Version:             0.0.4.1
 Synopsis:            bindings to imagemagick library
 License:             OtherLicense
 License-file:        LICENSE
@@ -88,7 +88,7 @@ Library
         cpp-options:  -DCABAL_OS_DARWIN
   if os(windows)
         cpp-options:  -DCABAL_OS_WINDOWS
-  pkgconfig-depends:  ImageMagick, MagickWand >= 6.8
+  pkgconfig-depends:  ImageMagick, MagickWand >= 6.7
   Build-tools:        hsc2hs
 
 executable            resize
