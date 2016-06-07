@@ -11,6 +11,7 @@ import           Data.Text                                (Text)
 import           Data.Text.Encoding                       (decodeUtf8,
                                                            encodeUtf8)
 import           Foreign
+import           Prelude
 
 
 import qualified Graphics.ImageMagick.MagickCore.FFI.Mime as F

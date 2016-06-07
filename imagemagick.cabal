@@ -1,5 +1,5 @@
 Name:                imagemagick
-Version:             0.0.4.1
+Version:             0.0.4.2
 Synopsis:            bindings to imagemagick library
 License:             OtherLicense
 License-file:        LICENSE
@@ -76,12 +76,12 @@ Library
                       , Graphics.ImageMagick.MagickWand.FFI.WandProperties
   build-depends:       base >= 4.0 && <5.0
                       , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
+                      , transformers >= 0.3 && < 0.6
                       , vector >= 0.9 && < 0.12
-                      , bytestring >= 0.9 && <0.11
+                      , bytestring >= 0.9 && <0.12
                       , text >= 0.11 && <1.3
-                      , filepath >= 1.0
-                      , MonadCatchIO-transformers == 0.3.*
+                      , filepath >= 1.0 && < 2.0
+ --                    , MonadCatchIO-transformers == 0.3.*
   extensions:         EmptyDataDecls
   Ghc-options:        -Wall
   if os(darwin)
@@ -95,12 +95,12 @@ executable            resize
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -114,12 +114,12 @@ executable            extent
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && < 1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -133,12 +133,12 @@ executable            floodfill
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -153,12 +153,12 @@ executable            cyclops
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -172,12 +172,12 @@ executable            clipmask
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -190,12 +190,12 @@ executable            paint-trans
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && < 1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -210,12 +210,12 @@ executable            round-mask
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && < 0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -229,12 +229,12 @@ executable            make-tile
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && < 1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -247,12 +247,12 @@ executable            draw-shapes
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -266,12 +266,12 @@ executable            text-effects
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -285,13 +285,13 @@ executable            gel
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
-                      , lifted-base >= 0.1 && <0.3
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
+                      , lifted-base
                       , imagemagick
   Else
     Buildable:        False
@@ -304,12 +304,12 @@ executable            reflect
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -323,12 +323,12 @@ executable            3dlogo
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -342,12 +342,12 @@ executable            affine
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -361,12 +361,12 @@ executable            grayscale
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -380,12 +380,12 @@ executable            modulate
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -400,12 +400,12 @@ executable            landscape3d
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring 
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -419,12 +419,12 @@ executable            tilt-shift
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -438,12 +438,12 @@ executable            bunny
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -457,12 +457,12 @@ executable            pixel-mod
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -476,12 +476,12 @@ executable            wandtest
   If flag(buildExamples)
     Buildable:        True
     build-depends:      base >= 4.0 && <5.0
-                      , resourcet >= 0.3 && <1.2
-                      , transformers >= 0.3 && <0.5
-                      , vector >= 0.9 && <0.12
-                      , bytestring >= 0.9 && <0.11
-                      , text >= 0.11 && <1.3
-                      , filepath >= 1.0
+                      , resourcet
+                      , transformers
+                      , vector
+                      , bytestring
+                      , text
+                      , filepath
                       , imagemagick
   Else
     Buildable:        False
@@ -494,14 +494,14 @@ test-suite           image-tests
   type:              exitcode-stdio-1.0
   main-is:           test/ImageTest.hs
   build-depends:       base >= 4.0 && <5.0
-                     , lifted-base >= 0.1 && <0.3
+                     , lifted-base
                      , directory
-                     , resourcet >= 0.3 && <1.2
-                     , transformers >= 0.3 && <0.5
-                     , vector >= 0.9 && <0.12
-                     , bytestring >= 0.9 && <0.11
-                     , text >= 0.11 && <1.3
-                     , filepath >= 1.0
+                     , resourcet
+                     , transformers
+                     , vector
+                     , bytestring
+                     , text
+                     , filepath
                      , imagemagick
                      , QuickCheck >= 2
                      , tasty
