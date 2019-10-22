@@ -4,10 +4,10 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 module Main (main) where
 import           Control.Applicative
-import           Control.Exception.Lifted
 import           Control.Monad
 import           Control.Monad.IO.Class          (liftIO)
 import           Control.Monad.Trans.Resource
+import           Control.Monad.Catch
 import           Data.ByteString                 (ByteString)
 import qualified Data.ByteString                 as BS
 import           Data.Maybe
@@ -379,7 +379,7 @@ getColorPW color = do
   pw `setColor` color
   return pw
 
-assertMagickWandException :: (MonadResource m, MonadBaseControl IO m) => m a -> m ()
+assertMagickWandException :: (MonadResource m, MonadCatch m) => m a -> m ()
 assertMagickWandException action =
   catch (action >> (liftIO $ assertFailure "Expected MagickWandException"))
         (\(_::MagickWandException) -> return ())
