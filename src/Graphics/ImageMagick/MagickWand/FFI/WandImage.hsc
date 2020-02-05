@@ -262,6 +262,10 @@ foreign import ccall "MagickShadowImage" magickShadowImage
 foreign import ccall "MagickTrimImage" magickTrimImage
   :: Ptr MagickWand -> CDouble -> IO MagickBooleanType
 
+-- | MagickUnsharpMaskImage() sharpens an image.
+foreign import ccall "MagickUnsharpMaskImage" magickUnsharpMaskImage
+  :: Ptr MagickWand -> CDouble -> CDouble -> CDouble -> CDouble -> IO MagickBooleanType
+
 -- | MagickResetImagePage() resets the Wand page canvas and position.
 foreign import ccall "MagickResetImagePage" magickResetImagePage
   :: Ptr MagickWand -> CString -> IO MagickBooleanType
