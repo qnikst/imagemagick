@@ -76,6 +76,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , annotateImage
 -- , animateImages
 -- , appendImages
+  , autoOrientImage
 -- , autoGammaImage
 -- , autoLevelImage
 -- , blackThresholdImage
@@ -173,7 +174,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , getImageIterations
 -- , getImageLength
 -- , getImageMatteColor
--- , getImageOrientation
+, getImageOrientation
 -- , getImagePage
 -- , getImagePixelColor
 -- , getImageRedPrimary
@@ -274,7 +275,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , setImageMatte
 -- , setImageMatteColor
 -- , setImageOpacity
--- , setImageOrientation
+, setImageOrientation
 -- , setImagePage
 -- , setImageProgressMonitor
 -- , setImageRedPrimary
@@ -361,6 +362,10 @@ getImageHeight w = liftIO $ fmap fromIntegral (F.magickGetImageHeight w)
 
 getImageWidth :: (MonadResource m) => Ptr MagickWand -> m Int
 getImageWidth w = liftIO $ fmap fromIntegral (F.magickGetImageWidth w)
+
+-- | returns the image orientation.
+getImageOrientation :: (MonadResource m) => PMagickWand -> m OrientationType
+getImageOrientation w = liftIO $ F.magickGetImageOrientation w
 
 -- | returns the color of the specified pixel into the pixelwand.
 getImagePixelColor :: (MonadResource m)
@@ -473,6 +478,10 @@ appendImages :: (MonadResource m)
              -> m (ReleaseKey, PMagickWand)
 appendImages w b = allocate (F.magickAppendImages w (toMBool b)) (void . F.destroyMagickWand)
 
+-- | adjusts an image so that its orientation is suitable $ for viewing (i.e. top-left orientation).
+autoOrientImage :: (MonadResource m) => PMagickWand -> m ()
+autoOrientImage w = withException_ w $! F.magickAutoOrientImage w
+
 -- |  MagickAddNoiseImage() adds random noise to the image.
 --
 addNoiseImage :: (MonadResource m)
@@ -489,7 +498,7 @@ writeImage :: (MonadResource m)
            -> Maybe Text
            -> m ()
 writeImage w Nothing   = withException_ w $ F.magickWriteImage w nullPtr
-writeImage w (Just fn) = withException_ w $ useAsCString (encodeUtf8 fn) (\f -> F.magickWriteImage w f)
+writeImage w (Just fn) = withException_ w $ useAsCString (encodeUtf8 fn) (F.magickWriteImage w)
 
 writeImages :: (MonadResource m) => Ptr MagickWand -> Text -> Bool -> m ()
 writeImages w fn b = withException_ w $ useAsCString (encodeUtf8 fn) (\f -> F.magickWriteImages w f (toMBool b))
@@ -537,6 +546,10 @@ setVirtualPixelMethod = (liftIO .). F.magickSetVirtualPixelMethod
 -- | Remove edges that are the background color from the image.
 trimImage :: (MonadResource m) => PMagickWand -> Double -> m ()
 trimImage w fuzz = withException_ w $ F.magickTrimImage w (realToFrac fuzz)
+
+-- | sets the image orientation.
+setImageOrientation :: (MonadResource m) => PMagickWand -> OrientationType -> m ()
+setImageOrientation w o = withException_ w $! F.magickSetImageOrientation w o
 
 -- | Resets the Wand page canvas and position.
 resetImagePage :: (MonadResource m) => PMagickWand -> Maybe Text -> m ()
