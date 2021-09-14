@@ -20,6 +20,10 @@ foreign import ccall "MagickGetImageHeight" magickGetImageHeight
 foreign import ccall "MagickGetImageWidth" magickGetImageWidth
   :: Ptr MagickWand -> IO CSize
 
+-- | MagickGetImageOrientation() returns the image orientation.
+foreign import ccall "MagickGetImageOrientation" magickGetImageOrientation
+  :: Ptr MagickWand -> IO OrientationType
+
 -- | MagickGetImagePixelColor() returns the color of the specified pixel.
 foreign import ccall "MagickGetImagePixelColor" magickGetImagePixelColor
   :: Ptr MagickWand
@@ -209,6 +213,10 @@ foreign import ccall "MagickSetImageVirtualPixelMethod" magickSetVirtualPixelMet
 foreign import ccall "MagickAppendImages" magickAppendImages
   :: Ptr MagickWand -> MagickBooleanType -> IO (Ptr MagickWand)
 
+-- | MagickAutoOrientImage() adjusts an image so that its orientation is suitable $ for viewing (i.e. top-left orientation).
+foreign import ccall "MagickAutoOrientImage" magickAutoOrientImage
+  :: Ptr MagickWand -> IO MagickBooleanType
+
 -- | MagickReadImage() reads an image or image sequence. The images are inserted at
 -- the current image pointer position. Use MagickSetFirstIterator(), MagickSetLastIterator,
 -- or MagickSetImageIndex() to specify the current image pointer position at the beginning
@@ -261,6 +269,10 @@ foreign import ccall "MagickShadowImage" magickShadowImage
 -- | MagickTrimImage() remove edges that are the background color from the image.
 foreign import ccall "MagickTrimImage" magickTrimImage
   :: Ptr MagickWand -> CDouble -> IO MagickBooleanType
+
+-- | MagickSetImageOrientation() sets the image orientation.
+foreign import ccall "MagickSetImageOrientation" magickSetImageOrientation
+  :: Ptr MagickWand -> OrientationType -> IO MagickBooleanType
 
 -- | MagickResetImagePage() resets the Wand page canvas and position.
 foreign import ccall "MagickResetImagePage" magickResetImagePage
