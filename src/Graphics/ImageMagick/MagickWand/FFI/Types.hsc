@@ -71,6 +71,19 @@ newtype FillRule = FillRule { unFillRule :: CInt }
  , nonZeroRule = NonZeroRule
 }
 
+newtype OrientationType = OrientationType { unOrientationType :: CInt }
+#{enum OrientationType, OrientationType
+ , undefinedOrientation = UndefinedOrientation
+ , topLeftOrientation = TopLeftOrientation
+ , topRightOrientation = TopRightOrientation
+ , bottomRightOrientation = BottomRightOrientation
+ , bottomLeftOrientation = BottomLeftOrientation
+ , leftTopOrientation = LeftTopOrientation
+ , rightTopOrientation = RightTopOrientation
+ , rightBottomOrientation = RightBottomOrientation
+ , leftBottomOrientation = LeftBottomOrientation
+}
+
 data MagickPixelPacket 
 
 instance Storable MagickPixelPacket where
