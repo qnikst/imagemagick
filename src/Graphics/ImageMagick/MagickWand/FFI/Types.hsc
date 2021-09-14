@@ -72,6 +72,7 @@ newtype FillRule = FillRule { unFillRule :: CInt }
 }
 
 newtype OrientationType = OrientationType { unOrientationType :: CInt }
+  deriving (Eq, Show)
 #{enum OrientationType, OrientationType
  , undefinedOrientation = UndefinedOrientation
  , topLeftOrientation = TopLeftOrientation
