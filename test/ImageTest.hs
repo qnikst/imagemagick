@@ -23,6 +23,8 @@ import           Test.Tasty
 import           Test.Tasty.HUnit
 
 import           Graphics.ImageMagick.MagickWand
+import Data.Text (pack)
+import Graphics.ImageMagick.MagickWand.FFI.Types (undefinedOrientation, topLeftOrientation, topRightOrientation, bottomRightOrientation, bottomLeftOrientation, leftTopOrientation, rightTopOrientation, rightBottomOrientation, leftBottomOrientation)
 
 
 main :: IO ()
@@ -32,6 +34,9 @@ main = defaultMain tests
 tests :: TestTree
 tests = localOption (mkTimeout 1000000) $ testGroup "Behaves to spec"
   [ testCase "reading file" test_readImage
+  , testCase "getting orientation" test_getOrientation
+  , testCase "auto orienting image" test_autoOrientImage
+  , testCase "setting image orientation" test_setImageOrientation
   -- , testCase "stripping" test_strip
   -- , testCase "trimming" test_trim
   -- , testCase "format to MIME conversion" test_mime
@@ -350,6 +355,81 @@ test_reset = withImage "sasha.jpg" $ \w -> do
   sig2 <- getImageSignature control
   liftIO $ sig1 @?= sig2
 
+test_getOrientation :: IO ()
+test_getOrientation = withWand $ \w -> do
+  readImage w (pack. dataFile $ "orientation_0.jpeg")
+  orientation_0 <- getImageOrientation w
+  liftIO $ orientation_0 @?= undefinedOrientation
+  readImage w (pack. dataFile $ "orientation_1.jpeg")
+  orientation_1 <- getImageOrientation w
+  liftIO $ orientation_1 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_2.jpeg")
+  orientation_2 <- getImageOrientation w
+  liftIO $ orientation_2 @?= topRightOrientation
+  readImage w (pack. dataFile $ "orientation_3.jpeg")
+  orientation_3 <- getImageOrientation w
+  liftIO $ orientation_3 @?= bottomRightOrientation
+  readImage w (pack. dataFile $ "orientation_4.jpeg")
+  orientation_4 <- getImageOrientation w
+  liftIO $ orientation_4 @?= bottomLeftOrientation
+  readImage w (pack. dataFile $ "orientation_5.jpeg")
+  orientation_5 <- getImageOrientation w
+  liftIO $ orientation_5 @?= leftTopOrientation
+  readImage w (pack. dataFile $ "orientation_6.jpeg")
+  orientation_6 <- getImageOrientation w
+  liftIO $ orientation_6 @?= rightTopOrientation
+  readImage w (pack. dataFile $ "orientation_7.jpeg")
+  orientation_7 <- getImageOrientation w
+  liftIO $ orientation_7 @?= rightBottomOrientation
+  readImage w (pack. dataFile $ "orientation_8.jpeg")
+  orientation_8 <- getImageOrientation w
+  liftIO $ orientation_8 @?= leftBottomOrientation
+
+test_autoOrientImage :: IO ()
+test_autoOrientImage = withWand $ \w -> do
+  readImage w (pack. dataFile $ "orientation_0.jpeg")
+  autoOrientImage w
+  orientation_0 <- getImageOrientation w
+  liftIO $ orientation_0 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_1.jpeg")
+  autoOrientImage w
+  orientation_1 <- getImageOrientation w
+  liftIO $ orientation_1 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_2.jpeg")
+  autoOrientImage w
+  orientation_2 <- getImageOrientation w
+  liftIO $ orientation_2 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_3.jpeg")
+  autoOrientImage w
+  orientation_3 <- getImageOrientation w
+  liftIO $ orientation_3 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_4.jpeg")
+  autoOrientImage w
+  orientation_4 <- getImageOrientation w
+  liftIO $ orientation_4 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_5.jpeg")
+  autoOrientImage w
+  orientation_5 <- getImageOrientation w
+  liftIO $ orientation_5 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_6.jpeg")
+  autoOrientImage w
+  orientation_6 <- getImageOrientation w
+  liftIO $ orientation_6 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_7.jpeg")
+  autoOrientImage w
+  orientation_7 <- getImageOrientation w
+  liftIO $ orientation_7 @?= topLeftOrientation
+  readImage w (pack. dataFile $ "orientation_8.jpeg")
+  autoOrientImage w
+  orientation_8 <- getImageOrientation w
+  liftIO $ orientation_8 @?= topLeftOrientation
+
+test_setImageOrientation :: IO ()
+test_setImageOrientation = withImage "orientation_0.jpeg" $ \w -> do
+  setImageOrientation w topLeftOrientation
+  orientation <- getImageOrientation w
+  liftIO $ orientation @?= topLeftOrientation
+
 -- helpers
 
 fuzz :: Double
@@ -358,10 +438,12 @@ fuzz = 10
 dataFile :: String -> FilePath
 dataFile name = "data/" ++ name
 
+withWand :: (PMagickWand -> ResourceT IO a) -> IO a
 withWand f =  withMagickWandGenesis $ do
   (_,w) <- magickWand
   f w
 
+withImage :: String -> (PMagickWand -> ResourceT IO a) -> IO a
 withImage name f = withWand $ \w -> do
   readImage w (T.pack $ dataFile name)
   f w
