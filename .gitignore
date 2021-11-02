@@ -2,3 +2,6 @@ cabal-dev
 dist
 TAGS
 .stack-work/
+dist-newstyle
+stack.yaml.lock
+.DS_Store
