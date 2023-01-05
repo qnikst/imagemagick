@@ -270,6 +270,10 @@ foreign import ccall "MagickShadowImage" magickShadowImage
 foreign import ccall "MagickTrimImage" magickTrimImage
   :: Ptr MagickWand -> CDouble -> IO MagickBooleanType
 
+-- | MagickUnsharpMaskImage() sharpens an image.
+foreign import ccall "MagickUnsharpMaskImage" magickUnsharpMaskImage
+  :: Ptr MagickWand -> CDouble -> CDouble -> CDouble -> CDouble -> IO MagickBooleanType
+
 -- | MagickSetImageOrientation() sets the image orientation.
 foreign import ccall "MagickSetImageOrientation" magickSetImageOrientation
   :: Ptr MagickWand -> OrientationType -> IO MagickBooleanType

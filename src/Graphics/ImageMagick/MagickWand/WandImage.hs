@@ -315,7 +315,7 @@ module Graphics.ImageMagick.MagickWand.WandImage
 -- , transverseImage
 -- , trimImage
 -- , uniqueImageColors
--- , unsharpMaskImage
+  , unsharpMaskImage
 -- , vignetteImage
 -- , waveImage
 -- , whiteThresholdImage
@@ -546,6 +546,11 @@ setVirtualPixelMethod = (liftIO .). F.magickSetVirtualPixelMethod
 -- | Remove edges that are the background color from the image.
 trimImage :: (MonadResource m) => PMagickWand -> Double -> m ()
 trimImage w fuzz = withException_ w $ F.magickTrimImage w (realToFrac fuzz)
+
+-- | Sharpen the image with an unsharp mask operator.
+unsharpMaskImage :: (MonadResource m) => PMagickWand -> Double -> Double -> Double -> Double -> m ()
+unsharpMaskImage w rad sig gain thres = withException_ w $ F.magickUnsharpMaskImage w (realToFrac rad) (realToFrac sig)
+                                                                                   (realToFrac gain) (realToFrac thres)
 
 -- | sets the image orientation.
 setImageOrientation :: (MonadResource m) => PMagickWand -> OrientationType -> m ()
