@@ -11,6 +11,10 @@ Build-type:          Simple
 Cabal-version:       >=1.8
 Description:         Basic image magick bindings.
 
+tested-with:
+  GHC ==9.2.2
+   || ==8.10.7
+
 extra-source-files:  data/*.jpg
                      data/*.png
                      data/*.gif
